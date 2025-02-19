@@ -10,7 +10,7 @@ if (isset($_GET['lab_name'])) {
 $searchQuery = isset($_GET['query']) ? mysqli_real_escape_string($db_conn, $_GET['query']) : '';
 $labName = isset($_GET['lab_name']) ? strtolower($_GET['lab_name']) : '';
 
-$fetchLabTestNamesQuery = "SELECT id, test_name, B2B, B2C FROM `tests_$labName` WHERE test_name LIKE '%$searchQuery%'";
+$fetchLabTestNamesQuery = "SELECT id, test_name, B2C FROM `tests_$labName` WHERE test_name LIKE '%$searchQuery%'";
 
 $query = mysqli_query($db_conn, $fetchLabTestNamesQuery);
 

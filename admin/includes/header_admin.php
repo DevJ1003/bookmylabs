@@ -127,7 +127,11 @@
                             <span class="micon dw dw-invoice"></span><span class="mtext">Franchise Monitor</span>
                         </a>
                     </li>
-
+                    <li>
+                        <a href="recentBookings" class="dropdown-toggle no-arrow">
+                            <span class="micon dw dw-invoice"></span><span class="mtext">Recent Bookings</span>
+                        </a>
+                    </li>
                     <li>
                         <a href="reportUpload" class="dropdown-toggle no-arrow">
                             <span class="micon dw dw-invoice"></span><span class="mtext">Upload Reports</span>

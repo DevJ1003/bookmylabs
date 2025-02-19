@@ -346,8 +346,8 @@ function selectedTestsAmount($lab_name, $test_ids)
     return $row['total_amount'] ?? 0;
 }
 
-// function recentBookings() is used to fetch the recent bookings
-function recentBookings()
+// function recentBookingsFranchise() is used to fetch the recent bookings
+function recentBookingsFranchise()
 {
     global $db_conn;
 
@@ -374,6 +374,7 @@ function recentBookings()
         $originalDate = $created_at;
         $date = new DateTime($originalDate);
         $formattedDate = $date->format('jS F Y, h:i A');
+        $status = $row['status'];
 
         echo "<tr>";
         echo "<td><input type='checkbox'></td>";
@@ -386,6 +387,7 @@ function recentBookings()
         echo "<td>{$order_amount}</td>";
         echo "<td>{$selected_tests}</td>";
         echo "<td>{$formattedDate}</td>";
+        echo "<td>{$status}</td>";
         echo "<td><a href='invoice?sr_no=$sr_no&patient_name=$patient_name' target='_blank'>View Invoice</a></td>";
         echo "</tr>";
     }
@@ -928,7 +930,7 @@ function franchiseMonitor()
     }
 }
 
-// function recentBookings() is used to fetch the recent bookings
+// function franchiseBookings() is used to fetch the recent bookings for franchise
 function franchiseBookings()
 {
     if (isset($_GET['franchise_id'])) {
@@ -973,6 +975,45 @@ function franchiseBookings()
         }
 
         // return null;
+    }
+}
+
+// function recentBookings() fetches all bookings
+function recentBookings()
+{
+
+    $recentBookingsQuery = "SELECT * FROM `test_requests` ORDER BY created_at DESC";
+    $query = query($recentBookingsQuery);
+    confirm($query);
+
+    while ($row = mysqli_fetch_array($query)) {
+
+        $sr_no = $row['id'];
+        $franchise_name = $row['franchise_name'];
+        $lab_name = $row['lab_name'];
+        $patient_name = $row['patient_name'];
+        $order_amount = $row['order_amount'];
+        $test_names = $row['selected_test'];
+        $booking_date = date("d-m-Y h:i A", strtotime($row['created_at']));
+        $status = $row['status'];
+
+        echo "<tr>";
+        echo "<td><input type='checkbox'></td>";
+        echo "<td>{$sr_no}</td>";
+        echo "<td>{$franchise_name}</td>";
+        echo "<td>{$lab_name}</td>";
+        echo "<td>{$patient_name}</td>";
+        echo "<td>{$order_amount}</td>";
+        echo "<td>{$test_names}</td>";
+        echo "<td>{$booking_date}</td>";
+        echo "<td>{$status}</td>";
+        echo "<td>
+                <div style='display: flex; gap: 5px;'>
+                    <a class='btn btn-success' href='bookingApproved?id=$sr_no' style='color: white;'>Approve</a>
+                    <a class='btn btn-danger' href='bookingRejected?id=$sr_no' style='color: white;'>Reject</a>
+                </div>
+            </td>";
+        echo "</tr>";
     }
 }
 

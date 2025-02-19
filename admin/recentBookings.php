@@ -4,7 +4,7 @@
     <div class="pd-ltr-20">
         <div class="card-box mb-30">
             <div class="pd-20">
-                <h4 class="text-blue h4">Franchise Bookings</h4>
+                <h4 class="text-blue h4">Recent Bookings</h4>
             </div>
             <div class="pb-20">
                 <div class="table-responsive">
@@ -13,20 +13,18 @@
                             <tr>
                                 <th>Select</th>
                                 <th>SR NO</th>
-                                <th>Franchise</th>
-                                <th>Patient Name</th>
-                                <th>Gender</th>
-                                <th>Age</th>
+                                <th>Franchise Name</th>
                                 <th>Lab Name</th>
-                                <th>Dispatch Type</th>
+                                <th>Patient Name</th>
                                 <th>Order Amount</th>
                                 <th>Test Name</th>
-                                <th>Booking Date</th>
-                                <!-- <th>Invoice</th> -->
+                                <th>Booking Date & Time</th>
+                                <th>Status</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php franchiseBookings(); ?>
+                            <?php recentBookings(); ?>
                         </tbody>
                     </table>
                 </div>

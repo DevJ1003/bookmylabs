@@ -21,11 +21,12 @@
                                 <th>Order Amount</th>
                                 <th>Test Name</th>
                                 <th>Booking Date</th>
+                                <th>Status</th>
                                 <th>Invoice</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php recentBookings(); ?>
+                            <?php recentBookingsFranchise(); ?>
                         </tbody>
                     </table>
                 </div>
