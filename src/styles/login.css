@@ -1,0 +1,37 @@
+.login-container {
+    background: #fff;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-container img {
+    max-width: 100%;
+    display: block;
+    margin: 0 auto 20px;
+}
+
+@media (min-width: 768px) {
+    .login-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .login-container img {
+        width: 50%;
+        margin: 0;
+        /* Remove margin for horizontal layout */
+    }
+
+    .login-box {
+        width: 50%;
+        padding-left: 20px;
+    }
+}
+
+@media (max-width: 767px) {
+    .login-container {
+        flex-direction: column;
+    }
+}

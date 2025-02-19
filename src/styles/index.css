@@ -1,0 +1,102 @@
+.dashboard-card {
+    position: relative;
+    padding: 20px;
+    border-radius: 10px;
+    color: #000;
+    font-weight: bold;
+    overflow: hidden;
+    min-height: 120px;
+}
+
+.dashboard-card h5 {
+    font-size: 16px;
+}
+
+.dashboard-card p {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.dashboard-card::after {
+    content: "";
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    width: 80px;
+    height: 80px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.2;
+}
+
+.revenue {
+    background: #e0ffe0;
+}
+
+.revenue::after {
+    background-image: url('https://img.icons8.com/ios/100/rupee.png');
+}
+
+.booking {
+    background: #e0f0ff;
+}
+
+.booking::after {
+    background-image: url('https://img.icons8.com/ios/100/calendar.png');
+}
+
+.healthfit {
+    background: #e6e9ff;
+}
+
+.healthfit::after {
+    background-image: url('https://img.icons8.com/ios/100/clock.png');
+}
+
+.net-partner {
+    background: #e0ffe0;
+}
+
+.net-partner::after {
+    background-image: url('https://img.icons8.com/ios/100/wallet.png');
+}
+
+.rejected {
+    background: #ffe0e0;
+}
+
+.rejected::after {
+    background-image: url('https://img.icons8.com/ios/100/cancel.png');
+}
+
+.completed {
+    background: #e0fffa;
+}
+
+.completed::after {
+    background-image: url('https://img.icons8.com/ios/100/checkmark.png');
+}
+
+.processing {
+    background: #fff5e0;
+}
+
+.processing::after {
+    background-image: url('https://img.icons8.com/ios/100/hourglass.png');
+}
+
+.pending {
+    background: #fff8d6;
+}
+
+.pending::after {
+    background-image: url('https://img.icons8.com/ios/100/clock.png');
+}
+
+.resample {
+    background: #f0e6ff;
+}
+
+.resample::after {
+    background-image: url('https://img.icons8.com/ios/100/clock.png');
+}

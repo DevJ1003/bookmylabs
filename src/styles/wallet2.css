@@ -1,0 +1,133 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+}
+
+/* Wallet Title */
+.title h4 {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    color: #333;
+    font-weight: bold;
+}
+
+.wallet-icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+/* Wallet Balance Section */
+.balance {
+    display: flex;
+    justify-content: space-between;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.balance .left h3,
+.balance .left h1 {
+    margin: 5px 0;
+}
+
+#add-money-btn {
+    background:rgb(0, 4, 255);
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#add-money-btn:hover {
+    background: #e68900;
+}
+
+/* QR Code Section */
+.balance .right {
+    text-align: center;
+}
+
+.qr-code {
+    width: 120px;
+    height: 120px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Modal Styles */
+
+
+
+/* Modal Styles - Centered & Better Layout */
+.modal {
+    display: none;
+    position: fixed;
+    top: 52%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 450px; /* Increased width */
+    max-width: 90%;
+    max-height: 72vh; /* Prevents modal from becoming too tall */
+    overflow-y: auto;
+}
+
+/* Modal Content Styling */
+.modal-content {
+    text-align: center;
+}
+
+/* Close Button */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.close-btn:hover {
+    color: red;
+}
+
+/* Form Styling */
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px; /* More spacing between inputs */
+}
+
+/* Input Fields */
+.form input,
+.form button {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+/* Submit Button */
+.form button {
+    background: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 12px;
+}
+
+.form button:hover {
+    background: #218838;
+}

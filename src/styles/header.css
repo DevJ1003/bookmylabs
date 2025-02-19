@@ -1,0 +1,30 @@
+.sidebar-menu>ul>li>.dropdown-toggle.active {
+    background-color: rgba(0, 40, 255, 0.12);
+    border-radius: 10px;
+}
+
+.sidebar-menu .dropdown-toggle:hover,
+.sidebar-menu .show>.dropdown-toggle {
+    background-color: rgba(0, 40, 255, 0.12);
+    /* border-radius: 1 0px; */
+}
+
+.book-test-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    /* Adds spacing between the icon and text */
+    padding: 6px 12px;
+    font-size: 14px;
+    height: auto;
+    /* Prevents unwanted height issues */
+    line-height: 1;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    /* Ensures alignment */
+    gap: 10px;
+    /* Adds spacing between elements */
+}

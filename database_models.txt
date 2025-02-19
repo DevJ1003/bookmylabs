@@ -1,0 +1,44 @@
+Database models used in the project
+
+// Franchise module
+
+1. franchises
+    id (Primary Key)
+    name
+    email (Unique)
+    password (hashed)
+    tier (Gold, Diamond, etc.)
+    wallet_balance
+    parent_franchise_id (for sub-franchises; null if no parent)
+    created_at, updated_at
+    
+2. wallet_transactions
+    id (Primary Key)
+    franchise_id (Foreign Key)
+    amount
+    type (recharge or deduction)
+    remarks
+    created_at
+
+3. patients
+    id (Primary Key)
+    franchise_id (Foreign Key)
+    name
+    age
+    contact_number
+    email
+
+4. patient_tests
+    id (Primary Key)
+    patient_id (Foreign Key)
+    test_id (Foreign Key)
+    b2b_price
+    b2c_price
+    invoice_generated (true/false)
+    created_at
+
+5. test_catalog
+    id (Primary Key)
+    name
+    b2b_price
+    b2c_price

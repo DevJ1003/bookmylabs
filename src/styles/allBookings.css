@@ -1,0 +1,87 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body,
+html {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 15vh;
+}
+
+.search,
+.middle {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.search input,
+.middle input,
+.middle select {
+  flex: 1;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+button {
+  padding: 10px 20px; /* Adjusting padding to make buttons reasonably sized */
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.bottom {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  overflow-x: scroll;
+}
+
+/* Custom Scrollbar */
+.bottom::-webkit-scrollbar {
+  width: 10px;
+}
+
+.bottom::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.bottom::-webkit-scrollbar-thumb {
+  background: #007bff;
+  border-radius: 10px;
+}
+
+.bottom::-webkit-scrollbar-thumb:hover {
+  background: #0056b3;
+}
+
+@media (min-width: 1301px) {
+  .container {
+    width: 80vw;
+    margin-left: auto;
+    margin-right: 0px;
+  }
+}

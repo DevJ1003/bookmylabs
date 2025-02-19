@@ -1,0 +1,181 @@
+
+
+.container {
+  display: flex;
+  width: 100%;
+  margin-top: 15vh;
+}
+
+.sidebar {
+  width: 20vw;
+  background-color: #fff;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li.menu-item {
+  padding: 8px;
+  background-color: #fff;
+  color: #4a5568;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+li.menu-item img {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  transition: filter 0.3s ease-in-out, brightness 0.3s ease-in-out, invert 0.3s ease-in-out;
+}
+
+li.menu-item:hover {
+  background-color: #ebf8ff;
+  color: #3182ce;
+}
+
+li.menu-item:hover img {
+  filter: brightness(0) invert(1);
+}
+
+.pricing {
+  width: 80vw;
+  padding: 16px;
+  color: #1a202c;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+  padding: 8px;
+  border: 1px solid #e2e8f0;
+  text-align: center;
+}
+
+thead {
+  background-color: #edf2f7;
+}
+
+button {
+  padding: 12px 24px;
+  background-color: #4299e1;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease-in-out;
+  margin: 8px;
+}
+
+button:hover {
+  background-color: #3182ce;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+label {
+  display: block;
+  color: #4a5568;
+  margin-bottom: 8px;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Add these styles for the new buttons */
+.edit-button,
+.delete-button {
+  margin: 0 4px;
+}
+
+/* .edit-button {
+  background-color: #38a169;
+}
+
+.edit-button:hover {
+  background-color: #2f855a;
+} */
+
+.edit-button {
+  display: inline-block;
+  padding: 8px 15px;
+  background-color: #38a169; /* Green color */
+  color: white !important; /* Ensure text color stays white */
+  border: none;
+  border-radius: 5px;
+  text-decoration: none; /* Remove underline */
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+}
+
+.edit-button:hover {
+  background-color: #2f855a; /* Darker green on hover */
+  color: white !important; /* Ensure text color remains white */
+  text-decoration: none;
+  transform: scale(1.05); /* Slight zoom effect on hover */
+}
+
+.edit-button:active {
+  transform: scale(0.95); /* Slight press effect */
+}
+
+/* .delete-button {
+  background-color: #e53e3e;
+}
+
+.delete-button:hover {
+  background-color: #c53030;
+} */
+
+.delete-button {
+  display: inline-block;
+  padding: 8px 15px;
+  background-color: #dc3545; /* Red color */
+  color: white !important; /* Ensure text color stays white */
+  border: none;
+  border-radius: 5px;
+  text-decoration: none; /* Remove underline */
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.delete-button:hover {
+  background-color: #b22234; /* Darker red on hover */
+  color: white !important; /* Ensure text color remains white */
+  text-decoration: none;
+}
+
+
+@media   (min-width:1301px) {
+  .container{
+      width: 80vw;
+      margin-left: auto;
+      margin-right: 0px;
+      transition: 0.2s ease-out;
+  }
+  
+}
