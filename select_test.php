@@ -16,7 +16,7 @@ confirm($query);
 <!-- Custom css file -->
 <link rel="stylesheet" type="text/css" href="src/styles/select_test.css">
 
-<div class="pre-loader">
+<!-- <div class="pre-loader">
     <div class="pre-loader-box">
         <div class="loader-logo"><img src="vendors/images/BOOK-MY-LAB.png" alt="" style="height:100px;"></div>
         <div class='loader-progress' id="progress_div">
@@ -27,7 +27,7 @@ confirm($query);
             Loading...
         </div>
     </div>
-</div>
+</div> -->
 
 <div class="main-container">
     <div class="pd-ltr-20 xs-pd-20-10">
@@ -87,28 +87,21 @@ confirm($query);
 <script>
     document.getElementById("searchInput").addEventListener("keyup", function() {
         let searchQuery = this.value.trim();
+        let labName = "<?php echo $Lab_name; ?>";
+        let xhr = new XMLHttpRequest();
 
-        // Perform the AJAX request if the search input is not empty
         if (searchQuery.length > 0) {
-            let xhr = new XMLHttpRequest();
-            xhr.open("GET", "search_tests.php?query=" + encodeURIComponent(searchQuery) + "&lab_name=" + "<?php echo $Lab_name; ?>", true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    document.querySelector("#labTestResults").innerHTML = xhr.responseText;
-                }
-            };
-            xhr.send();
+            xhr.open("GET", "search_tests.php?query=" + encodeURIComponent(searchQuery) + "&lab_name=" + labName, true);
         } else {
-            // If search input is empty, reload all tests (same as initial state)
-            let xhr = new XMLHttpRequest();
-            xhr.open("GET", "select_test.php?lab_name=" + "<?php echo $Lab_name; ?>", true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    document.querySelector("#labTestResults").innerHTML = xhr.responseText;
-                }
-            };
-            xhr.send();
+            xhr.open("GET", "fetch_all_tests.php?lab_name=" + labName, true);
         }
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                document.querySelector("#labTestResults").innerHTML = xhr.responseText;
+            }
+        };
+        xhr.send();
     });
 </script>
 

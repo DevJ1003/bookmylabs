@@ -1,17 +1,9 @@
 <?php
 include "includes/db.php";
 
-if (isset($_GET['lab_name'])) {
-    $Lab_name = $_GET['lab_name'];
-} else {
-    $Lab_name = "";
-}
-
-$searchQuery = isset($_GET['query']) ? mysqli_real_escape_string($db_conn, $_GET['query']) : '';
 $labName = isset($_GET['lab_name']) ? strtolower($_GET['lab_name']) : '';
 
-$fetchLabTestNamesQuery = "SELECT id, test_name, B2B, B2C FROM `tests_$labName` WHERE test_name LIKE '%$searchQuery%'";
-
+$fetchLabTestNamesQuery = "SELECT id, test_name, B2B, B2C FROM `tests_$labName`";
 $query = mysqli_query($db_conn, $fetchLabTestNamesQuery);
 
 if (mysqli_num_rows($query) > 0) {
@@ -23,7 +15,7 @@ if (mysqli_num_rows($query) > 0) {
                 </h4>
                 <p class="clinova">
                     <img src="https://cdn-icons-png.flaticon.com/512/883/883360.png" alt="">
-                    <?php echo $Lab_name; ?>
+                    <?php echo htmlspecialchars(ucwords($labName)); ?>
                 </p>
                 <p class="price">
                     <span class="reducedprice">&#8377; <?php echo $row['B2C']; ?></span>
