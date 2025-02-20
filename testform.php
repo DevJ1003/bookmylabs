@@ -21,8 +21,9 @@ if (isset($_GET['lab_name'])) {
 }
 
 $lab_name = strtolower($lab_name);
-$total_amount = selectedTestsAmount($lab_name, $selected_test_ids);
-
+$amounts = selectedTestsAmount($lab_name, $selected_test_ids);
+$total_amount = $amounts['total_amount'];
+$deduction_amount = $amounts['deduction_amount'];
 
 ?>
 
@@ -47,7 +48,9 @@ $total_amount = selectedTestsAmount($lab_name, $selected_test_ids);
             <div class="pd-20 card-box mb-30">
                 <div class="wizard-content">
                     <form class="form" action="testform" method="POST" enctype="multipart/form-data">
-                        <?php TestRequestForm(); ?>
+                        <?php TestRequestForm();
+                        displayMessage();
+                        ?>
 
                         <!-- CSRF Token -->
                         <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
@@ -90,6 +93,8 @@ $total_amount = selectedTestsAmount($lab_name, $selected_test_ids);
                                     <label for="orderAmount">Total Amount:</label>
                                     <input type="hidden" name="orderAmount" id="orderAmount" class="form-control"
                                         value="<?php echo $total_amount; ?>" required>
+                                    <input type="hidden" name="orderDeductionAmount" id="orderDeductionAmount" class="form-control"
+                                        value="<?php echo $deduction_amount; ?>" required>
                                     <p>₹<?php echo $total_amount; ?></p>
                                 </div>
                             </div>
@@ -98,8 +103,8 @@ $total_amount = selectedTestsAmount($lab_name, $selected_test_ids);
                                     <label>Sample Dispatch Option:</label>
                                     <select name="dispatchOption" class="form-control" required>
                                         <option value="">Select</option>
-                                        <option value="pickup">Sample Drawn</option>
-                                        <option value="courier">Home Collection</option>
+                                        <option value="Pickup">Sample Drawn</option>
+                                        <option value="Courier">Home Collection</option>
                                     </select>
                                 </div>
                                 <div class="form-group">

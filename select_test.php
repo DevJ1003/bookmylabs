@@ -15,20 +15,6 @@ confirm($query);
 
 <!-- Custom css file -->
 <link rel="stylesheet" type="text/css" href="src/styles/select_test.css">
-
-<!-- <div class="pre-loader">
-    <div class="pre-loader-box">
-        <div class="loader-logo"><img src="vendors/images/BOOK-MY-LAB.png" alt="" style="height:100px;"></div>
-        <div class='loader-progress' id="progress_div">
-            <div class='bar' id='bar1'></div>
-        </div>
-        <div class='percent' id='percent1'>0%</div>
-        <div class="loading-text">
-            Loading...
-        </div>
-    </div>
-</div> -->
-
 <div class="main-container">
     <div class="pd-ltr-20 xs-pd-20-10">
         <div class="min-height-200px">
@@ -51,7 +37,8 @@ confirm($query);
                                             <?php echo $Lab_name; ?>
                                         </p>
                                         <p class="price">
-                                            <span class="reducedprice">&#8377; <?php echo $row['B2C']; ?></span>
+                                            <span class="linethrough" style="color: red;">&#8377;<?php echo $row['B2C']; ?></span>
+                                            <span class="reducedprice">&#8377;<?php echo $row['B2B']; ?></span>
                                         </p>
                                         <label class="checkbox">
                                             <div>

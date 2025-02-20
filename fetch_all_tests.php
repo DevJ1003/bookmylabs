@@ -18,7 +18,8 @@ if (mysqli_num_rows($query) > 0) {
                     <?php echo htmlspecialchars(ucwords($labName)); ?>
                 </p>
                 <p class="price">
-                    <span class="reducedprice">&#8377; <?php echo $row['B2C']; ?></span>
+                    <span class="linethrough" style="color: red;">&#8377;<?php echo $row['B2C']; ?></span>
+                    <span class="reducedprice">&#8377; <?php echo $row['B2B']; ?></span>
                 </p>
                 <label class="checkbox">
                     <div>

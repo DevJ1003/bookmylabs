@@ -138,7 +138,7 @@ function get_user_id()
 function registerUser()
 {
 
-    if (isset($_POST['register'])) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
 
         $username = $_POST['username'];
         $email = $_POST['email'];
@@ -165,7 +165,7 @@ function loginUser()
 {
     global $db_conn;
 
-    if (isset($_POST['login_form'])) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_form'])) {
         // CSRF token validation
         if (empty($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
             setMessage("Invalid CSRF token.", "danger");
@@ -252,7 +252,7 @@ function TestRequestForm()
         $lab_name = "Unknown Lab";
     }
 
-    if (isset($_POST['test_request'])) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['test_request'])) {
 
         $franchise_name = $_SESSION['agency_name'];
         $lab_name = $_POST['lab_name'];
@@ -282,6 +282,9 @@ function TestRequestForm()
         // Order amount
         $order_amount = $_POST['orderAmount'];
 
+        // Deduction amount
+        $order_deduction_amount = $_POST['orderDeductionAmount'];
+
         if ($patient_age <= 0) {
             setMessage("Invalid age. Please enter a positive value.", "warning");
             exit();
@@ -297,11 +300,11 @@ function TestRequestForm()
 
         if ($availableWalletBalance > $order_amount) {
             $updateWalletBalanceQuery = "INSERT INTO `recharge_requests` (franchise_id, franchise_name, amount, status, created_at) ";
-            $updateWalletBalanceQuery .= "VALUES ('$franchise_id', '$franchise_name', '-$order_amount', 'Approved', NOW())";
+            $updateWalletBalanceQuery .= "VALUES ('$franchise_id', '$franchise_name', '-$order_deduction_amount', 'Approved', NOW())";
             $balanceQuery = query($updateWalletBalanceQuery);
             confirm($balanceQuery);
         } else {
-            echo "Requested amount cannot be processed. Recharge your wallet!";
+            setMessage("Requested amount cannot be processed. Recharge your wallet!");
             exit();
         }
         // =====================================================================
@@ -361,12 +364,15 @@ function selectedTestsAmount($lab_name, $test_ids)
     $test_ids_list = implode(", ", $escaped_ids);
     $lab_name = strtolower($lab_name);
 
-    $query = "SELECT SUM(B2C) AS total_amount FROM `tests_$lab_name` WHERE id IN ($test_ids_list)";
+    $query = "SELECT SUM(B2C) AS total_amount, SUM(B2B) AS deduction_amount FROM `tests_$lab_name` WHERE id IN ($test_ids_list)";
     $result = query($query);
     confirm($result);
 
     $row = mysqli_fetch_array($result);
-    return $row['total_amount'] ?? 0;
+    return [
+        'total_amount' => $row['total_amount'] ?? 0,
+        'deduction_amount' => $row['deduction_amount'] ?? 0
+    ];
 }
 
 // function recentBookingsFranchise() is used to fetch the recent bookings
@@ -454,7 +460,7 @@ function rechargeRequests()
     $upi_reference_id = $_SESSION['id'];
     $upi_reference_id = mysqli_real_escape_string($db_conn, $upi_reference_id);
 
-    if (isset($_POST['wallet_request'])) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['wallet_request'])) {
 
         $amount = $_POST['amount'];
         $upi_reference_id = $_POST['upi_reference'];
@@ -709,7 +715,7 @@ function readLabData($lab_id)
 // function updateTestPrice() is used to update test details like name, price etc.
 function updateLabDetails($lab_id, $lab_name)
 {
-    if (isset($_POST['updateLab'])) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['updateLab'])) {
 
         $lab_name_updated = $_POST['labName_updated'];
         $lab_logo_updated = $_FILES['labLogo_updated']['name'];
@@ -770,7 +776,7 @@ function readAllTestPrice()
 // function addTestPrice() is used to add test names, prices.
 function addTestPrice()
 {
-    if (isset($_POST['addTestPrice'])) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addTestPrice'])) {
 
         $code = $_POST['test_code'];
         $name = $_POST['test_name'];
@@ -819,7 +825,7 @@ function updateTestPrice($test_id)
     $franchise_id = $_SESSION['id'];
     $franchise_id = mysqli_real_escape_string($db_conn, $franchise_id);
 
-    if (isset($_POST['updateTestPrice'])) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['updateTestPrice'])) {
 
         $code = $_POST['code_updated'];
         $name = $_POST['name_updated'];
@@ -843,7 +849,7 @@ function addFranchise()
     // $franchise_id = $_SESSION['id'];
     // $franchise_id = mysqli_real_escape_string($db_conn, $franchise_id);
 
-    if (isset($_POST['addFranchise'])) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addFranchise'])) {
 
         $owner_name = $_POST['owner_name'];
         $agency_name = $_POST['agency_name'];
@@ -908,7 +914,7 @@ function updateProfile()
     $franchise_id = $_SESSION['id'];
     $franchise_id = mysqli_real_escape_string($db_conn, $franchise_id);
 
-    if (isset($_POST['updateProfile'])) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['updateProfile'])) {
 
         $owner_name = $_POST['owner_name'];
         $agency_name = $_POST['agency_name'];
@@ -938,7 +944,7 @@ function updateProfile()
 // function uploadReport() used to upload report
 function uploadReport()
 {
-    if (isset($_POST['uploadReport'])) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['uploadReport'])) {
 
         $patient_name = $_POST['patient_name'];
         $franchise_name = $_POST['franchise_name'];

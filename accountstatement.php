@@ -15,7 +15,17 @@ confirm($query);
 if ($row = mysqli_fetch_array($query)) {
     $total_bookings = $row['total_bookings'] ?? 0;
     $b2c_revenue = $row['b2c_revenue'] ?? 0;
-    $date = $row['created_at'];
+}
+
+// b2b deduction function
+$fetchDeductionAmountQuery = "SELECT SUM(amount) AS deduction_amount FROM `recharge_requests` WHERE franchise_id = $franchise_id ";
+$fetchDeductionAmountQuery .= " AND amount < 0 AND DATE(created_at) >= DATE_SUB(CURDATE(), INTERVAL $days DAY)";
+$deductionQuery = query($fetchDeductionAmountQuery);
+confirm($deductionQuery);
+
+if ($row = mysqli_fetch_array($deductionQuery)) {
+    $b2b_deduction_amount = $row['deduction_amount'] ?? 0;
+    // $b2b_revenue += $deduction_amount;
 }
 
 ?>
@@ -58,15 +68,15 @@ if ($row = mysqli_fetch_array($query)) {
                 <thead>
                     <tr>
                         <th>Total Revenue B2C</th>
-                        <th>Total Booking</th>
+                        <th>Total Bookings</th>
                         <th>B2B Deduction</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>₹<?php echo $b2c_revenue; ?></td>
+                        <td>₹<?php echo $b2c_revenue; ?>/-</td>
                         <td><?php echo $total_bookings; ?></td>
-                        <td>-₹<?php echo $b2c_revenue; ?></td>
+                        <td>-₹<?php echo number_format(abs($b2b_deduction_amount)); ?></td>
                         </td>
                     </tr>
                 </tbody>
@@ -74,23 +84,6 @@ if ($row = mysqli_fetch_array($query)) {
         </div>
     </div>
 </div>
-
-<!-- <script>
-    document.getElementById('dayRangeSelect').addEventListener('change', function() {
-        var selectedDays = this.value;
-        if (selectedDays) {
-            var today = new Date();
-            var pastDate = new Date();
-            pastDate.setDate(today.getDate() - selectedDays);
-
-            console.log("Selected Range: Last " + selectedDays + " Days");
-            console.log("Start Date: " + pastDate.toISOString().split('T')[0]);
-            console.log("End Date: " + today.toISOString().split('T')[0]);
-
-            // You can now send this data via AJAX or refresh with PHP
-        }
-    });
-</script> -->
 <script>
     document.getElementById('dayRangeSelect').addEventListener('change', function() {
         var selectedDays = this.value;
