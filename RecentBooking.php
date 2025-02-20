@@ -1,155 +1,149 @@
 <?php include "includes/header.php"; ?>
 
-<!DOCTYPE html>
-<html lang="en">
+<!-- Custom css file -->
+<link rel="stylesheet" type="text/css" href="src/styles/recentBooking.css">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-        }
+<div class="main-container">
+    <h1>Recent Booking</h1>
+    <div class="search">
+        <input type="text" id="searchInput" placeholder="Search by patient name...">
+        <button id="searchButton">Search</button>
+    </div>
+    <div class="middle">
+        <input type="date" id="dateFilter">
+        <select id="dispatchOptionFilter">
+            <option value="">Dispatch Option</option>
+            <option value="Pickup">Sample Drawn</option>
+            <option value="Courier">Home Collection</option>
+        </select>
+        <select id="labNameFilter">
+            <option value="">All Labs</option>
+            <?php
+            $labQuery = "SELECT lab_name FROM `labs`";
+            $labResult = mysqli_query($db_conn, $labQuery);
 
-        body,
-        html {
-            height: 100%;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            font-family: Arial, sans-serif;
-        }
-
-        .container {
-            width: 100vw;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            margin-top: 15vh;
-
-
-        }
-
-        .search,
-        .middle {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
-            width: 100%;
-        }
-
-        .search input,
-        .middle input,
-        .middle select {
-            flex: 1;
-            padding: 10px;
-            font-size: 1rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        button {
-            padding: 10px 20px;
-            /* Adjusting padding to make buttons reasonably sized */
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        .bottom {
-            display: flex;
-            flex-direction: row;
-            gap: 10px;
-            overflow-x: scroll;
-        }
-
-        /* Custom Scrollbar */
-        .bottom::-webkit-scrollbar {
-            width: 10px;
-        }
-
-        .bottom::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-
-        .bottom::-webkit-scrollbar-thumb {
-            background: #007bff;
-            border-radius: 10px;
-        }
-
-        .bottom::-webkit-scrollbar-thumb:hover {
-            background: #0056b3;
-        }
-
-
-        @media (min-width:1301px) {
-            .container {
-                width: 80vw;
-                margin-left: auto;
-                margin-right: 0px;
+            while ($labRow = mysqli_fetch_assoc($labResult)) {
+                echo "<option value='{$labRow['lab_name']}'>{$labRow['lab_name']}</option>";
             }
-
-        }
-    </style>
-</head>
-
-<body>
-    <div class="container">
-        <h1>Recent Booking</h1>
-        <div class="search">
-            <input type="text" placeholder="Search">
-            <button>Search</button>
-        </div>
-        <div class="middle">
-            <input type="date">
-            <select name="" id="">
-                <option value="select an Option">Select an Option</option>
-                <option value="Home Collection">Home Collection</option>
-                <option value="Courier">Courier</option>
-                <option value="Pickup">Pickup</option>
-                <option value="Sample Drawn">Sample Drawn</option>
-            </select>
-            <select name="" id="">
-                <option value="All Labs">All Labs</option>
-            </select>
-            <select name="" id="">
-                <option value="">Order Status</option>
-                <option value="Pending">Pending</option>
-                <option value="Process">Process</option>
-                <option value="Complete">Complete</option>
-                <option value="Resample">Resample</option>
-                <option value="Reject">Reject</option>
-            </select>
-            <button>Clear Filter</button>
-            <button>Download Excel</button>
-        </div>
-        <div class="bottom">
-            <span>Select Dispatch Item</span>
-            <span>SR No</span>
-            <span>Patient ID</span>
-            <span>Booking ID</span>
-            <span>Patient Name</span>
-            <span>Gender</span>
-            <span>Patient Age</span>
-            <span>Lab Name</span>
-            <span>Order Status</span>
-            <span>Dispatch Type</span>
-            <span>Order Amount</span>
-            <span>Booking Date</span>
-            <span>Test Name</span>
+            ?>
+        </select>
+        <select id="orderStatusFilter">
+            <option value="">All Status</option>
+            <option value="Pending">Pending</option>
+            <option value="In-Process">In-Process</option>
+            <option value="Completed">Completed</option>
+            <option value="Rejected/Cancelled">Rejected/Cancelled</option>
+        </select>
+        <button id="clearFilterButton">Clear Filter</button>
+        <button id="downloadExcel">Download Excel</button>
+    </div>
+    <div class="pb-20">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered hover multiple-select-row data-table-export-recent-booking">
+                <thead>
+                    <tr>
+                        <th>Select</th>
+                        <th>SR NO</th>
+                        <th>Patient ID</th>
+                        <th>Patient Name</th>
+                        <th>Gender</th>
+                        <th>Age</th>
+                        <th>Lab Name</th>
+                        <th>Dispatch Type</th>
+                        <th>Order Amount</th>
+                        <th>Test Name</th>
+                        <th>Booking Date</th>
+                        <th>Status</th>
+                        <th>Invoice</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php recentBookingsFranchise(); ?>
+                </tbody>
+            </table>
         </div>
     </div>
-</body>
+</div>
 
-</html>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const searchInput = document.getElementById("searchInput");
+        const searchButton = document.getElementById("searchButton");
+        const orderStatusFilter = document.getElementById("orderStatusFilter");
+        const dispatchOptionFilter = document.getElementById("dispatchOptionFilter");
+        const labNameFilter = document.getElementById("labNameFilter");
+        const dateFilter = document.getElementById("dateFilter");
+        const clearFilterButton = document.getElementById("clearFilterButton"); // Clear Filter Button
+        const resultsTable = document.querySelector(".data-table-export-recent-booking tbody");
+
+        function fetchFilteredResults() {
+            const query = searchInput.value.trim();
+            const status = orderStatusFilter.value;
+            const dispatchOption = dispatchOptionFilter.value;
+            const labName = labNameFilter.value;
+            const selectedDate = dateFilter.value;
+
+            fetch(`search_recent_booking.php?query=${encodeURIComponent(query)}&status=${encodeURIComponent(status)}&dispatch_option=${encodeURIComponent(dispatchOption)}&lab_name=${encodeURIComponent(labName)}&date=${encodeURIComponent(selectedDate)}`)
+                .then(response => response.text())
+                .then(data => {
+                    resultsTable.innerHTML = data;
+                })
+                .catch(error => console.error("Error fetching filtered results:", error));
+        }
+
+        searchButton.addEventListener("click", function() {
+            fetchFilteredResults();
+        });
+
+        searchInput.addEventListener("keyup", function(event) {
+            if (event.key === "Enter") {
+                fetchFilteredResults();
+            }
+        });
+
+        orderStatusFilter.addEventListener("change", function() {
+            fetchFilteredResults();
+        });
+
+        dispatchOptionFilter.addEventListener("change", function() {
+            fetchFilteredResults();
+        });
+
+        labNameFilter.addEventListener("change", function() {
+            fetchFilteredResults();
+        });
+
+        dateFilter.addEventListener("change", function() {
+            fetchFilteredResults();
+        });
+
+        // ✅ Clear Filter Function
+        clearFilterButton.addEventListener("click", function() {
+            searchInput.value = ""; // Clear search input
+            orderStatusFilter.value = ""; // Reset status filter
+            dispatchOptionFilter.value = ""; // Reset dispatch option
+            labNameFilter.value = ""; // Reset lab filter
+            dateFilter.value = ""; // Reset date filter
+
+            fetchFilteredResults(); // Reload data without filters
+        });
+    });
+
+
+
+
+
+
+    document.getElementById("downloadExcel").addEventListener("click", function() {
+        const query = encodeURIComponent(document.getElementById("searchInput").value.trim());
+        const status = encodeURIComponent(document.getElementById("orderStatusFilter").value);
+        const dispatchOption = encodeURIComponent(document.getElementById("dispatchOptionFilter").value);
+        const labName = encodeURIComponent(document.getElementById("labNameFilter").value);
+        const selectedDate = encodeURIComponent(document.getElementById("dateFilter").value);
+
+        // Redirect to export_to_excel.php with filters as query parameters
+        window.location.href = `export_to_excel.php?query=${query}&status=${status}&dispatch_option=${dispatchOption}&lab_name=${labName}&date=${selectedDate}`;
+    });
+</script>
 <?php include "includes/footer.php"; ?>

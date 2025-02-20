@@ -41,6 +41,33 @@ $('document').ready(function(){
 		]
 	});
 
+	$('.data-table-export-recent-booking').DataTable({
+		scrollCollapse: true,
+		autoWidth: false,
+		responsive: true,
+		searching: false,
+		paging: false,
+		info: false,
+		ordering: false,
+		columnDefs: [{
+			targets: "datatable-nosort",
+			orderable: false,
+		}],
+		"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+		"language": {
+			"info": "_START_-_END_ of _TOTAL_ entries",
+			searchPlaceholder: "Search",
+			paginate: {
+				next: '<i class="ion-chevron-right"></i>',
+				previous: '<i class="ion-chevron-left"></i>'  
+			}
+		},
+		dom: 't',
+		buttons: [
+		'copy', 'csv', 'pdf', 'print'
+		]
+	});
+
 	var table = $('.select-row').DataTable();
 	$('.select-row tbody').on('click', 'tr', function () {
 		if ($(this).hasClass('selected')) {

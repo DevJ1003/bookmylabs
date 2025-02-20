@@ -105,7 +105,7 @@ if (!isset($_SESSION['id']) || !isset($_SESSION['email']) || !isset($_SESSION['a
                         </a>
                     </li>
                     <li>
-                        <a href="allbookings" class="dropdown-toggle no-arrow">
+                        <a href="recentBooking" class="dropdown-toggle no-arrow">
                             <span class="micon dw dw-list3" style="color:black;"></span>
                             <span class="mtext" style="color:black;"><b>Recent Bookings</b></span>
                         </a>
