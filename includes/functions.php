@@ -260,7 +260,7 @@ function TestRequestForm()
         $patient_age = $_POST['age'];
         $patient_gender = $_POST['gender'];
         $patient_mobile = $_POST['mobile'];
-        $patient_city = $_POST['city'];
+        $patient_address = $_POST['address'];
 
         // Generate Unique Patient ID
         $patient_id = generatePatientID($db_conn);
@@ -307,11 +307,11 @@ function TestRequestForm()
         // =====================================================================
 
         // Insert into test_requests table with generated Patient ID
-        $testRequestQuery = "INSERT INTO `test_requests` (franchise_id, franchise_name, lab_name, patient_id, patient_name, age, gender, mobile, city, ";
+        $testRequestQuery = "INSERT INTO `test_requests` (franchise_id, franchise_name, lab_name, patient_id, patient_name, age, gender, mobile, address, ";
         $testRequestQuery .= "selected_test, dispatch_option, sample_drawn_date, sample_drawn_time, fasting_status, reference_doctor, ";
         $testRequestQuery .= "attachments, order_amount, created_at) ";
         $testRequestQuery .= "VALUES ('$franchise_id', '$franchise_name', '$lab_name', '$patient_id', '$patient_name', '$patient_age', '$patient_gender', ";
-        $testRequestQuery .= "'$patient_mobile', '$patient_city', '$selected_tests_string', '$patient_dispatch_option', '$patient_sample_drawn_date', ";
+        $testRequestQuery .= "'$patient_mobile', '$patient_address', '$selected_tests_string', '$patient_dispatch_option', '$patient_sample_drawn_date', ";
         $testRequestQuery .= "'$patient_sample_drawn_time', '$patient_fasting_status', '$patient_reference_doctor', '$image', $order_amount, NOW())";
 
         $query = query($testRequestQuery);
@@ -482,6 +482,19 @@ function rechargeRequests()
     }
 }
 
+// function totalRevenue() used for calculating total revenue earned through B2C bookings
+function totalRevenue()
+{
+    $totalRevenueQuery = "SELECT SUM(order_amount) AS total_revenue FROM `test_requests` WHERE status = 'Completed'";
+    $query = query($totalRevenueQuery);
+    confirm($query);
+
+    $result = mysqli_fetch_assoc($query);
+    if ($result) {
+        echo $result['total_revenue'];
+    }
+}
+
 // function totalFranchiseBooking() is used to fetch the total number of bookings
 function totalFranchiseBooking()
 {
@@ -503,20 +516,31 @@ function totalFranchiseBooking()
     return null;
 }
 
-// function fetchTestCode used to fetch test details like code, B2C price
-// function fetchTestCode($test)
-// {
-//     $fetchTestDetails = "SELECT * FROM test_details WHERE test_name = '$test' ";
-//     $query = query($fetchTestDetails);
-//     confirm($query);
+// function fetchNumberOfLabs() used to fetch total number of labs
+function fetchNumberOfLabs()
+{
+    $fetchNumberOfLabs = "SELECT COUNT(*) AS total FROM `labs`";
+    $query = query($fetchNumberOfLabs);
+    confirm($query);
 
-//     while ($row = mysqli_fetch_array($query)) {
+    $result = mysqli_fetch_assoc($query);
+    if ($result) {
+        echo $result['total'];
+    }
+}
 
-//         $code = $row['code'];
-//         $lab_name = $row['lab_name'];
-//         $test_price = $row['B2C'];
-//     }
-// }
+// function fetchTestStatus() fetches the test status for admin panel
+function fetchTestStatus($status)
+{
+    $fetchTestStatus = "SELECT COUNT(*) AS total FROM `test_requests` WHERE status = '$status'";
+    $query = query($fetchTestStatus);
+    confirm($query);
+
+    $result = mysqli_fetch_assoc($query);
+    if ($result) {
+        echo $result['total'];
+    }
+}
 
 // function fetchUploadedReportsFranchise() used to fetch uploaded reports
 function fetchUploadedReportsFranchise()
@@ -1036,6 +1060,7 @@ function recentBookings()
         echo "<td>{$status}</td>";
         echo "<td>
                 <div style='display: flex; gap: 5px;'>
+                    <a class='btn btn-info' href='bookingInProcess?id=$sr_no' style='color: white;'>In-Process</a>
                     <a class='btn btn-success' href='bookingCompleted?id=$sr_no' style='color: white;'>Completed</a>
                     <a class='btn btn-danger' href='bookingRejected?id=$sr_no' style='color: white;'>Rejected/Cancelled</a>
                 </div>

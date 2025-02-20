@@ -24,6 +24,7 @@ while ($row = mysqli_fetch_array($query)) {
 	$patient_age = $row['age'];
 	$patient_gender = $row['gender'];
 	$patient_mobile = $row['mobile'];
+	$patient_address = $row['address'];
 
 	$franchise_name = $row['franchise_name'];
 	$lab_name = $row['lab_name'];
@@ -69,13 +70,6 @@ foreach ($test_names as $printed_test) {
 }
 
 // ========================================================================================================
-$getLabLogoQuery = "SELECT lab_logo from `labs` WHERE lab_name = '$lab_name'";
-$query = query($getLabLogoQuery);
-confirm($query);
-
-while ($row = mysqli_fetch_array($query)) {
-	$lab_logo = $row['lab_logo'];
-}
 
 ?>
 <div class="main-container">
@@ -100,7 +94,7 @@ while ($row = mysqli_fetch_array($query)) {
 				<div class="invoice-box">
 					<div class="invoice-header text-center">
 						<div class="lab-logo">
-							<img src="src/images/labs_images/<?php echo $lab_logo; ?>" alt="Lab Logo" style="max-height: 80px;">
+							<img src="vendors/images/BOOK-MY-LAB.png" alt="Lab Logo" style="max-height: 80px;">
 						</div>
 						<div class="d-flex justify-content-between align-items-center mt-2">
 							<div class="flex-grow-1 text-center">
@@ -123,6 +117,7 @@ while ($row = mysqli_fetch_array($query)) {
 								<p class="font-14 mb-5">Name & Age: <strong class="weight-600"><?php echo $patient_name . ", " . $patient_age; ?></strong></p>
 								<p class="font-14 mb-5">Gender: <strong class="weight-600"><?php echo $patient_gender; ?></strong></p>
 								<p class="font-14 mb-5">Contact No.: <strong class="weight-600"><?php echo $patient_mobile; ?></strong></p>
+								<p class="font-14 mb-5">Address: <strong class="weight-600"><?php echo $patient_address; ?></strong></p>
 							</div>
 						</div>
 					</div>

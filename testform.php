@@ -76,8 +76,8 @@ $total_amount = selectedTestsAmount($lab_name, $selected_test_ids);
                                     <input type="text" name="mobile" class="form-control" required>
                                 </div>
                                 <div class="form-group">
-                                    <label>City:</label>
-                                    <input type="text" name="city" class="form-control" required>
+                                    <label>Address:</label>
+                                    <input type="text" name="address" class="form-control" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="selectedTests">Selected Tests:</label>

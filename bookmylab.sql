@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Feb 20, 2025 at 06:57 AM
+-- Generation Time: Feb 20, 2025 at 08:38 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -53,7 +53,7 @@ CREATE TABLE `franchises` (
 --
 
 INSERT INTO `franchises` (`id`, `owner_name`, `agency_name`, `email`, `phone`, `address`, `pin_code`, `package`, `aadhaar_number`, `aadhaar_image`, `pan_number`, `pan_image`, `owner_image`, `owner_signature`, `password`, `usertype`, `wallet_balance`, `created_at`) VALUES
-(1, 'test_updated', 'test_updated', 'testupdated@gmail.com', 2147483647, 'old delhi junction', 523691, '', 2147483647, '', 'edrft9137w', '', 'banner-img.png', '', '$2y$10$K2XTKXabq4gNpeWyMaGrh.A3fhYp4n.IYpElPCGqjk08/gejQmm7K', 'Admin', 130, '0000-00-00 00:00:00.000000'),
+(1, 'test_updated', 'test_updated', 'testupdated@gmail.com', 2147483647, 'old delhi junction', 523691, '', 2147483647, '', 'edrft9137w', '', 'banner-img.png', '', '$2y$10$K2XTKXabq4gNpeWyMaGrh.A3fhYp4n.IYpElPCGqjk08/gejQmm7K', 'Admin', 40, '0000-00-00 00:00:00.000000'),
 (3, 'test', 'test1', 't@gmail.com', 2147483647, 'mfdkvvfdml,', 45612, 'Advanced', 0, '', '7485edfdc', '', '', '', '$2y$10$vSl4jMvQcJ7E7nbzFsjjBO/t3nmtL0aQmYMwKgdU00e7Uv.oyMHl2', 'Franchise', 0, '2025-02-01 15:00:13.000000'),
 (4, 'test', 'test2', 'test2@gmail.com', 45789523, 'indvkmlomdfps,l', 451263, 'Premium', 0, 'chat-img2.jpg', '7485edfdc', 'check-mark.png', 'caution-sign.png', 'check-mark-green.png', '$2y$10$sparhTY36ZzWU9GUjowRCeIIMvGehLgT4HcanlGvxkvRVN/Od19Q6', 'Franchise', 0, '2025-02-01 15:05:48.000000'),
 (5, 'test', 'test3', 'test23@gmail.com', 2147483647, 'jnbskmdfvsilbdkm', 785236, 'Advanced', 2147483647, 'check-mark.png', '7485edfdc', 'chat-img1.jpg', 'caution-sign.png', 'check-mark-green.png', '$2y$10$5rChuaJdUKsd3OD11CeHGuaXe4wYHO.Gwe8JQqLERYqji5B3q1Jc2', 'Franchise', 0, '2025-02-01 15:09:35.000000');
@@ -129,7 +129,8 @@ INSERT INTO `recharge_requests` (`id`, `franchise_id`, `franchise_name`, `amount
 (7, 1, 'test_updated', -1400, 0, '', 'Approved', '2025-02-17 22:35:36.000000'),
 (8, 1, 'test_updated', -90, 0, '', 'Approved', '2025-02-20 10:53:35.000000'),
 (9, 1, 'test_updated', -90, 0, '', 'Approved', '2025-02-20 11:05:38.000000'),
-(10, 1, 'test_updated', -90, 0, '', 'Approved', '2025-02-20 11:19:04.000000');
+(10, 1, 'test_updated', -90, 0, '', 'Approved', '2025-02-20 11:19:04.000000'),
+(11, 1, 'test_updated', -90, 0, '', 'Approved', '2025-02-20 13:06:02.000000');
 
 -- --------------------------------------------------------
 
@@ -14327,7 +14328,7 @@ CREATE TABLE `test_requests` (
   `age` int(255) NOT NULL,
   `gender` text NOT NULL,
   `mobile` int(10) NOT NULL,
-  `city` text NOT NULL,
+  `address` varchar(255) NOT NULL,
   `selected_test` text NOT NULL,
   `dispatch_option` enum('pickup','courier','','') NOT NULL,
   `sample_drawn_date` date NOT NULL,
@@ -14336,7 +14337,7 @@ CREATE TABLE `test_requests` (
   `reference_doctor` text NOT NULL,
   `attachments` text NOT NULL,
   `order_amount` int(10) NOT NULL,
-  `status` enum('In-Process','Completed','Rejected/Cancelled','') NOT NULL DEFAULT 'In-Process',
+  `status` enum('Pending','In-Process','Completed','Rejected/Cancelled') NOT NULL DEFAULT 'Pending',
   `created_at` datetime(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -14344,21 +14345,22 @@ CREATE TABLE `test_requests` (
 -- Dumping data for table `test_requests`
 --
 
-INSERT INTO `test_requests` (`id`, `franchise_id`, `franchise_name`, `lab_name`, `patient_id`, `patient_name`, `age`, `gender`, `mobile`, `city`, `selected_test`, `dispatch_option`, `sample_drawn_date`, `sample_drawn_time`, `fasting_status`, `reference_doctor`, `attachments`, `order_amount`, `status`, `created_at`) VALUES
-(3, 1, 'test_updated', 'pathkind', '', 'test', 2, 'male', 2147483647, 'haryana', 'CBC, test1', 'pickup', '2025-12-31', '12:59:00.000000', 'Yes', 'test', 'apple-touch-icon.png', 1300, 'In-Process', '2025-02-12 14:57:21.000000'),
-(4, 1, 'test_updated', 'metropolis', '', 'test', 2, 'male', 2147483647, 'ludhiana', 'bulb', 'pickup', '2025-12-31', '12:59:00.000000', 'Yes', 'test', 'banner-img.png', 1000, 'In-Process', '2025-02-12 16:19:47.000000'),
-(5, 1, 'test_updated', 'apollo', '', 'test', 1, 'male', 2147483647, 'test', 'bulb', 'pickup', '2025-12-31', '12:59:00.000000', 'Yes', 'test', '', 1000, 'In-Process', '2025-02-12 16:23:03.000000'),
-(6, 1, 'test_updated', 'pathkind', '', 'test', 2, 'male', 2147483647, 'test', 'bulb', 'pickup', '2025-12-31', '12:59:00.000000', 'Yes', '', '', 1000, 'In-Process', '2025-02-12 16:31:10.000000'),
-(7, 1, 'test_updated', 'apollo', '', 'test', 1, 'male', 2147483647, 'test', 'bulb', 'pickup', '2025-12-31', '12:59:00.000000', 'Yes', '', '', 1000, 'In-Process', '2024-12-24 16:58:20.000000'),
-(8, 1, 'test_updated', 'apollo', '', 'test', 2, 'male', 2147483647, 'test', 'bulb', 'pickup', '2025-12-31', '12:59:00.000000', 'Yes', '', '', 1000, 'In-Process', '2025-02-12 18:03:43.000000'),
-(10, 1, 'test_updated', 'apollo', '', 'test', 1, 'male', 2147483647, 'test', 'test1, lipid profile, blood', 'pickup', '2025-12-31', '12:58:00.000000', 'Yes', '', '', 2000, 'In-Process', '2025-02-12 18:13:45.000000'),
-(11, 1, 'test_updated', 'Dr.Lal', '', 'test', 2, 'male', 2147483647, 'test', 'CBC, test1, test2, lipid profile', 'pickup', '2025-12-31', '12:59:00.000000', 'Yes', 'test', 'caution-sign.png', 3100, 'In-Process', '2025-02-12 20:58:26.000000'),
-(12, 1, 'test_updated', 'Apollo', '', 'test', 2, 'male', 2147483647, 'gurgaon', 'bulb', 'pickup', '2025-12-31', '12:59:00.000000', 'Yes', 'test', 'caution-sign.png', 1000, 'In-Process', '2025-02-13 18:21:16.000000'),
-(13, 1, 'test_updated', 'Indira Pathlabs', '', 'test', 2, 'male', 2147483647, 'delhi', 'BILIRUBIN, BLOOD GROUP, CHIKUNGUNYA IGM, CHLORIDE, TOTAL CHOLESTEROAL', 'pickup', '2025-12-31', '12:59:00.000000', 'Yes', '', '', 1700, 'Rejected/Cancelled', '2025-02-14 18:57:16.000000'),
-(15, 1, 'test_updated', 'agilus diagnostics', '', 'test', 2, 'male', 2147483647, 'delhi', 'NONGYNAEC CYTOLOGY & FINE NEEDLE ASPIRATION CYTOLOGY (FNAC) PHOTO', 'pickup', '2025-12-31', '12:59:00.000000', 'Yes', 'test', 'apple-touch-icon.png', 1400, 'Completed', '2025-02-17 22:35:36.000000'),
-(16, 1, 'test_updated', 'dr.lal pathlabs', '', 'Test Test', 7, 'female', 2147483647, 'Delhi', '0.5 HR AFTER 75 GM GLUCOSE', 'courier', '2025-12-31', '12:59:00.000000', 'Yes', 'Dr. Test Test', 'apple-touch-icon.png', 90, 'In-Process', '2025-02-20 10:53:35.000000'),
-(17, 1, 'test_updated', 'dr.lal pathlabs', '', 'Mr. Test Test', 12, 'Male', 2147483647, 'Test ', '0.5 HR AFTER 75 GM GLUCOSE', 'pickup', '2025-12-30', '12:59:00.000000', 'Yes', 'Dr. Test Test', 'apple-touch-icon.png', 90, 'In-Process', '2025-02-20 11:05:38.000000'),
-(18, 1, 'test_updated', 'dr.lal pathlabs', 'P202568776', 'Mr. Test Test', 11, 'Male', 2147483647, 'Test', '0.5 HR AFTER 75 GM GLUCOSE', 'pickup', '2025-12-31', '12:59:00.000000', 'Yes', 'Dr. Test Test', 'banner-img.png', 90, 'In-Process', '2025-02-20 11:19:04.000000');
+INSERT INTO `test_requests` (`id`, `franchise_id`, `franchise_name`, `lab_name`, `patient_id`, `patient_name`, `age`, `gender`, `mobile`, `address`, `selected_test`, `dispatch_option`, `sample_drawn_date`, `sample_drawn_time`, `fasting_status`, `reference_doctor`, `attachments`, `order_amount`, `status`, `created_at`) VALUES
+(3, 1, 'test_updated', 'pathkind', '', 'test', 2, 'male', 2147483647, 'haryana', 'CBC, test1', 'pickup', '2025-12-31', '12:59:00.000000', 'Yes', 'test', 'apple-touch-icon.png', 1300, 'Pending', '2025-02-12 14:57:21.000000'),
+(4, 1, 'test_updated', 'metropolis', '', 'test', 2, 'male', 2147483647, 'ludhiana', 'bulb', 'pickup', '2025-12-31', '12:59:00.000000', 'Yes', 'test', 'banner-img.png', 1000, 'Pending', '2025-02-12 16:19:47.000000'),
+(5, 1, 'test_updated', 'apollo', '', 'test', 1, 'male', 2147483647, 'test', 'bulb', 'pickup', '2025-12-31', '12:59:00.000000', 'Yes', 'test', '', 1000, 'Pending', '2025-02-12 16:23:03.000000'),
+(6, 1, 'test_updated', 'pathkind', '', 'test', 2, 'male', 2147483647, 'test', 'bulb', 'pickup', '2025-12-31', '12:59:00.000000', 'Yes', '', '', 1000, 'Pending', '2025-02-12 16:31:10.000000'),
+(7, 1, 'test_updated', 'apollo', '', 'test', 1, 'male', 2147483647, 'test', 'bulb', 'pickup', '2025-12-31', '12:59:00.000000', 'Yes', '', '', 1000, 'Pending', '2024-12-24 16:58:20.000000'),
+(8, 1, 'test_updated', 'apollo', '', 'test', 2, 'male', 2147483647, 'test', 'bulb', 'pickup', '2025-12-31', '12:59:00.000000', 'Yes', '', '', 1000, 'Pending', '2025-02-12 18:03:43.000000'),
+(10, 1, 'test_updated', 'apollo', '', 'test', 1, 'male', 2147483647, 'test', 'test1, lipid profile, blood', 'pickup', '2025-12-31', '12:58:00.000000', 'Yes', '', '', 2000, 'Pending', '2025-02-12 18:13:45.000000'),
+(11, 1, 'test_updated', 'Dr.Lal', '', 'test', 2, 'male', 2147483647, 'test', 'CBC, test1, test2, lipid profile', 'pickup', '2025-12-31', '12:59:00.000000', 'Yes', 'test', 'caution-sign.png', 3100, 'Pending', '2025-02-12 20:58:26.000000'),
+(12, 1, 'test_updated', 'Apollo', '', 'test', 2, 'male', 2147483647, 'gurgaon', 'bulb', 'pickup', '2025-12-31', '12:59:00.000000', 'Yes', 'test', 'caution-sign.png', 1000, 'Pending', '2025-02-13 18:21:16.000000'),
+(13, 1, 'test_updated', 'Indira Pathlabs', '', 'test', 2, 'male', 2147483647, 'delhi', 'BILIRUBIN, BLOOD GROUP, CHIKUNGUNYA IGM, CHLORIDE, TOTAL CHOLESTEROAL', 'pickup', '2025-12-31', '12:59:00.000000', 'Yes', '', '', 1700, 'Pending', '2025-02-14 18:57:16.000000'),
+(15, 1, 'test_updated', 'agilus diagnostics', '', 'test', 2, 'male', 2147483647, 'delhi', 'NONGYNAEC CYTOLOGY & FINE NEEDLE ASPIRATION CYTOLOGY (FNAC) PHOTO', 'pickup', '2025-12-31', '12:59:00.000000', 'Yes', 'test', 'apple-touch-icon.png', 1400, 'Rejected/Cancelled', '2025-02-17 22:35:36.000000'),
+(16, 1, 'test_updated', 'dr.lal pathlabs', '', 'Test Test', 7, 'female', 2147483647, 'Delhi', '0.5 HR AFTER 75 GM GLUCOSE', 'courier', '2025-12-31', '12:59:00.000000', 'Yes', 'Dr. Test Test', 'apple-touch-icon.png', 90, 'Completed', '2025-02-20 10:53:35.000000'),
+(17, 1, 'test_updated', 'dr.lal pathlabs', '', 'Mr. Test Test', 12, 'Male', 2147483647, 'Test ', '0.5 HR AFTER 75 GM GLUCOSE', 'pickup', '2025-12-30', '12:59:00.000000', 'Yes', 'Dr. Test Test', 'apple-touch-icon.png', 90, 'Pending', '2025-02-20 11:05:38.000000'),
+(18, 1, 'test_updated', 'dr.lal pathlabs', 'P202568776', 'Mr. Test Test', 11, 'Male', 2147483647, 'Test', '0.5 HR AFTER 75 GM GLUCOSE', 'pickup', '2025-12-31', '12:59:00.000000', 'Yes', 'Dr. Test Test', 'banner-img.png', 90, 'In-Process', '2025-02-20 11:19:04.000000'),
+(19, 1, 'test_updated', 'dr.lal pathlabs', 'P202576643', 'Mr. Test Test', 5, 'Male', 2147483647, 'House No.23, jawahar nagar, delhi, 451263', '0.5 HR AFTER 75 GM GLUCOSE', 'pickup', '2025-12-31', '12:59:00.000000', 'Yes', 'test', 'apple-touch-icon.png', 90, 'Pending', '2025-02-20 13:06:02.000000');
 
 --
 -- Indexes for dumped tables
@@ -14511,7 +14513,7 @@ ALTER TABLE `labs`
 -- AUTO_INCREMENT for table `recharge_requests`
 --
 ALTER TABLE `recharge_requests`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `reports`
@@ -14619,7 +14621,7 @@ ALTER TABLE `tests_thyrocare`
 -- AUTO_INCREMENT for table `test_requests`
 --
 ALTER TABLE `test_requests`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
