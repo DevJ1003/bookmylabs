@@ -55,7 +55,8 @@ if (isset($_SESSION['id'])) {
                                         <a href="modal" data-toggle="modal" data-target="#modal" class="edit-avatar">
                                             <i class="fa fa-pencil"></i>
                                         </a>
-                                        <img src="src/images/<?php echo $owner_photo; ?>" alt="" class="avatar-photo">
+                                        <img src="src/images/<?php //echo $owner_photo; 
+                                                                ?>" alt="" class="avatar-photo">
                                     </div>
                                 </div> -->
                                 <div class="col-md-4 text-center">
@@ -105,15 +106,12 @@ if (isset($_SESSION['id'])) {
                                         <label for="address">Address</label>
                                         <textarea class="form-control" id="address" name="address" required><?php echo $address; ?></textarea>
                                     </div>
-
                                     <div class="form-group">
                                         <label for="pin_code">Pin Code</label>
                                         <input type="text" class="form-control" id="pin_code" name="pin_code" value="<?php echo $pin_code; ?>" required>
                                     </div>
                                 </div>
-
                                 <div class="col-md-6">
-
                                     <div class="form-group">
                                         <label for="adhaar_no">Aadhaar No</label>
                                         <input type="text" class="form-control" id="aadhaar_number" name="aadhaar_number" value="<?php echo $aadhaar_number; ?>" required>
@@ -126,6 +124,7 @@ if (isset($_SESSION['id'])) {
                                         <label for="pan_no">PAN No</label>
                                         <input type="text" class="form-control" id="pan_no" name="pan_number" value="<?php echo $pan_number; ?>" required>
                                     </div>
+                                    <a href="javascript:void(0);" onclick="openChangePasswordWindow();" class="btn btn-danger">Change Password</a>
                                     <!-- <div class="form-group">
                                         <label for="pan_upload">PAN Upload</label>
                                         <input type="file" class="form-control" id="pan_upload" name="pan_upload" accept="image/*,.pdf" required>
@@ -166,6 +165,20 @@ if (isset($_SESSION['id'])) {
             };
             reader.readAsDataURL(file);
         }
+    }
+
+
+
+    function openChangePasswordWindow() {
+        var width = 500;
+        var height = 400;
+        var left = (screen.width - width) / 2;
+        var top = (screen.height - height) / 2;
+
+        var franchiseId = <?php echo json_encode($_SESSION['id']); ?>; // Get franchise_id from session
+        var url = "change_password.php?franchise_id=" + franchiseId;
+
+        window.open(url, "Change Password", "width=" + width + ", height=" + height + ", top=" + top + ", left=" + left + ", resizable=no, scrollbars=no");
     }
 </script>
 <?php include "includes/footer.php"; ?>

@@ -37,3 +37,12 @@ form.addEventListener('submit', (event) => {
     // Optionally, clear the form fields
     form.reset();
 });
+
+document.getElementById("add-money-form").addEventListener("submit", function(event) {
+    let fileInput = document.getElementById("file");
+
+    if (fileInput.files.length === 0) {
+        alert("Please upload proof of payment (image) before submitting.");
+        event.preventDefault(); // Stop form submission
+    }
+});

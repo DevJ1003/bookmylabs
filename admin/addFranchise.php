@@ -99,10 +99,6 @@
                                         <label for="owner_signature">Owner Signature</label>
                                         <input type="file" class="form-control" id="owner_signature" name="owner_signature" accept="image/*,.pdf" required>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="password">Password</label>
-                                        <input type="password" class="form-control" id="password" name="password" required>
-                                    </div>
                                 </div>
                             </div>
                             <div class="form-group text-center">

@@ -113,7 +113,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="addfranchise" class="dropdown-toggle no-arrow">
+                        <a href="addFranchise" class="dropdown-toggle no-arrow">
                             <span class="micon dw dw-invoice"></span><span class="mtext">Add Franchise</span>
                         </a>
                     </li>

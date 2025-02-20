@@ -623,6 +623,53 @@ function fetchUploadedReportsFranchise()
     }
 }
 
+// function updatePassword() used to update password
+function updatePassword()
+{
+    global $db_conn;
+    $franchise_id = $_SESSION['id'];
+
+    if (isset($_POST['changePassword'])) {
+
+        // CSRF protection
+        if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            die("CSRF Token mismatch! Possible CSRF attack.");
+        }
+
+        $current_password = $_POST['current_password'];
+        $new_password = $_POST['new_password'];
+        $confirm_password = $_POST['confirm_password'];
+
+        if ($new_password !== $confirm_password) {
+            echo "<script>alert('New passwords do not match!');</script>";
+        } else {
+            $selectOldPasswordQuery = "SELECT password FROM `franchises` WHERE id = $franchise_id";
+            $oldPasswordQuery = query($selectOldPasswordQuery);
+            confirm($oldPasswordQuery);
+
+            if ($row = mysqli_fetch_assoc($oldPasswordQuery)) {
+                $stored_hashed_password = $row['password'];
+
+                if (!password_verify($current_password, $stored_hashed_password)) {
+                    echo "<script>alert('Current password is incorrect!');</script>";
+                } else {
+                    $new_hashed_password = password_hash($new_password, PASSWORD_BCRYPT);
+
+                    $updatePasswordQuery = "UPDATE `franchises` SET password = '$new_hashed_password' WHERE id = $franchise_id";
+                    $newPasswordQuery = query($updatePasswordQuery);
+                    confirm($newPasswordQuery);
+
+                    if ($newPasswordQuery) {
+                        echo "<script>alert('Password changed successfully!'); window.close();</script>";
+                    } else {
+                        echo "<script>alert('Error updating password!');</script>";
+                    }
+                }
+            }
+        }
+    }
+}
+
 /********************************** END OF FRANCHISE MODULE FUNCTIONS ************************************/
 // 
 // 
@@ -881,8 +928,7 @@ function addFranchise()
         $owner_signature_temp = $_FILES['owner_signature']['tmp_name'];
         move_uploaded_file($owner_signature_temp, "src/images/test_form_images/$owner_signature");
 
-        $password = $_POST['password'];
-        $hashed_password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 10));
+        $hashed_password = "$2y$10$76BI4UydJt1h49zb7zn7IutxQ9Lv2Z5N6RZQK7TSCTTB2194VNkzi";  //Default password: password
 
         // Check if the email already exists in the database
         $emailCheckQuery = "SELECT * FROM franchises WHERE email = '$email'";

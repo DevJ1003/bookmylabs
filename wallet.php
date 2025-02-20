@@ -49,7 +49,7 @@
         <label for="amount">Amount</label>
         <input type="text" id="amount" name="amount" required>
         <label for="image">Proof of Payment (Image)</label>
-        <input type="file" id="file" name="file" accept="image/*">
+        <input type="file" id="file" name="file" accept="image/*" required>
         <button type="submit" name="wallet_request">Submit</button>
       </form>
     </div>
