@@ -5,7 +5,7 @@ include "../includes/functions.php";
 if (isset($_GET['id'])) {
 
     $request_id = $_GET['id'];
-    $bookingApproveQuery = "UPDATE `test_requests` SET status = 'Approved' WHERE id = $request_id";
+    $bookingApproveQuery = "UPDATE `test_requests` SET status = 'Completed' WHERE id = $request_id";
     $query = query($bookingApproveQuery);
     confirm($query);
 

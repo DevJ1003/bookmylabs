@@ -13,6 +13,7 @@
                             <tr>
                                 <th>Select</th>
                                 <th>SR NO</th>
+                                <th>Patient ID</th>
                                 <th>Patient Name</th>
                                 <th>Gender</th>
                                 <th>Age</th>

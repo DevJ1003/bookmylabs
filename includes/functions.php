@@ -217,6 +217,27 @@ function loginUser()
 // 
 /************************************** FRANCHISE MODULE FUNCTIONS ***************************************/
 
+// function generatePatientID() used to generate random patient id
+function generatePatientID()
+{
+    $year = date('Y');  // Get current year (e.g., 2024)
+
+    do {
+        $randomNumber = mt_rand(10000, 99999); // Generate a 5-digit number
+        $patientID = 'P' . $year . $randomNumber; // Format: PYYYYxxxxx
+
+        // Check if the generated ID already exists
+        $checkQuery = "SELECT COUNT(*) as count FROM `test_requests` WHERE patient_id = '$patientID'";
+        $result = query($checkQuery);
+        $row = mysqli_fetch_assoc($result);
+        $exists = $row['count'] > 0;
+    } while ($exists); // Regenerate if ID already exists
+
+    return $patientID;
+}
+
+
+
 // function TestRequestForm() is used to submit the test request form
 function TestRequestForm()
 {
@@ -241,11 +262,12 @@ function TestRequestForm()
         $patient_mobile = $_POST['mobile'];
         $patient_city = $_POST['city'];
 
-        // Get the selected tests from POST (you already passed it from URL)
-        // $selectedTests = $_POST['selectedTestNames'];
+        // Generate Unique Patient ID
+        $patient_id = generatePatientID($db_conn);
+
+        // Get selected tests
         $selected_test_names = array_unique(explode(',', $_POST['selectedTestNames']));
         $selected_tests_string = implode(',', $selected_test_names);
-
 
         $patient_dispatch_option = $_POST['dispatchOption'];
         $patient_sample_drawn_date = $_POST['drawnDate'];
@@ -257,15 +279,15 @@ function TestRequestForm()
         $temp_image = $_FILES['file']['tmp_name'];
         move_uploaded_file($temp_image, "src/images/test_form_images/$image");
 
-        // order amount is calculated based on the selected tests
+        // Order amount
         $order_amount = $_POST['orderAmount'];
 
         if ($patient_age <= 0) {
-            setMessage("Invalid age. Please enter a possitive value.", "warning");
+            setMessage("Invalid age. Please enter a positive value.", "warning");
             exit();
         }
 
-        // =========================== Wallet balance calculation and updation logic ==================================
+        // =================== Wallet Balance Check & Update ===================
         $fetchWalletBalanceFranchise = "SELECT `wallet_balance` FROM `franchises` WHERE id = '$franchise_id'";
         $fetchBalanceQuery = query($fetchWalletBalanceFranchise);
         confirm($fetchBalanceQuery);
@@ -274,32 +296,33 @@ function TestRequestForm()
         $availableWalletBalance = $row['wallet_balance'] ?? 0;
 
         if ($availableWalletBalance > $order_amount) {
-
             $updateWalletBalanceQuery = "INSERT INTO `recharge_requests` (franchise_id, franchise_name, amount, status, created_at) ";
             $updateWalletBalanceQuery .= "VALUES ('$franchise_id', '$franchise_name', '-$order_amount', 'Approved', NOW())";
             $balanceQuery = query($updateWalletBalanceQuery);
             confirm($balanceQuery);
         } else {
-
             echo "Requested amount cannot be processed. Recharge your wallet!";
             exit();
         }
-        // ============================================================================================================
+        // =====================================================================
 
-        $testRequestQuery = "INSERT INTO `test_requests` (franchise_id, franchise_name, lab_name, patient_name, age, gender, mobile, city, ";
+        // Insert into test_requests table with generated Patient ID
+        $testRequestQuery = "INSERT INTO `test_requests` (franchise_id, franchise_name, lab_name, patient_id, patient_name, age, gender, mobile, city, ";
         $testRequestQuery .= "selected_test, dispatch_option, sample_drawn_date, sample_drawn_time, fasting_status, reference_doctor, ";
         $testRequestQuery .= "attachments, order_amount, created_at) ";
-        $testRequestQuery .= "VALUES ('$franchise_id', '$franchise_name', '$lab_name', '$patient_name', '$patient_age', '$patient_gender', ";
+        $testRequestQuery .= "VALUES ('$franchise_id', '$franchise_name', '$lab_name', '$patient_id', '$patient_name', '$patient_age', '$patient_gender', ";
         $testRequestQuery .= "'$patient_mobile', '$patient_city', '$selected_tests_string', '$patient_dispatch_option', '$patient_sample_drawn_date', ";
         $testRequestQuery .= "'$patient_sample_drawn_time', '$patient_fasting_status', '$patient_reference_doctor', '$image', $order_amount, NOW())";
+
         $query = query($testRequestQuery);
         confirm($query);
 
-        setMessage("Your request has been submitted successfully!", "success");
+        setMessage("Your request has been submitted successfully! Patient ID: $patient_id", "success");
         redirect("allbookings");
         exit();
     }
 }
+
 
 // function updateWalletBalanceFranchise() used to update wallet balance for franchise
 function updateWalletBalanceFranchise()
@@ -361,11 +384,12 @@ function recentBookingsFranchise()
     while ($row = mysqli_fetch_array($query)) {
 
         $sr_no = $row['id'];
+        $patient_id = $row['patient_id'];
         $patient_name = $row['patient_name'];
         $patient_gender = $row['gender'];
         $patient_age = $row['age'];
         $selected_tests = $row['selected_test'];
-        $lab_name = $row['lab_name'];
+        $lab_name = strtoupper($row['lab_name']);
         $patient_dispatch_option = $row['dispatch_option'];
         $order_amount = $row['order_amount'];
 
@@ -379,6 +403,7 @@ function recentBookingsFranchise()
         echo "<tr>";
         echo "<td><input type='checkbox'></td>";
         echo "<td>{$sr_no}</td>";
+        echo "<td>{$patient_id}</td>";
         echo "<td>{$patient_name}</td>";
         echo "<td>{$patient_gender}</td>";
         echo "<td>{$patient_age}</td>";
@@ -991,6 +1016,7 @@ function recentBookings()
         $sr_no = $row['id'];
         $franchise_name = $row['franchise_name'];
         $lab_name = $row['lab_name'];
+        $patient_id = $row['patient_id'];
         $patient_name = $row['patient_name'];
         $order_amount = $row['order_amount'];
         $test_names = $row['selected_test'];
@@ -1002,6 +1028,7 @@ function recentBookings()
         echo "<td>{$sr_no}</td>";
         echo "<td>{$franchise_name}</td>";
         echo "<td>{$lab_name}</td>";
+        echo "<td>{$patient_id}</td>";
         echo "<td>{$patient_name}</td>";
         echo "<td>{$order_amount}</td>";
         echo "<td>{$test_names}</td>";
@@ -1009,8 +1036,8 @@ function recentBookings()
         echo "<td>{$status}</td>";
         echo "<td>
                 <div style='display: flex; gap: 5px;'>
-                    <a class='btn btn-success' href='bookingApproved?id=$sr_no' style='color: white;'>Approve</a>
-                    <a class='btn btn-danger' href='bookingRejected?id=$sr_no' style='color: white;'>Reject</a>
+                    <a class='btn btn-success' href='bookingCompleted?id=$sr_no' style='color: white;'>Completed</a>
+                    <a class='btn btn-danger' href='bookingRejected?id=$sr_no' style='color: white;'>Rejected/Cancelled</a>
                 </div>
             </td>";
         echo "</tr>";

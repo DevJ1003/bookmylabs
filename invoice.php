@@ -20,6 +20,7 @@ confirm($query);
 
 while ($row = mysqli_fetch_array($query)) {
 
+	$patient_id = $row['patient_id'];
 	$patient_age = $row['age'];
 	$patient_gender = $row['gender'];
 	$patient_mobile = $row['mobile'];
@@ -67,6 +68,15 @@ foreach ($test_names as $printed_test) {
 	}
 }
 
+// ========================================================================================================
+$getLabLogoQuery = "SELECT lab_logo from `labs` WHERE lab_name = '$lab_name'";
+$query = query($getLabLogoQuery);
+confirm($query);
+
+while ($row = mysqli_fetch_array($query)) {
+	$lab_logo = $row['lab_logo'];
+}
+
 ?>
 <div class="main-container">
 	<div class="pd-ltr-20 xs-pd-20-10">
@@ -88,16 +98,16 @@ foreach ($test_names as $printed_test) {
 			</div>
 			<div class="invoice-wrap">
 				<div class="invoice-box">
-					<div class="invoice-header">
-						<div class="logo text-center">
-							<img src="vendors/images/deskapp-logo.png" alt="">
+					<div class="invoice-header text-center">
+						<div class="lab-logo">
+							<img src="src/images/labs_images/<?php echo $lab_logo; ?>" alt="Lab Logo" style="max-height: 80px;">
+						</div>
+						<div class="d-flex justify-content-between align-items-center mt-2">
+							<div class="flex-grow-1 text-center">
+								<h4 class="mb-0 weight-600">INVOICE</h4>
+							</div>
 						</div>
 					</div>
-					<h4 class="text-center mb-30 weight-600">INVOICE</h4>
-					<div class="d-flex justify-content-end">
-						<a href="download_invoice.php?sr_no=<?php echo $sr_no; ?>&patient_name=<?php echo urlencode($patient_name); ?>" class="btn btn-primary">Download Invoice</a>
-					</div>
-					<br>
 					<div class="row pb-30">
 						<div class="col-md-6">
 							<p class="font-14 mb-5">Date: <strong class="weight-600"><?php echo $formattedDate; ?></strong></p>
@@ -105,10 +115,11 @@ foreach ($test_names as $printed_test) {
 							<!-- <p class="font-14 mb-5">Lab Code: <strong class="weight-600"><?php //echo $lab_code; 
 																								?></strong></p> -->
 							<p class="font-14 mb-5">Lab Name: <strong class="weight-600"><?php echo strtoupper($lab_name); ?></strong></p>
+							<a href="download_invoice.php?sr_no=<?php echo $sr_no; ?>&patient_name=<?php echo urlencode($patient_name); ?>" class="btn btn-primary">Download Invoice</a>
 						</div>
 						<div class="col-md-6">
 							<div class="text-right">
-								<p class="font-14 mb-5">Patient ID: <strong class="weight-600">patient_id</strong></p>
+								<p class="font-14 mb-5">Patient ID: <strong class="weight-600"><?php echo $patient_id; ?></strong></p>
 								<p class="font-14 mb-5">Name & Age: <strong class="weight-600"><?php echo $patient_name . ", " . $patient_age; ?></strong></p>
 								<p class="font-14 mb-5">Gender: <strong class="weight-600"><?php echo $patient_gender; ?></strong></p>
 								<p class="font-14 mb-5">Contact No.: <strong class="weight-600"><?php echo $patient_mobile; ?></strong></p>

@@ -25,7 +25,7 @@ if (isset($_POST['upload'])) {
                 $escaped_values = array_map(fn($val) => mysqli_real_escape_string($db_conn, $val), $row);
 
                 // Insert into tests_agilus table
-                $query = "INSERT INTO `tests_agilus diagnostics` (`" . implode("`, `", $columns) . "`) VALUES ('" . implode("', '", $escaped_values) . "')";
+                $query = "INSERT INTO `tests_dr.lal pathlabs` (`" . implode("`, `", $columns) . "`) VALUES ('" . implode("', '", $escaped_values) . "')";
                 mysqli_query($db_conn, $query);
                 $row = []; // Reset for next row
             }

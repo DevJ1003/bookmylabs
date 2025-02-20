@@ -15,6 +15,7 @@
                                 <th>SR NO</th>
                                 <th>Franchise Name</th>
                                 <th>Lab Name</th>
+                                <th>Patient ID</th>
                                 <th>Patient Name</th>
                                 <th>Order Amount</th>
                                 <th>Test Name</th>
