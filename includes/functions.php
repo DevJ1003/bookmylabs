@@ -483,63 +483,107 @@ function rechargeRequests()
 }
 
 // function totalRevenue() used for calculating total revenue earned through B2C bookings
-function totalRevenue()
+function totalRevenue($days = null)
 {
-    $totalRevenueQuery = "SELECT SUM(order_amount) AS total_revenue FROM `test_requests` WHERE status = 'Completed'";
-    $query = query($totalRevenueQuery);
-    confirm($query);
+    global $db_conn;
+    $franchise_id = $_SESSION['id'];
 
-    $result = mysqli_fetch_assoc($query);
-    if ($result) {
-        echo $result['total_revenue'];
+    $query = "SELECT SUM(order_amount) AS total FROM test_requests WHERE status = 'Completed' AND franchise_id = ?";
+    if ($days) {
+        $query .= " AND DATE(created_at) >= DATE_SUB(CURDATE(), INTERVAL ? DAY)";
     }
+
+    $stmt = mysqli_prepare($db_conn, $query);
+
+    if ($days) {
+        mysqli_stmt_bind_param($stmt, "ii", $franchise_id, $days);
+    } else {
+        mysqli_stmt_bind_param($stmt, "i", $franchise_id);
+    }
+
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    $row = mysqli_fetch_assoc($result);
+    return $row['total'] ?? 0;
 }
+
 
 // function totalFranchiseBooking() is used to fetch the total number of bookings
-function totalFranchiseBooking()
+function totalFranchiseBooking($days = null)
 {
-
     global $db_conn;
-
     $franchise_id = $_SESSION['id'];
-    $franchise_id = mysqli_real_escape_string($db_conn, $franchise_id);
 
-    $totalFranchiseBookingQuery = "SELECT COUNT(*) AS total_bookings FROM `test_requests` WHERE franchise_id = $franchise_id";
-    $query = query($totalFranchiseBookingQuery);
-    confirm($query);
-
-    $result = mysqli_fetch_assoc($query);
-    if ($result) {
-        echo $result['total_bookings'];
+    $query = "SELECT COUNT(*) AS total FROM test_requests WHERE franchise_id = ?";
+    if ($days) {
+        $query .= " AND DATE(created_at) >= DATE_SUB(CURDATE(), INTERVAL ? DAY)";
     }
 
-    return null;
+    $stmt = mysqli_prepare($db_conn, $query);
+
+    if ($days) {
+        mysqli_stmt_bind_param($stmt, "ii", $franchise_id, $days);
+    } else {
+        mysqli_stmt_bind_param($stmt, "i", $franchise_id);
+    }
+
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    $row = mysqli_fetch_assoc($result);
+    return $row['total'] ?? 0;
 }
 
-// function fetchNumberOfLabs() used to fetch total number of labs
-function fetchNumberOfLabs()
+// function fetchNumberOfLabs() used to fetch the number of labs
+function fetchNumberOfLabs($days = null)
 {
-    $fetchNumberOfLabs = "SELECT COUNT(*) AS total FROM `labs`";
-    $query = query($fetchNumberOfLabs);
-    confirm($query);
+    global $db_conn;
+    $query = "SELECT COUNT(DISTINCT lab_name) AS total_labs FROM `labs`";
 
-    $result = mysqli_fetch_assoc($query);
-    if ($result) {
-        echo $result['total'];
+    if ($days !== null) {
+        $query .= " WHERE DATE(created_at) >= DATE_SUB(CURDATE(), INTERVAL ? DAY)";
     }
+
+    $stmt = mysqli_prepare($db_conn, $query);
+
+    if ($days !== null) {
+        mysqli_stmt_bind_param($stmt, "i", $days);
+    }
+
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    $row = mysqli_fetch_assoc($result);
+    return $row['total_labs'] ?? 0;
 }
+
+
 
 // function fetchTestStatus() fetches the test status for admin panel
-function fetchTestStatus($status)
+function fetchTestStatus($status, $days = null)
 {
-    $fetchTestStatus = "SELECT COUNT(*) AS total FROM `test_requests` WHERE status = '$status'";
-    $query = query($fetchTestStatus);
-    confirm($query);
+    global $db_conn;
+    $franchise_id = $_SESSION['id'];
 
-    $result = mysqli_fetch_assoc($query);
-    if ($result) {
-        echo $result['total'];
+    $query = "SELECT COUNT(*) AS count FROM test_requests WHERE franchise_id = ? AND status = ?";
+    if ($days) {
+        $query .= " AND DATE(created_at) >= DATE_SUB(CURDATE(), INTERVAL ? DAY)";
     }
+
+    $stmt = mysqli_prepare($db_conn, $query);
+
+    if ($days) {
+        mysqli_stmt_bind_param($stmt, "isi", $franchise_id, $status, $days);
+    } else {
+        mysqli_stmt_bind_param($stmt, "is", $franchise_id, $status);
+    }
+
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    $row = mysqli_fetch_assoc($result);
+    return $row['count'] ?? 0;
 }
 
 // function fetchUploadedReportsFranchise() used to fetch uploaded reports

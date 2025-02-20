@@ -14,63 +14,62 @@
                             Welcome back, <div class="weight-600 font-30 text-blue"><?php echo $_SESSION['agency_name']; ?></div>
                         </h4>
                     </div>
-
-                    <div class="col-md-4 text-right" style="margin-bottom:12px;">
+                    <div class="col-md-4 text-right">
                         <select id="dateFilter" class="form-control">
+                            <option value="all">All Data</option>
                             <option value="15">Last 15 Days</option>
                             <option value="30">Last 30 Days</option>
                         </select>
                     </div>
                 </div>
-
                 <?php displayMessage(); ?>
                 <div class="row gy-4">
                     <div class="col-md-4" style="margin-bottom: 20px;">
                         <div class="dashboard-card revenue">
                             <h5>Total Revenue</h5>
-                            <p>₹<?php totalRevenue(); ?>/-</p>
+                            <p id="totalRevenue">₹<?php echo totalRevenue(); ?>/-</p>
                         </div>
                     </div>
                     <div class="col-md-4" style="margin-bottom: 20px;">
                         <div class="dashboard-card booking">
                             <h5>Total Booking</h5>
-                            <p><?php totalFranchiseBooking(); ?></p>
+                            <p id="totalBookings"><?php echo totalFranchiseBooking(); ?></p>
                         </div>
                     </div>
                     <div class="col-md-4" style="margin-bottom: 20px;">
                         <div class="dashboard-card net-partner">
                             <h5>Net Partner</h5>
-                            <p><?php fetchNumberOfLabs(); ?></p>
+                            <p id="netPartners"><?php echo fetchNumberOfLabs(); ?></p>
                         </div>
                     </div>
                     <div class="col-md-4" style="margin-bottom: 20px;">
                         <div class="dashboard-card rejected">
                             <h5>Total Rejected</h5>
-                            <p><?php fetchTestStatus("Rejected/Cancelled"); ?></p>
+                            <p id="totalRejected"><?php echo fetchTestStatus("Rejected/Cancelled"); ?></p>
                         </div>
                     </div>
                     <div class="col-md-4" style="margin-bottom: 20px;">
                         <div class="dashboard-card completed">
                             <h5>Total Completed</h5>
-                            <p><?php fetchTestStatus("Completed"); ?></p>
+                            <p id="totalCompleted"><?php echo fetchTestStatus("Completed"); ?></p>
                         </div>
                     </div>
                     <div class="col-md-4" style="margin-bottom: 20px;">
                         <div class="dashboard-card processing">
                             <h5>Total Processing</h5>
-                            <p><?php fetchTestStatus("In-Process"); ?></p>
+                            <p id="totalProcessing"><?php echo fetchTestStatus("In-Process"); ?></p>
                         </div>
                     </div>
                     <div class="col-md-4" style="margin-bottom: 20px;">
                         <div class="dashboard-card pending">
                             <h5>Total Pending</h5>
-                            <p><?php fetchTestStatus("Pending"); ?></p>
+                            <p id="totalPending"><?php echo fetchTestStatus("Pending"); ?></p>
                         </div>
                     </div>
                     <div class="col-md-4" style="margin-bottom: 20px;">
                         <div class="dashboard-card resample">
                             <h5>Total Resample</h5>
-                            <p><?php fetchTestStatus("Rejected/Cancelled"); ?></p>
+                            <p id="totalResample"><?php echo fetchTestStatus("Rejected/Cancelled"); ?></p>
                         </div>
                     </div>
                 </div>
@@ -226,13 +225,74 @@
         font-size: 14px;
     }
 </style>
+
+
 <script>
     document.getElementById("dateFilter").addEventListener("change", function() {
         let days = this.value;
-        console.log("Filter selected: Last " + days + " days");
-        // Implement AJAX request to fetch filtered data if needed
+
+        fetch("fetch_dashboard_data.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: "days=" + days
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Response from server:", data);
+
+                // Debugging: Check if elements exist before updating them
+                if (document.getElementById("totalRevenue")) {
+                    document.getElementById("totalRevenue").innerText = "₹" + data.totalRevenue + "/-";
+                } else {
+                    console.error("Element #totalRevenue not found!");
+                }
+
+                if (document.getElementById("totalBookings")) {
+                    document.getElementById("totalBookings").innerText = data.totalBookings;
+                } else {
+                    console.error("Element #totalBookings not found!");
+                }
+
+                if (document.getElementById("netPartners")) {
+                    document.getElementById("netPartners").innerText = data.netPartners;
+                } else {
+                    console.error("Element #netPartners not found!");
+                }
+
+                if (document.getElementById("totalRejected")) {
+                    document.getElementById("totalRejected").innerText = data.totalRejected;
+                } else {
+                    console.error("Element #totalRejected not found!");
+                }
+
+                if (document.getElementById("totalCompleted")) {
+                    document.getElementById("totalCompleted").innerText = data.totalCompleted;
+                } else {
+                    console.error("Element #totalCompleted not found!");
+                }
+
+                if (document.getElementById("totalProcessing")) {
+                    document.getElementById("totalProcessing").innerText = data.totalProcessing;
+                } else {
+                    console.error("Element #totalProcessing not found!");
+                }
+
+                if (document.getElementById("totalPending")) {
+                    document.getElementById("totalPending").innerText = data.totalPending;
+                } else {
+                    console.error("Element #totalPending not found!");
+                }
+
+                if (document.getElementById("totalResample")) {
+                    document.getElementById("totalResample").innerText = data.totalResample;
+                } else {
+                    console.error("Element #totalResample not found!");
+                }
+            })
+            .catch(error => console.error("AJAX Error:", error));
     });
 </script>
 
-
-<?php include "includes/footer.php" ?>
+<?php include "includes/footer.php"; ?>
