@@ -46,7 +46,7 @@
     </script>
     <style>
         .left-side-bar {
-            background-color: #23395d;
+            background-color: rgb(56, 91, 146);
         }
     </style>
 </head>
