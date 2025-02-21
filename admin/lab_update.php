@@ -23,6 +23,7 @@ if (isset($_GET['update'])) {
                 ?>
                 <!-- CSRF Token -->
                 <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+
                 <input type="hidden" id="labId" name="labId"><!-- Hidden lab ID -->
                 <div class="form-group">
                     <label>Lab Name</label>

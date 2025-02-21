@@ -153,6 +153,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 						</div>
 						<h6 class="mb-20">Enter your email address to reset your password</h6>
 						<form method="POST" action="">
+
 							<div class="input-group custom">
 								<input type="email" name="email" class="form-control form-control-lg" placeholder="Enter your email" required>
 								<div class="input-group-append custom">

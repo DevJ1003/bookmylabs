@@ -24,6 +24,10 @@ confirm($query);
             </div>
             <section>
                 <form action="testform.php" method="GET">
+
+                    <!-- CSRF Token -->
+                    <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+
                     <div class="scrollable-container">
                         <div class="row" id="labTestResults">
                             <?php while ($row = mysqli_fetch_array($query)) { ?>

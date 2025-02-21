@@ -109,7 +109,7 @@
                     </li>
                     <li>
                         <a href="testSelectLab" class="dropdown-toggle no-arrow">
-                            <span class="micon dw dw-invoice"></span><span class="mtext">Add Test</span>
+                            <span class="micon dw dw-invoice"></span><span class="mtext">Tests</span>
                         </a>
                     </li>
                     <li>

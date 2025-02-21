@@ -23,6 +23,7 @@ if (isset($_GET['update'])) {
             <form action="" id="testUpdateForm" method="POST" class="form">
                 <?php
                 updateTestPrice($test_id); ?>
+
                 <!-- CSRF Token -->
                 <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
 

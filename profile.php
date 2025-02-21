@@ -45,8 +45,10 @@ if (isset($_SESSION['id'])) {
                     <div class="pd-20 card-box">
                         <form action="" method="POST" id="update_profile" enctype="multipart/form-data">
                             <?php updateProfile(); ?>
+
                             <!-- CSRF Token -->
                             <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+
                             <!-- First Row: Profile photo and owner details -->
                             <div class="row">
                                 <!-- Left: Profile Photo -->

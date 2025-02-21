@@ -42,8 +42,10 @@
         <?php rechargeRequests();
         displayMessage();
         ?>
+
         <!-- CSRF Token -->
         <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+
         <label for="upi_reference">UPI Reference Number</label>
         <input type="text" id="upi_reference" name="upi_reference" required>
         <label for="amount">Amount</label>
