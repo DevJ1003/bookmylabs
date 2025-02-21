@@ -105,7 +105,7 @@ include "includes/header.php";
             <!-- Search Bar -->
             <div class="search">
                 <img src="https://cdn-icons-png.flaticon.com/512/2652/2652234.png" alt="">
-                <input type="text" id="searchLab" placeholder="Search Labs...">
+                <input type="text" id="searchLab" placeholder="Search labs...">
             </div>
 
             <!-- Original Labs List -->

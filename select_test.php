@@ -20,7 +20,7 @@ confirm($query);
         <div class="min-height-200px">
             <div class="search">
                 <img src="vendors/images/assets/search.png" alt="">
-                <input type="text" id="searchInput" placeholder="Search Labs">
+                <input type="text" id="searchInput" placeholder="Search tests...">
             </div>
             <section>
                 <form action="testform.php" method="GET">

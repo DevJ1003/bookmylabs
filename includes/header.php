@@ -13,7 +13,7 @@ if (!isset($_SESSION['id']) || !isset($_SESSION['email']) || !isset($_SESSION['a
 
 <head>
     <meta charset="utf-8">
-    <title>Book My Lab</title>
+    <title>BookMyLabs - Book Any Test From Any Lab</title>
     <link rel="apple-touch-icon" sizes="180x180" href="vendors/images/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="vendors/images/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="vendors/images/favicon-16x16.png">
@@ -56,7 +56,7 @@ if (!isset($_SESSION['id']) || !isset($_SESSION['email']) || !isset($_SESSION['a
         <div class="header-left">
             <div class="menu-icon dw dw-menu"></div>
             <div class="header-search">
-                <h6>BOOK MY LABS</h6>
+                <!-- <h6>BOOK MY LABS</h6> -->
             </div>
         </div>
         <div class="header-right">
