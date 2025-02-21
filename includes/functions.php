@@ -321,7 +321,7 @@ function TestRequestForm()
         confirm($query);
 
         setMessage("Your request has been submitted successfully! Patient ID: $patient_id", "success");
-        redirect("allbookings");
+        redirect("recentBooking");
         exit();
     }
 }
