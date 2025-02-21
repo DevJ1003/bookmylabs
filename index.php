@@ -24,49 +24,49 @@
                 </div>
                 <?php displayMessage(); ?>
                 <div class="row gy-4">
-                    <div class="col-md-4" style="margin-bottom: 20px;">
+                    <div class="col-md-4" style="margin-bottom: 20px; cursor: pointer;" onclick="window.location.href='accountstatement'">
                         <div class="dashboard-card revenue">
                             <h5>Total Revenue</h5>
                             <p id="totalRevenue">₹<?php echo totalRevenue(); ?>/-</p>
                         </div>
                     </div>
-                    <div class="col-md-4" style="margin-bottom: 20px;">
+                    <div class="col-md-4" style="margin-bottom: 20px; cursor: pointer;" onclick="window.location.href='recentBooking'">
                         <div class="dashboard-card booking">
                             <h5>Total Booking</h5>
                             <p id="totalBookings"><?php echo totalFranchiseBooking(); ?></p>
                         </div>
                     </div>
-                    <div class="col-md-4" style="margin-bottom: 20px;">
+                    <div class="col-md-4" style="margin-bottom: 20px; cursor: pointer;" onclick="window.location.href='booktest'">
                         <div class="dashboard-card net-partner">
                             <h5>Net Partner</h5>
                             <p id="netPartners"><?php echo fetchNumberOfLabs(); ?></p>
                         </div>
                     </div>
-                    <div class="col-md-4" style="margin-bottom: 20px;">
+                    <div class="col-md-4" style="margin-bottom: 20px; cursor: pointer;" onclick="window.location.href='recentBooking'">
                         <div class="dashboard-card rejected">
                             <h5>Total Rejected</h5>
                             <p id="totalRejected"><?php echo fetchTestStatus("Rejected/Cancelled"); ?></p>
                         </div>
                     </div>
-                    <div class="col-md-4" style="margin-bottom: 20px;">
+                    <div class="col-md-4" style="margin-bottom: 20px; cursor: pointer;" onclick="window.location.href='recentBooking'">
                         <div class="dashboard-card completed">
                             <h5>Total Completed</h5>
                             <p id="totalCompleted"><?php echo fetchTestStatus("Completed"); ?></p>
                         </div>
                     </div>
-                    <div class="col-md-4" style="margin-bottom: 20px;">
+                    <div class="col-md-4" style="margin-bottom: 20px; cursor: pointer;" onclick="window.location.href='recentBooking'">
                         <div class="dashboard-card processing">
-                            <h5>Total Processing</h5>
+                            <h5>Total In-Process</h5>
                             <p id="totalProcessing"><?php echo fetchTestStatus("In-Process"); ?></p>
                         </div>
                     </div>
-                    <div class="col-md-4" style="margin-bottom: 20px;">
+                    <div class="col-md-4" style="margin-bottom: 20px; cursor: pointer;" onclick="window.location.href='recentBooking'">
                         <div class="dashboard-card pending">
                             <h5>Total Pending</h5>
                             <p id="totalPending"><?php echo fetchTestStatus("Pending"); ?></p>
                         </div>
                     </div>
-                    <div class="col-md-4" style="margin-bottom: 20px;">
+                    <div class="col-md-4" style="margin-bottom: 20px; cursor: pointer;" onclick="window.location.href='recentBooking'">
                         <div class="dashboard-card resample">
                             <h5>Total Resample</h5>
                             <p id="totalResample"><?php echo fetchTestStatus("Rejected/Cancelled"); ?></p>

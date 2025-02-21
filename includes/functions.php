@@ -566,7 +566,7 @@ function fetchNumberOfLabs($days = null)
 
 
 
-// function fetchTestStatus() fetches the test status for admin panel
+// function fetchTestStatus() fetches the test status for franchise panel
 function fetchTestStatus($status, $days = null)
 {
     global $db_conn;
@@ -1172,6 +1172,23 @@ function recentBookings()
 // 
 /************************************** ADMIN DASHBOARD FUNCTIONS ****************************************/
 
+// function totalRevenue() used for calculating total revenue earned through B2C bookings for all franchises
+function totalRevenueAdmin()
+{
+    global $db_conn;
+    $franchise_id = $_SESSION['id'];
+
+    $totalRevenueAdminQuery = "SELECT SUM(order_amount) AS total FROM test_requests WHERE status = 'Completed'";
+    $query = query($totalRevenueAdminQuery);
+    confirm($query);
+
+    $row = mysqli_fetch_assoc($query);
+    if ($row) {
+        echo $row['total'] ?? 0;
+    }
+    return null;
+}
+
 // function totalLabs() is used to fetch the total number of labs
 function totalLabs()
 {
@@ -1190,7 +1207,7 @@ function totalLabs()
 // function totalFranchise() is used to fetch the total number of labs
 function totalFranchise()
 {
-    $totalFranchiseQuery = "SELECT COUNT(*) AS total_franchise FROM `franchises`";
+    $totalFranchiseQuery = "SELECT COUNT(*) AS total_franchise FROM `franchises` WHERE usertype = 'Franchise'";
     $query = query($totalFranchiseQuery);
     confirm($query);
 
@@ -1215,6 +1232,64 @@ function totalBookings()
     }
 
     return null;
+}
+
+
+// function fetchTestStatusAdmin() fetches the test status for admin panel
+function fetchTestStatusAdmin($status)
+{
+    $fetchTestStatusAdminQuery = "SELECT COUNT(*) AS count FROM test_requests WHERE status = '$status'";
+    $query = query($fetchTestStatusAdminQuery);
+    confirm($query);
+
+    $row = mysqli_fetch_assoc($query);
+    if ($row) {
+        echo $row['count'];
+    }
+
+    return null;
+}
+
+
+// function totalTests() used to fetch total number of tests from all the tables
+function totalTests()
+{
+
+    global $db_conn;
+
+    $labQuery = "SELECT lab_name FROM labs";
+    $labResult = query($labQuery);
+    confirm($labResult);
+
+    if ($labResult->num_rows > 0) {
+        $queryParts = [];
+
+        while ($row = $labResult->fetch_assoc()) {
+
+            $lab_name = strtolower($row['lab_name']);
+            $labTable = "tests_" . $lab_name;
+
+            $checkTableQuery = "SHOW TABLES LIKE '$labTable'";
+            $tableExists = $db_conn->query($checkTableQuery);
+
+            if ($tableExists->num_rows > 0) {
+                $queryParts[] = "SELECT COUNT(*) AS total_tests FROM `$labTable`";
+            }
+        }
+
+        if (!empty($queryParts)) {
+            $finalQuery = "SELECT SUM(total_tests) AS total_tests_count FROM (" . implode(" UNION ALL ", $queryParts) . ") AS counts";
+            $result = query($finalQuery);
+            confirm($result);
+
+            $row = $result->fetch_assoc();
+            echo $row['total_tests_count'];
+        } else {
+            echo "No test tables found.";
+        }
+    } else {
+        echo "No labs found.";
+    }
 }
 
 // function fetchRechargeRequests() used to fetch recharge request details

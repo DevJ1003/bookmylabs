@@ -64,7 +64,7 @@
         <div class="header-left">
             <div class="menu-icon dw dw-menu"></div>
             <div class="header-search">
-                <h6>BOOK MY LABS</h6>
+                <!-- <h6>BOOK MY LABS</h6> -->
             </div>
         </div>
         <div class="header-right">
