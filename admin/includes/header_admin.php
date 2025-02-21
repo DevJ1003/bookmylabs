@@ -44,6 +44,11 @@
 
         gtag('config', 'UA-119386393-1');
     </script>
+    <style>
+        .left-side-bar {
+            background-color: #23395d;
+        }
+    </style>
 </head>
 
 <body>
@@ -99,42 +104,43 @@
                 <ul id="accordion-menu">
                     <li class="dropdown">
                         <a href="index" class="dropdown-toggle no-arrow">
-                            <span class="micon dw dw-house-1"></span><span class="mtext">Home</span>
+                            <span class="micon dw dw-hou-1"><img src="https://img.icons8.com/?size=100&id=6g6b5Mh-1uJ7&format=png&color=FFFFFF"></span><span class="mtext">Home</span>
                         </a>
                     </li>
                     <li>
                         <a href="manageLab" class="dropdown-toggle no-arrow">
-                            <span class="micon dw dw-invoice"></span><span class="mtext">Labs</span>
+                            <span class="micon dw dw-hospitals"><img src="https://img.icons8.com/?size=100&id=55232&format=png&color=FFFFFF">
+                            </span><span class="mtext">Labs</span>
                         </a>
                     </li>
                     <li>
                         <a href="testSelectLab" class="dropdown-toggle no-arrow">
-                            <span class="micon dw dw-invoice"></span><span class="mtext">Tests</span>
+                            <span class="micon dw dw-vials"><img src="https://img.icons8.com/?size=100&id=mvl6qRkeZvoH&format=png&color=FFFFFF"></span><span class="mtext">Tests</span>
                         </a>
                     </li>
                     <li>
                         <a href="addFranchise" class="dropdown-toggle no-arrow">
-                            <span class="micon dw dw-invoice"></span><span class="mtext">Add Franchise</span>
+                            <span class="micon dw dw-use"><img src="https://img.icons8.com/?size=100&id=23374&format=png&color=FFFFFF"></span><span class="mtext">Add Franchise</span>
                         </a>
                     </li>
                     <li>
                         <a href="rechargeRequests" class="dropdown-toggle no-arrow">
-                            <span class="micon dw dw-invoice"></span><span class="mtext">Recharge Requests</span>
+                            <span class="micon dw dw-wall"><img src="https://img.icons8.com/?size=100&id=20296&format=png&color=FFFFFF"></span><span class="mtext">Recharge Requests</span>
                         </a>
                     </li>
                     <li>
                         <a href="franchisemonitor" class="dropdown-toggle no-arrow">
-                            <span class="micon dw dw-invoice"></span><span class="mtext">Franchise Monitor</span>
+                            <span class="micon dw dw-analytic"><img src="https://img.icons8.com/?size=100&id=14103&format=png&color=FFFFFF"></span><span class="mtext">Franchise Monitor</span>
                         </a>
                     </li>
                     <li>
                         <a href="recentBookings" class="dropdown-toggle no-arrow">
-                            <span class="micon dw dw-invoice"></span><span class="mtext">Recent Bookings</span>
+                            <span class="micon dw dw-calenda"><img src="https://img.icons8.com/?size=100&id=22621&format=png&color=FFFFFF"></span><span class="mtext">Recent Bookings</span>
                         </a>
                     </li>
                     <li>
                         <a href="reportUpload" class="dropdown-toggle no-arrow">
-                            <span class="micon dw dw-invoice"></span><span class="mtext">Upload Reports</span>
+                            <span class="micon dw dw-uploa"><img src="https://img.icons8.com/?size=100&id=dM-cqlhsN3-n&format=png&color=FFFFFF"></span><span class="mtext">Upload Reports</span>
                         </a>
                     </li>
                 </ul>
