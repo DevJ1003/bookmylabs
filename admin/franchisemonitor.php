@@ -19,21 +19,13 @@
                 </div>
             </div>
 
-            <!-- Month Filter with English Calendar -->
-            <!-- <div class="row mb-3">
-                <div class="col-md-4">
-                    <label for="monthPicker">Select Month:</label>
-                    <input type="text" id="monthPicker" class="form-control" placeholder="Select Month" />
-                </div>
-            </div> -->
-
-            <!-- Download Excel Button -->
-            <!-- <div class="mb-3">
-                <a href="download_excel.php" class="btn btn-primary">Download Excel</a>
-            </div> -->
+            <!-- Search Bar -->
+            <div class="mb-3">
+                <input type="text" id="searchFranchise" class="form-control" placeholder="Search by franchise name..." onkeyup="filterTable()">
+            </div>
 
             <!-- Recharge Requests Table -->
-            <table class="table table-bordered">
+            <table class="table table-bordered" id="franchiseTable">
                 <thead>
                     <tr>
                         <th>Franchise Name</th>
@@ -50,27 +42,29 @@
     </div>
 </div>
 
-<!-- Include jQuery and Bootstrap Datepicker -->
+<!-- Include jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 
 <script>
-    $(document).ready(function() {
-        $('#monthPicker').datepicker({
-            format: "mm/yyyy",
-            startView: "months",
-            minViewMode: "months",
-            autoclose: true,
-            language: 'en' // Use English language for the calendar
-        }).on('changeDate', function(e) {
-            // Get the selected month and year
-            var month = e.date.getMonth() + 1; // Month is 0-indexed
-            var year = e.date.getFullYear();
-            // Implement your filter logic here
-            console.log("Selected month: " + month + ", Year: " + year);
-        });
-    });
+    function filterTable() {
+        var input = document.getElementById("searchFranchise");
+        var filter = input.value.toLowerCase();
+        var table = document.getElementById("franchiseTable");
+        var rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+
+        for (var i = 0; i < rows.length; i++) {
+            var franchiseNameCell = rows[i].getElementsByTagName("td")[0]; // First column
+
+            if (franchiseNameCell) {
+                var txtValue = franchiseNameCell.textContent || franchiseNameCell.innerText;
+                if (txtValue.toLowerCase().includes(filter)) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+        }
+    }
 </script>
 
 <?php include "includes/footer_admin.php"; ?>

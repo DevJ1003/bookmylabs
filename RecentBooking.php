@@ -130,11 +130,6 @@
         });
     });
 
-
-
-
-
-
     document.getElementById("downloadExcel").addEventListener("click", function() {
         const query = encodeURIComponent(document.getElementById("searchInput").value.trim());
         const status = encodeURIComponent(document.getElementById("orderStatusFilter").value);
