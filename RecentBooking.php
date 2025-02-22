@@ -1,7 +1,7 @@
 <?php include "includes/header.php"; ?>
 
 <!-- Custom css file -->
-<link rel="stylesheet" type="text/css" href="src/styles/recentBooking.css">
+<link rel="stylesheet" type="text/css" href="src/styles/recentBookings.css">
 
 <div class="main-container">
     <h1>Recent Booking</h1>
@@ -55,6 +55,7 @@
                         <th>Booking Date</th>
                         <th>Status</th>
                         <th>Invoice</th>
+                        <th>Rejection Reason (if any)</th>
                     </tr>
                 </thead>
                 <tbody>

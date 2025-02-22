@@ -444,6 +444,7 @@ function recentBookingsFranchise()
         $date = new DateTime($originalDate);
         $formattedDate = $date->format('jS F Y, h:i A');
         $status = $row['status'];
+        $rejection_reason = $row['rejection_reason'];
 
         echo "<tr>";
         echo "<td><input type='checkbox'></td>";
@@ -459,6 +460,7 @@ function recentBookingsFranchise()
         echo "<td>{$formattedDate}</td>";
         echo "<td>{$status}</td>";
         echo "<td><a href='invoice?sr_no=$sr_no&patient_name=$patient_name' target='_blank'>View Invoice</a></td>";
+        echo "<td>{$rejection_reason}</td>";
         echo "</tr>";
     }
 
@@ -1180,6 +1182,7 @@ function recentBookings()
         $test_names = $row['selected_test'];
         $booking_date = date("d-m-Y h:i A", strtotime($row['created_at']));
         $status = $row['status'];
+        $rejection_reason = $row['rejection_reason'];
 
         echo "<tr>";
         echo "<td><input type='checkbox' name='booking_ids[]' value='{$sr_no}' class='booking-checkbox'></td>";
@@ -1196,9 +1199,10 @@ function recentBookings()
                 <div style='display: flex; gap: 5px;'>
                     <a class='btn btn-info' href='bookingInProcess?id=$sr_no' style='color: white;'>In-Process</a>
                     <a class='btn btn-success' href='bookingCompleted?id=$sr_no' style='color: white;'>Completed</a>
-                    <a class='btn btn-danger' href='bookingRejected?id=$sr_no' style='color: white;'>Rejected/Cancelled</a>
+                    <a class='btn btn-danger' href='#' onclick='openRejectionModal($sr_no)' style='color: white;'>Rejected/Cancelled</a>
                 </div>
             </td>";
+        echo "<td>{$rejection_reason}</td>";
         echo "</tr>";
     }
 }

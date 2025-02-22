@@ -1,7 +1,8 @@
 <?php include "includes/header_admin.php"; ?>
 
 <!-- Custom css file -->
-<link rel="stylesheet" type="text/css" href="../src/styles/recentBooking.css">
+<link rel="stylesheet" type="text/css" href="../src/styles/recentBookings.css">
+<link rel="stylesheet" type="text/css" href="../src/styles/recentBookingsModal.css">
 
 <div class="main-container">
     <div class="pd-ltr-20">
@@ -57,6 +58,7 @@
                                 <th>Booking Date & Time</th>
                                 <th>Status</th>
                                 <th>Actions</th>
+                                <th>Rejection Reason (if any)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -74,134 +76,24 @@
     </div>
 </div>
 
+<!-- Rejection Reason Modal -->
+<div id="rejectionModal" class="modal-overlay">
+    <div class="modal-box">
+        <h2>Reject Booking</h2>
+        <p>Please enter the reason for rejecting this booking:</p>
+        <input type="hidden" id="bookingId">
+        <textarea id="rejectionReason" placeholder="Enter rejection reason..."></textarea>
+        <div class="modal-actions">
+            <button onclick="closeRejectionModal()" class="cancel-btn">Cancel</button>
+            <button onclick="submitRejection()" class="reject-btn">Reject</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- Bootstrap JS (for modal functionality) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $("#selectAll").on("change", function() {
-            $(".booking-checkbox").prop("checked", $(this).prop("checked"));
-        });
+<script src="../src/scripts/recentBookings.js"></script>
 
-        $(document).on("change", ".booking-checkbox", function() {
-            let totalCheckboxes = $(".booking-checkbox").length;
-            let checkedCheckboxes = $(".booking-checkbox:checked").length;
-
-            $("#selectAll").prop("checked", totalCheckboxes === checkedCheckboxes);
-        });
-    });
-
-    function updateStatus(status) {
-        let selectedIds = [];
-
-        $("input.booking-checkbox:checked").each(function() {
-            selectedIds.push($(this).val());
-        });
-
-        if (selectedIds.length === 0) {
-            alert("Please select at least one booking.");
-            return;
-        }
-
-        $.ajax({
-            url: "update_booking_status",
-            type: "POST",
-            dataType: "json",
-            contentType: "application/json",
-            data: JSON.stringify({
-                booking_ids: selectedIds,
-                status: status
-            }),
-            success: function(response) {
-                console.log("Raw Response:", response);
-                if (response.success) {
-                    alert(response.message);
-                    location.reload();
-                } else {
-                    alert("Error: " + response.message);
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error("AJAX Error:", error);
-                console.error("Response Text:", xhr.responseText);
-                alert("Request failed. Check console for details.");
-            }
-        });
-
-    }
-</script>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const searchInput = document.getElementById("searchInput");
-        const searchButton = document.getElementById("searchButton");
-        const orderStatusFilter = document.getElementById("orderStatusFilter");
-        const dispatchOptionFilter = document.getElementById("dispatchOptionFilter");
-        const labNameFilter = document.getElementById("labNameFilter");
-        const dateFilter = document.getElementById("dateFilter");
-        const clearFilterButton = document.getElementById("clearFilterButton"); // Clear Filter Button
-        const resultsTable = document.querySelector(".data-table-export-recent-booking tbody");
-
-        function fetchFilteredResults() {
-            const query = searchInput.value.trim();
-            const status = orderStatusFilter.value;
-            const dispatchOption = dispatchOptionFilter.value;
-            const labName = labNameFilter.value;
-            const selectedDate = dateFilter.value;
-
-            fetch(`../search_recent_booking.php?query=${encodeURIComponent(query)}&status=${encodeURIComponent(status)}&dispatch_option=${encodeURIComponent(dispatchOption)}&lab_name=${encodeURIComponent(labName)}&date=${encodeURIComponent(selectedDate)}`)
-                .then(response => response.text())
-                .then(data => {
-                    resultsTable.innerHTML = data;
-                })
-                .catch(error => console.error("Error fetching filtered results:", error));
-        }
-
-        searchButton.addEventListener("click", function() {
-            fetchFilteredResults();
-        });
-
-        searchInput.addEventListener("keyup", function(event) {
-            if (event.key === "Enter") {
-                fetchFilteredResults();
-            }
-        });
-
-        orderStatusFilter.addEventListener("change", function() {
-            fetchFilteredResults();
-        });
-
-        dispatchOptionFilter.addEventListener("change", function() {
-            fetchFilteredResults();
-        });
-
-        labNameFilter.addEventListener("change", function() {
-            fetchFilteredResults();
-        });
-
-        dateFilter.addEventListener("change", function() {
-            fetchFilteredResults();
-        });
-
-        // ✅ Clear Filter Function
-        clearFilterButton.addEventListener("click", function() {
-            searchInput.value = ""; // Clear search input
-            orderStatusFilter.value = ""; // Reset status filter
-            dispatchOptionFilter.value = ""; // Reset dispatch option
-            labNameFilter.value = ""; // Reset lab filter
-            dateFilter.value = ""; // Reset date filter
-
-            fetchFilteredResults(); // Reload data without filters
-        });
-    });
-
-    document.getElementById("downloadExcel").addEventListener("click", function() {
-        const query = encodeURIComponent(document.getElementById("searchInput").value.trim());
-        const status = encodeURIComponent(document.getElementById("orderStatusFilter").value);
-        const dispatchOption = encodeURIComponent(document.getElementById("dispatchOptionFilter").value);
-        const labName = encodeURIComponent(document.getElementById("labNameFilter").value);
-        const selectedDate = encodeURIComponent(document.getElementById("dateFilter").value);
-
-        // Redirect to export_to_excel.php with filters as query parameters
-        window.location.href = `../export_to_excel.php?query=${query}&status=${status}&dispatch_option=${dispatchOption}&lab_name=${labName}&date=${selectedDate}`;
-    });
-</script>
 <?php include "includes/footer_admin.php"; ?>
