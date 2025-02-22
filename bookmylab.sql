@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Feb 20, 2025 at 07:04 PM
+-- Generation Time: Feb 21, 2025 at 01:08 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -45,19 +45,21 @@ CREATE TABLE `franchises` (
   `password` text NOT NULL,
   `usertype` enum('Admin','Franchise') NOT NULL DEFAULT 'Franchise',
   `wallet_balance` int(25) NOT NULL,
-  `created_at` datetime(6) NOT NULL
+  `created_at` datetime(6) NOT NULL,
+  `reset_token` varchar(255) NOT NULL,
+  `reset_token_expiry` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `franchises`
 --
 
-INSERT INTO `franchises` (`id`, `owner_name`, `agency_name`, `email`, `phone`, `address`, `pin_code`, `package`, `aadhaar_number`, `aadhaar_image`, `pan_number`, `pan_image`, `owner_image`, `owner_signature`, `password`, `usertype`, `wallet_balance`, `created_at`) VALUES
-(1, 'test_updated', 'test_updated', 'testupdated@gmail.com', 2147483647, 'old delhi junction', 523691, '', 2147483647, '', 'edrft9137w', '', 'banner-img.png', '', '$2y$10$76BI4UydJt1h49zb7zn7IutxQ9Lv2Z5N6RZQK7TSCTTB2194VNkzi', 'Admin', 396, '0000-00-00 00:00:00.000000'),
-(3, 'test', 'test1', 't@gmail.com', 2147483647, 'mfdkvvfdml,', 45612, 'Advanced', 0, '', '7485edfdc', '', '', '', '$2y$10$vSl4jMvQcJ7E7nbzFsjjBO/t3nmtL0aQmYMwKgdU00e7Uv.oyMHl2', 'Franchise', 0, '2025-02-01 15:00:13.000000'),
-(4, 'test', 'test2', 'test2@gmail.com', 45789523, 'indvkmlomdfps,l', 451263, 'Premium', 0, 'chat-img2.jpg', '7485edfdc', 'check-mark.png', 'caution-sign.png', 'check-mark-green.png', '$2y$10$sparhTY36ZzWU9GUjowRCeIIMvGehLgT4HcanlGvxkvRVN/Od19Q6', 'Franchise', 0, '2025-02-01 15:05:48.000000'),
-(5, 'test', 'test3', 'test23@gmail.com', 2147483647, 'jnbskmdfvsilbdkm', 785236, 'Advanced', 2147483647, 'check-mark.png', '7485edfdc', 'chat-img1.jpg', 'caution-sign.png', 'check-mark-green.png', '$2y$10$5rChuaJdUKsd3OD11CeHGuaXe4wYHO.Gwe8JQqLERYqji5B3q1Jc2', 'Franchise', 0, '2025-02-01 15:09:35.000000'),
-(6, 'new', 'new again', 'new@gmail.com', 7946135, 'delhi', 451263, 'Standard', 2147483647, 'apple-touch-icon.png', 'lokij5478p', 'banner-img.png', 'caution-sign.png', 'chat-img2.jpg', '$2y$10$746WsCshtKKL/pGKuIgQMucAJmY8o65zB241Q.X8/HFPZgDAHtDWK', 'Franchise', 0, '2025-02-20 17:13:57.000000');
+INSERT INTO `franchises` (`id`, `owner_name`, `agency_name`, `email`, `phone`, `address`, `pin_code`, `package`, `aadhaar_number`, `aadhaar_image`, `pan_number`, `pan_image`, `owner_image`, `owner_signature`, `password`, `usertype`, `wallet_balance`, `created_at`, `reset_token`, `reset_token_expiry`) VALUES
+(1, 'test_updated', 'test_updated', 'testupdated@gmail.com', 2147483647, 'old delhi junction', 523691, '', 2147483647, '', 'edrft9137w', '', 'banner-img.png', '', '$2y$10$76BI4UydJt1h49zb7zn7IutxQ9Lv2Z5N6RZQK7TSCTTB2194VNkzi', 'Admin', 396, '0000-00-00 00:00:00.000000', 'f338383ba45868643eff5cb2da03d5a6b0a8cdba9da028a3ab7b6d78d2d17785354d1abcd8d5e023507d882163d9e5f9cae8', '2025-02-20 20:58:12'),
+(3, 'test', 'test1', 't@gmail.com', 2147483647, 'mfdkvvfdml,', 45612, 'Advanced', 0, '', '7485edfdc', '', '', '', '$2y$10$vSl4jMvQcJ7E7nbzFsjjBO/t3nmtL0aQmYMwKgdU00e7Uv.oyMHl2', 'Franchise', 0, '2025-02-01 15:00:13.000000', '', NULL),
+(4, 'test', 'test2', 'test2@gmail.com', 45789523, 'indvkmlomdfps,l', 451263, 'Premium', 0, 'chat-img2.jpg', '7485edfdc', 'check-mark.png', 'caution-sign.png', 'check-mark-green.png', '$2y$10$sparhTY36ZzWU9GUjowRCeIIMvGehLgT4HcanlGvxkvRVN/Od19Q6', 'Franchise', 0, '2025-02-01 15:05:48.000000', '', NULL),
+(5, 'test', 'test3', 'test23@gmail.com', 2147483647, 'jnbskmdfvsilbdkm', 785236, 'Advanced', 2147483647, 'check-mark.png', '7485edfdc', 'chat-img1.jpg', 'caution-sign.png', 'check-mark-green.png', '$2y$10$5rChuaJdUKsd3OD11CeHGuaXe4wYHO.Gwe8JQqLERYqji5B3q1Jc2', 'Franchise', 0, '2025-02-01 15:09:35.000000', '', NULL),
+(6, 'new', 'new again', 'new@gmail.com', 7946135, 'delhi', 451263, 'Standard', 2147483647, 'apple-touch-icon.png', 'lokij5478p', 'banner-img.png', 'caution-sign.png', 'chat-img2.jpg', '$2y$10$grPXUXC7iYIaYKeL9GlgGOqe2TEVlP1r1Y2xfjtC6/5PGdxYCr8Aa', 'Franchise', 0, '2025-02-20 17:13:57.000000', '', NULL);
 
 -- --------------------------------------------------------
 

@@ -175,6 +175,7 @@ function loginUser()
 
         $email = trim($_POST['email']);
         $password = trim($_POST['password']);
+        $remember = trim($_POST['remember']);
 
         $email = mysqli_real_escape_string($db_conn, $email);
         $password = mysqli_real_escape_string($db_conn, $password);
@@ -193,6 +194,23 @@ function loginUser()
                     $_SESSION['id'] = $db_userid;
                     $_SESSION['email'] = $db_email;
                     $_SESSION['agency_name'] = $row['agency_name'];
+
+
+                    // Handle "Remember Me" functionality
+                    if ($remember) {
+                        $token = bin2hex(random_bytes(32)); // Generate a secure token
+                        $expires = time() + (30 * 24 * 60 * 60); // 30 days
+
+                        // Store token in database
+                        $tokenQuery = "UPDATE `franchises` SET remember_token='$token' WHERE id='$db_userid'";
+                        query($tokenQuery);
+                        confirm($tokenQuery);
+
+                        // Set secure cookie
+                        setcookie("remember_token", $token, $expires, "/", "", true, true);
+                    }
+
+
                     setMessage("Valid credentials. You are now logged in.", "success");
                     redirect("index");
                     exit();
@@ -206,6 +224,27 @@ function loginUser()
             setMessage("Invalid credentials. Please try again.", "danger");
             redirect("login");
             exit();
+        }
+    }
+}
+
+// function checkRememberedUser() used to check the cookies for user login
+function checkRememberedUser()
+{
+    global $db_conn;
+
+    if (!isset($_SESSION['id']) && isset($_COOKIE['remember_token'])) {
+        $token = mysqli_real_escape_string($db_conn, $_COOKIE['remember_token']);
+
+        $query = "SELECT * FROM `franchises` WHERE remember_token = '$token'";
+        $result = query($query);
+        confirm($result);
+
+        if (mysqli_num_rows($result) > 0) {
+            $user = mysqli_fetch_array($result);
+            $_SESSION['id'] = $user['id'];
+            $_SESSION['email'] = $user['email'];
+            $_SESSION['agency_name'] = $user['agency_name'];
         }
     }
 }
@@ -1126,7 +1165,6 @@ function franchiseBookings()
 // function recentBookings() fetches all bookings
 function recentBookings()
 {
-
     $recentBookingsQuery = "SELECT * FROM `test_requests` ORDER BY created_at DESC";
     $query = query($recentBookingsQuery);
     confirm($query);
@@ -1144,7 +1182,7 @@ function recentBookings()
         $status = $row['status'];
 
         echo "<tr>";
-        echo "<td><input type='checkbox'></td>";
+        echo "<td><input type='checkbox' name='booking_ids[]' value='{$sr_no}' class='booking-checkbox'></td>";
         echo "<td>{$sr_no}</td>";
         echo "<td>{$franchise_name}</td>";
         echo "<td>{$lab_name}</td>";
@@ -1165,6 +1203,7 @@ function recentBookings()
     }
 }
 
+
 /************************************ END OF ADMIN MODULE FUNCTIONS **************************************/
 // 
 // 
@@ -1175,8 +1214,6 @@ function recentBookings()
 // function totalRevenue() used for calculating total revenue earned through B2C bookings for all franchises
 function totalRevenueAdmin()
 {
-    global $db_conn;
-    $franchise_id = $_SESSION['id'];
 
     $totalRevenueAdminQuery = "SELECT SUM(order_amount) AS total FROM test_requests WHERE status = 'Completed'";
     $query = query($totalRevenueAdminQuery);

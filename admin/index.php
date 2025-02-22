@@ -15,7 +15,7 @@
                 </div>
                 <?php displayMessage(); ?>
                 <div class="row gy-4">
-                    <div class="col-md-4" style="margin-bottom: 20px; cursor: pointer;">
+                    <div class="col-md-4" style="margin-bottom: 20px; cursor: pointer;" onclick="window.location.href='franchisemonitor'">
                         <div class="dashboard-card revenue">
                             <h5>Total Revenue</h5>
                             <p id="totalRevenue">₹<?php totalRevenueAdmin(); ?>/-</p>

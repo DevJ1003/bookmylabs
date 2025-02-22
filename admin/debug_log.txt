@@ -1,0 +1,75 @@
+Raw Input:
+
+Decoded Data:
+
+Server Request Method: GET
+Received Data: 
+Server Request Method: GET
+Server Request Method: GET
+Request Method: GET
+Request Method: GET
+Request Method: GET
+Request Method: GET
+Request Method: GET
+Request Method: POST
+Content-Type: application/json
+Raw Input: {"booking_ids":["22","21"],"status":"In-Process"}
+Decoded Data: Array
+(
+    [booking_ids] => Array
+        (
+            [0] => 22
+            [1] => 21
+        )
+
+    [status] => In-Process
+)
+
+Request Method: POST
+Content-Type: application/json
+Raw Input: {"booking_ids":["22","21"],"status":"In-Process"}
+Decoded Data: Array
+(
+    [booking_ids] => Array
+        (
+            [0] => 22
+            [1] => 21
+        )
+
+    [status] => In-Process
+)
+
+Request Method: POST
+Content-Type: application/json
+Raw Input: {"booking_ids":["22","21"],"status":"In-Process"}
+Decoded Data: Array
+(
+    [booking_ids] => Array
+        (
+            [0] => 22
+            [1] => 21
+        )
+
+    [status] => In-Process
+)
+
+Request Method: POST
+Content-Type: application/json
+Raw Input: {"booking_ids":["22","21"],"status":"Completed"}
+Decoded Data: Array
+(
+    [booking_ids] => Array
+        (
+            [0] => 22
+            [1] => 21
+        )
+
+    [status] => Completed
+)
+
+Request Method: POST
+Request Method: POST
+Request Method: POST
+SQL Query: UPDATE `test_requests` SET `status` = 'In-Process' WHERE `id` IN (22,21)
+Request Method: POST
+SQL Query: UPDATE `test_requests` SET `status` = 'Completed' WHERE `id` IN (22,21)

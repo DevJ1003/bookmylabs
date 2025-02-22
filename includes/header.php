@@ -1,6 +1,8 @@
 <?php
 include "functions.php";
 
+checkRememberedUser();
+
 if (!isset($_SESSION['id']) || !isset($_SESSION['email']) || !isset($_SESSION['agency_name'])) {
     redirect("login");
     exit();
