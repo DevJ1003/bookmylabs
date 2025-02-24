@@ -1,8 +1,9 @@
 <?php include "includes/header_admin.php";
 
-if (isset($_GET['update'])) {
+if (isset($_GET['update']) || isset($_GET['lab_name'])) {
     $test_id = $_GET['update'];
-    $test_data = readTestPrice($test_id);
+    $Lab_name = $_GET['lab_name'];
+    $test_data = readTestPrice($Lab_name, $test_id);
     if ($test_data) {
         $test_id = $test_data['id'];
         $code = $test_data['code'];
@@ -21,8 +22,7 @@ if (isset($_GET['update'])) {
     <div class="pricing-update">
         <div id="input-form" class="form">
             <form action="" id="testUpdateForm" method="POST" class="form">
-                <?php
-                updateTestPrice($test_id); ?>
+                <?php updateTestPrice($Lab_name, $test_id); ?>
 
                 <!-- CSRF Token -->
                 <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
@@ -37,7 +37,7 @@ if (isset($_GET['update'])) {
                 <input type="text" id="B2C_updated" name="B2C_updated" value="<?php echo $B2C; ?>">
                 <div class="button-group">
                     <button id="save-button" type="submit" name="updateTestPrice" style="width: 100px;">Save</button>
-                    <button id="cancel-button" style="width: 100px;" onclick="cancelTestUpdate()">Cancel</button>
+                    <button id="cancel-button" style="width: 100px;" onclick="cancelTestUpdate('<?php echo htmlspecialchars($Lab_name); ?>'); return false;">Cancel</button>
                 </div>
             </form>
         </div>
@@ -45,8 +45,8 @@ if (isset($_GET['update'])) {
 </div>
 <script src="../src/scripts/pricing.js"></script>
 <script>
-    function cancelTestUpdate() {
-        window.location.href = "test";
+    function cancelTestUpdate(LabName) {
+        window.location.href = "test.php?lab_name=" + encodeURIComponent(LabName);
     }
 </script>
 <?php include "includes/footer_admin.php"; ?>

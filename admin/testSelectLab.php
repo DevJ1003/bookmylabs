@@ -1,7 +1,5 @@
-<?php
-include "includes/header_admin.php";
+<?php include "includes/header_admin.php"; ?>
 
-?>
 <link rel="stylesheet" href="../src/styles/booktest.css" class="css">
 <div class="mobile-menu-overlay"></div>
 <div class="main-container">

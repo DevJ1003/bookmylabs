@@ -6,20 +6,21 @@
 
 include "../includes/functions.php";
 
-// global $db_conn;
+global $db_conn;
 
-// $franchise_id = $_SESSION['id'];
-// $franchise_id = mysqli_real_escape_string($db_conn, $franchise_id);
-
-if (isset($_GET['delete'])) {
+if (isset($_GET['delete']) && isset($_GET['lab_name'])) {
 
     $test_id = $_GET['delete'];
     $test_id = mysqli_real_escape_string($db_conn, $test_id);
 
-    $deleteTestPriceQuery = "DELETE FROM `test_details` WHERE id = '$test_id'";
+    $Lab_name = $_GET['lab_name'];
+    $lab_name = strtolower($Lab_name);
+
+    $deleteTestPriceQuery = "DELETE FROM `tests_$lab_name` WHERE id = '$test_id'";
     $query = query($deleteTestPriceQuery);
     confirm($query);
 
-    redirect("test");
+    setMessage("Test deleted successfully!");
+    redirect("test?lab_name=$Lab_name");
     exit();
 }

@@ -1,4 +1,7 @@
-<?php include "includes/header_admin.php"; ?>
+<?php include "includes/header_admin.php";
+displayMessage();
+?>
+
 
 <div class="main-container">
     <div class="pd-ltr-20 xs-pd-20-10">

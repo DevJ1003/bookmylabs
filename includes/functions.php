@@ -193,6 +193,7 @@ function loginUser()
                 if (password_verify($password, $dbpassword)) {
                     $_SESSION['id'] = $db_userid;
                     $_SESSION['email'] = $db_email;
+                    $_SESSION['usertype'] = $row['usertype'];
                     $_SESSION['agency_name'] = $row['agency_name'];
 
 
@@ -828,36 +829,40 @@ function updateLabDetails($lab_id, $lab_name)
 }
 
 // function readAllTestPrice() is used to read all test details like name, price etc.
-function readAllTestPrice()
+function readAllTestPrice($Lab_name)
 {
-    if (isset($_GET['lab_name'])) {
+    global $db_conn;
 
-        $lab_name = $_GET['lab_name'];
-        $lab_name = strtolower($lab_name);
+    if (!$Lab_name) {
+        die("Error: Lab name is missing.");
+    }
 
-        $readAllTestPriceQuery = "SELECT * FROM `tests_$lab_name`";
-        $query = query($readAllTestPriceQuery);
-        confirm($query);
+    $lab_name = strtolower($Lab_name);
+    $readAllTestPriceQuery = "SELECT * FROM `tests_$lab_name`";
 
-        while ($row = mysqli_fetch_array($query)) {
+    $query = mysqli_query($db_conn, $readAllTestPriceQuery);
+    if (!$query) {
+        die("SQL Error: " . mysqli_error($db_conn));
+    }
 
-            $test_id = $row['id'];
-            $code = $row['code'];
-            $name = $row['test_name'];
-            $B2B = $row['B2B'];
-            $B2C = $row['B2C'];
+    while ($row = mysqli_fetch_array($query)) {
 
-            echo "<tr>";
-            echo "<td>{$code}</td>";
-            echo "<td>{$name}</td>";
-            echo "<td>{$B2B}</td>";
-            echo "<td>{$B2C}</td>";
-            echo "<td>
-                <a class='edit-button' href='test_update?update=$test_id'>Edit</a>
-                <a class='delete-button' href='#' onclick='confirmDelete($test_id)'>Delete</a>
+        $test_id = $row['id'];
+        $code = $row['code'];
+        $name = $row['test_name'];
+        $B2B = $row['B2B'];
+        $B2C = $row['B2C'];
+
+        echo "<tr>";
+        echo "<td>{$code}</td>";
+        echo "<td>{$name}</td>";
+        echo "<td>{$B2B}</td>";
+        echo "<td>{$B2C}</td>";
+        echo "<td>
+                <a class='edit-button' href='test_update?update=$test_id&lab_name=$Lab_name'>Edit</a>
+               <a class='delete-button' href='#' onclick=\"confirmDelete($test_id, '" . htmlspecialchars($Lab_name, ENT_QUOTES) . "')\">Delete</a>
             </td>";
-            echo "</tr>";
-        }
+        echo "</tr>";
     }
 }
 
@@ -866,29 +871,33 @@ function addTestPrice()
 {
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addTestPrice'])) {
 
+        if (!isset($_POST['lab_name']) || empty($_POST['lab_name'])) {
+            die("Error: Lab name is missing in form submission.");
+        }
+
+        $Lab_name = $_POST['lab_name'];
+        $lab_name = strtolower($Lab_name);
+
         $code = $_POST['test_code'];
         $name = $_POST['test_name'];
         $B2B = $_POST['B2B'];
         $B2C = $_POST['B2C'];
 
-        $addTestPrice = "INSERT INTO `test_details` (code, test_name, B2B, B2C, created_at) ";
-        $addTestPrice .= "VALUES ('$code', '$name', '$B2B', '$B2C', NOW())";
+        $addTestPrice = "INSERT INTO `tests_$lab_name` (code, test_name, B2B, B2C) ";
+        $addTestPrice .= "VALUES ('$code', '$name', '$B2B', '$B2C')";
         $query = query($addTestPrice);
         confirm($query);
 
         setMessage("New Test added!", "success");
-        redirect("test");
+        redirect("test?lab_name=" . urlencode($Lab_name));
     }
 }
 
 // function readTestPrice() is used to read particular test details like name, price etc.
-function readTestPrice($test_id)
+function readTestPrice($lab_name, $test_id)
 {
-    // global $db_conn;
-    // $franchise_id = $_SESSION['id'];
-    // $franchise_id = mysqli_real_escape_string($db_conn, $franchise_id);
-
-    $readAllTestPriceQuery = "SELECT * FROM `test_details` WHERE id = '$test_id'";
+    $lab_name = strtolower($lab_name);
+    $readAllTestPriceQuery = "SELECT * FROM `tests_$lab_name` WHERE id = '$test_id'";
     $query = query($readAllTestPriceQuery);
     confirm($query);
 
@@ -907,11 +916,9 @@ function readTestPrice($test_id)
 }
 
 // function updateTestPrice() is used to update test details like name, price etc.
-function updateTestPrice($test_id)
+function updateTestPrice($Lab_name, $test_id)
 {
-    global $db_conn;
-    $franchise_id = $_SESSION['id'];
-    $franchise_id = mysqli_real_escape_string($db_conn, $franchise_id);
+    $lab_name = strtolower($Lab_name);
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['updateTestPrice'])) {
 
@@ -920,13 +927,13 @@ function updateTestPrice($test_id)
         $B2B = $_POST['B2B_updated'];
         $B2C = $_POST['B2C_updated'];
 
-        $updateTestDetailsQuery = "UPDATE `test_details` SET code = '{$code}', test_name = '{$name}', B2B = '{$B2B}', B2C = '{$B2C}' ";
+        $updateTestDetailsQuery = "UPDATE `tests_$lab_name` SET code = '{$code}', test_name = '{$name}', B2B = '{$B2B}', B2C = '{$B2C}' ";
         $updateTestDetailsQuery .= "WHERE id = '{$test_id}'";
         $query = query($updateTestDetailsQuery);
         confirm($query);
 
         setMessage("Test details updated!", "success");
-        redirect("test");
+        redirect("test?lab_name=$Lab_name");
     }
 }
 
@@ -998,7 +1005,7 @@ function addFranchise()
 function updateProfile()
 {
     global $db_conn;
-    $franchise_id = $_SESSION['id'];
+    $franchise_id = $_GET['franchise_id'];
     $franchise_id = mysqli_real_escape_string($db_conn, $franchise_id);
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['updateProfile'])) {
@@ -1012,9 +1019,26 @@ function updateProfile()
         $aadhaar_number = $_POST['aadhaar_number'];
         $pan_number = $_POST['pan_number'];
 
-        $owner_image = $_FILES['owner_image']['name'];
-        $owner_image_temp = $_FILES['owner_image']['tmp_name'];
-        move_uploaded_file($owner_image_temp, "src/images/updateProfile/$owner_image");
+        // Fetch existing owner image
+        $fetchImageQuery = "SELECT owner_image FROM franchises WHERE id = '$franchise_id'";
+        $result = query($fetchImageQuery);
+        confirm($result);
+        $row = fetch_array($result);
+        $existing_image = $row['owner_image'];
+
+        // Check if a new image is uploaded
+        if (!empty($_FILES['owner_image']['name'])) {
+            $owner_image = $_FILES['owner_image']['name'];
+            $owner_image_temp = $_FILES['owner_image']['tmp_name'];
+
+            if ($_SESSION['usertype'] === 'Admin') {
+                move_uploaded_file($owner_image_temp, "../src/images/updateProfile/$owner_image");
+            } else {
+                move_uploaded_file($owner_image_temp, "src/images/updateProfile/$owner_image");
+            }
+        } else {
+            $owner_image = $existing_image;
+        }
 
         $updateProfileQuery = "UPDATE `franchises` SET owner_name = '{$owner_name}', agency_name = '{$agency_name}', email = '{$email}', ";
         $updateProfileQuery .= "phone = '$phone', address = '$address', pin_code = '$pin_code', aadhaar_number = '$aadhaar_number', ";
@@ -1023,8 +1047,14 @@ function updateProfile()
         $query = query($updateProfileQuery);
         confirm($query);
 
-        setMessage("Profile details updated!", "success");
-        redirect("profile");
+        // check for usertype and redirect accordingly
+        if ($_SESSION['usertype'] === 'Admin') {
+            setMessage("Profile details updated!", "success");
+            redirect("viewFranchiseProfile?franchise_id=$franchise_id");
+        } else {
+            setMessage("Profile details updated!", "success");
+            redirect("profile");
+        }
     }
 }
 
@@ -1106,7 +1136,9 @@ function franchiseMonitor()
         $total_revenue = $row['total_revenue'];
 
         echo "<tr>";
-        echo "<td>$franchise_name</td>";
+        echo "<td>
+                <a href=viewFranchiseProfile?franchise_id=$franchise_id>$franchise_name</a>
+                </td>";
         echo "<td>$total_bookings</td>";
         echo "<td>₹ $total_revenue</td>";
         echo "<td>
