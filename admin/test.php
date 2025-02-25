@@ -9,6 +9,85 @@ $Lab_name = $_GET['lab_name'];
 
 <!-- Custom css file -->
 <link rel="stylesheet" type="text/css" href="../src/styles/test.css">
+
+<!-- ============================================ password verification modal ========================================= -->
+<style>
+  .modal {
+    z-index: 1050;
+    /* Bootstrap default for modals */
+  }
+
+  .modal-backdrop {
+    z-index: 1040;
+    /* Bootstrap default for modal backdrop */
+  }
+
+  .custom-close-btn {
+    color: grey;
+    font-size: 24px;
+    font-weight: bold;
+    background: transparent;
+    border: none;
+    opacity: 1;
+    transition: background 0.3s ease, color 0.3s ease;
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
+
+  .custom-close-btn:hover {
+    background: red;
+    color: white;
+  }
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+<script>
+  function redirectToIndex() {
+    window.location.href = "index";
+  }
+</script>
+<!-- ================================================================================================================ -->
+
+<?php
+if (isset($_SESSION['lab_access_granted_test']) && $_SESSION['lab_access_granted_test'] === true) {
+  // If access is granted, continue
+} else {
+  echo '<script>$(document).ready(function() { $("#passwordModal").modal("show"); });</script>';
+}
+
+if (isset($_GET['error']) && $_GET['error'] == 'wrong_password') {
+  echo '<script>alert("Wrong password, not allowed for performing operations.");</script>';
+}
+?>
+<!-- ================================================================================================================ -->
+
+
+
+
+
+
+<!-- Password Verification Modal -->
+<div id="passwordModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Enter Password</h4>
+        <button type="button" class="close custom-close-btn" onclick="redirectToIndex()">×</button>
+      </div>
+      <div class="modal-body">
+        <form id="passwordForm" method="POST" action="verify_password_test">
+          <div class="form-group">
+            <label>Enter Admin Password:</label>
+            <input type="password" name="admin_password" id="admin_password" class="form-control" required>
+            <input type="hidden" name="lab_name" id="lab_name" class="form-control" value="<?php echo $Lab_name; ?>">
+          </div>
+          <button type="submit" class="btn btn-primary">Verify</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of Password Verification Modal -->
 <div class="main-container">
   <div class="page-header">
     <div class="row">
@@ -34,7 +113,7 @@ $Lab_name = $_GET['lab_name'];
       <input type="text" id="searchInput" placeholder="Search by Test Name...">
       <button id="searchButton" hidden>Search</button>
     </div>
-
+    <?php displayMessage(); ?>
 
 
     <table id="pricing-table">

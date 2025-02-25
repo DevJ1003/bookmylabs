@@ -25,7 +25,8 @@ echo "<tr>
         <th>Age</th>
         <th>Lab Name</th>
         <th>Dispatch Type</th>
-        <th>Order Amount</th>
+        <th>Order Amount(B2C)</th>
+        <th>B2B Amount</th>
         <th>Test Name</th>
         <th>Booking Date</th>
         <th>Status</th>
@@ -82,6 +83,7 @@ while ($row = mysqli_fetch_assoc($result)) {
             <td>{$row['lab_name']}</td>
             <td>{$row['dispatch_option']}</td>
             <td>₹{$row['order_amount']}</td>
+            <td>₹{$row['b2b_amount']}</td>
             <td>{$row['selected_test']}</td>
             <td>" . date("d M Y, h:i A", strtotime($row['created_at'])) . "</td>
             <td>{$row['status']}</td>

@@ -64,6 +64,7 @@ if (mysqli_num_rows($result) > 0) {
             <td>{$row['lab_name']}</td>
             <td>{$row['dispatch_option']}</td>
             <td>₹{$row['order_amount']}</td>
+            <td>₹{$row['b2b_amount']}</td>
             <td>{$row['selected_test']}</td>
             <td>" . date("d M Y, h:i A", strtotime($row['created_at'])) . "</td>
             <td>{$row['status']}</td>

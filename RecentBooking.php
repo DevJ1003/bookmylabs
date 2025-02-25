@@ -50,7 +50,8 @@
                         <th>Age</th>
                         <th>Lab Name</th>
                         <th>Dispatch Type</th>
-                        <th>Order Amount</th>
+                        <th>Order Amount(B2C)</th>
+                        <th>B2B Amount</th>
                         <th>Test Name</th>
                         <th>Booking Date</th>
                         <th>Status</th>

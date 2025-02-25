@@ -438,6 +438,7 @@ function recentBookingsFranchise()
         $lab_name = strtoupper($row['lab_name']);
         $patient_dispatch_option = $row['dispatch_option'];
         $order_amount = $row['order_amount'];
+        $b2b_amount = $row['b2b_amount'];
 
         // date formatting
         $created_at = $row['created_at'];
@@ -456,7 +457,8 @@ function recentBookingsFranchise()
         echo "<td>{$patient_age}</td>";
         echo "<td>{$lab_name}</td>";
         echo "<td>{$patient_dispatch_option}</td>";
-        echo "<td>{$order_amount}</td>";
+        echo "<td>₹{$order_amount}</td>";
+        echo "<td>₹{$b2b_amount}</td>";
         echo "<td>{$selected_tests}</td>";
         echo "<td>{$formattedDate}</td>";
         echo "<td>{$status}</td>";
@@ -1189,8 +1191,8 @@ function franchiseBookings()
             echo "<td>{$patient_age}</td>";
             echo "<td>{$lab_name}</td>";
             echo "<td>{$patient_dispatch_option}</td>";
-            echo "<td>{$order_amount}</td>";
-            echo "<td>{$b2b_amount}</td>";
+            echo "<td>₹{$order_amount}</td>";
+            echo "<td>₹{$b2b_amount}</td>";
             echo "<td>{$selected_tests}</td>";
             echo "<td>{$formattedDate}</td>";
             echo "<td>{$status}</td>";
@@ -1230,8 +1232,8 @@ function recentBookings()
         echo "<td>{$lab_name}</td>";
         echo "<td>{$patient_id}</td>";
         echo "<td>{$patient_name}</td>";
-        echo "<td>{$order_amount}</td>";
-        echo "<td>{$b2b_amount}</td>";
+        echo "<td>₹{$order_amount}</td>";
+        echo "<td>₹{$b2b_amount}</td>";
         echo "<td>{$test_names}</td>";
         echo "<td>{$booking_date}</td>";
         echo "<td>{$status}</td>";
@@ -1392,7 +1394,7 @@ function fetchRechargeRequests()
 
         echo "<tr>";
         echo "<td>{$franchise_name}</td>";
-        echo "<td>{$amount}</td>";
+        echo "<td>₹{$amount}</td>";
         echo "<td>{$upi_reference}</td>";
         echo "<td><a href='../src/images/received_images/{$attachments}' target='_blank'>View Proof</a></td>";
         echo "<td>{$status}</td>";
