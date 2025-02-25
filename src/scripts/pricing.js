@@ -251,3 +251,39 @@ document.addEventListener('DOMContentLoaded', () => {
 //     return confirm("Are you sure you want to delete this test?");
 // }
 // });
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const searchInput = document.getElementById("searchInput");
+    const searchButton = document.getElementById("searchButton");
+    const tableRows = document.querySelectorAll("#pricing-tbody tr");
+
+    function filterTests() {
+        const query = searchInput.value.trim().toLowerCase();
+
+        tableRows.forEach(row => {
+            const testCode = row.cells[0].textContent.toLowerCase(); // Test Code column
+            const testName = row.cells[1].textContent.toLowerCase(); // Test Name column
+
+            if (testCode.includes(query) || testName.includes(query)) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    }
+
+    // Search on button click
+    searchButton.addEventListener("click", filterTests);
+
+    // Search on "Enter" keypress
+    searchInput.addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            filterTests();
+        }
+    });
+
+    // Search as the user types (Optional)
+    searchInput.addEventListener("input", filterTests);
+});

@@ -53,7 +53,8 @@
                                 <th>Lab Name</th>
                                 <th>Patient ID</th>
                                 <th>Patient Name</th>
-                                <th>Order Amount</th>
+                                <th>Order Amount(B2C)</th>
+                                <th>B2B Amount</th>
                                 <th>Test Name</th>
                                 <th>Booking Date & Time</th>
                                 <th>Status</th>

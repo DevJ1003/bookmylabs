@@ -352,10 +352,10 @@ function TestRequestForm()
         // Insert into test_requests table with generated Patient ID
         $testRequestQuery = "INSERT INTO `test_requests` (franchise_id, franchise_name, lab_name, patient_id, patient_name, age, gender, mobile, address, ";
         $testRequestQuery .= "selected_test, dispatch_option, sample_drawn_date, sample_drawn_time, fasting_status, reference_doctor, ";
-        $testRequestQuery .= "attachments, order_amount, created_at) ";
+        $testRequestQuery .= "attachments, order_amount, b2b_amount, created_at) ";
         $testRequestQuery .= "VALUES ('$franchise_id', '$franchise_name', '$lab_name', '$patient_id', '$patient_name', '$patient_age', '$patient_gender', ";
         $testRequestQuery .= "'$patient_mobile', '$patient_address', '$selected_tests_string', '$patient_dispatch_option', '$patient_sample_drawn_date', ";
-        $testRequestQuery .= "'$patient_sample_drawn_time', '$patient_fasting_status', '$patient_reference_doctor', '$image', $order_amount, NOW())";
+        $testRequestQuery .= "'$patient_sample_drawn_time', '$patient_fasting_status', '$patient_reference_doctor', '$image', $order_amount, '$order_deduction_amount', NOW())";
 
         $query = query($testRequestQuery);
         confirm($query);
@@ -859,9 +859,11 @@ function readAllTestPrice($Lab_name)
         echo "<td>{$B2B}</td>";
         echo "<td>{$B2C}</td>";
         echo "<td>
+            <div class='action-buttons'>
                 <a class='edit-button' href='test_update?update=$test_id&lab_name=$Lab_name'>Edit</a>
                <a class='delete-button' href='#' onclick=\"confirmDelete($test_id, '" . htmlspecialchars($Lab_name, ENT_QUOTES) . "')\">Delete</a>
-            </td>";
+            </div>
+               </td>";
         echo "</tr>";
     }
 }
@@ -1169,12 +1171,14 @@ function franchiseBookings()
             $lab_name = $row['lab_name'];
             $patient_dispatch_option = $row['dispatch_option'];
             $order_amount = $row['order_amount'];
+            $b2b_amount = $row['b2b_amount'];
 
             // date formatting
             $created_at = $row['created_at'];
             $originalDate = $created_at;
             $date = new DateTime($originalDate);
             $formattedDate = $date->format('jS F Y, h:i A');
+            $status = $row['status'];
 
             echo "<tr>";
             echo "<td><input type='checkbox'></td>";
@@ -1186,8 +1190,10 @@ function franchiseBookings()
             echo "<td>{$lab_name}</td>";
             echo "<td>{$patient_dispatch_option}</td>";
             echo "<td>{$order_amount}</td>";
+            echo "<td>{$b2b_amount}</td>";
             echo "<td>{$selected_tests}</td>";
             echo "<td>{$formattedDate}</td>";
+            echo "<td>{$status}</td>";
             // echo "<td><a href='invoice?sr_no=$sr_no&patient_name=$patient_name' target='_blank'>View Invoice</a></td>";
             echo "</tr>";
         }
@@ -1211,6 +1217,7 @@ function recentBookings()
         $patient_id = $row['patient_id'];
         $patient_name = $row['patient_name'];
         $order_amount = $row['order_amount'];
+        $b2b_amount = $row['b2b_amount'];
         $test_names = $row['selected_test'];
         $booking_date = date("d-m-Y h:i A", strtotime($row['created_at']));
         $status = $row['status'];
@@ -1224,6 +1231,7 @@ function recentBookings()
         echo "<td>{$patient_id}</td>";
         echo "<td>{$patient_name}</td>";
         echo "<td>{$order_amount}</td>";
+        echo "<td>{$b2b_amount}</td>";
         echo "<td>{$test_names}</td>";
         echo "<td>{$booking_date}</td>";
         echo "<td>{$status}</td>";

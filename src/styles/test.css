@@ -1,0 +1,66 @@
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    /* Adjust space between buttons */
+  }
+
+  .edit-button,
+  .delete-button {
+    padding: 5px 10px;
+    text-decoration: none;
+    color: white;
+    border-radius: 5px;
+  }
+
+  .edit-button {
+    background-color: #38a169;
+    /* Blue color */
+  }
+
+  .delete-button {
+    background-color: #dc3545;
+    /* Red color */
+  }
+
+
+
+
+  /* search bar css */
+  /* .search-container {
+    margin-bottom: 15px;
+}
+
+#searchInput {
+    padding: 8px;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+} */
+
+.search-container {
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+#searchInput {
+  padding: 10px;
+  width: 100%;  /* Makes it full width */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  box-sizing: border-box; /* Prevents overflow */
+}
+
+#searchButton {
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-left: 5px;
+    border-radius: 5px;
+}
+
+#searchButton:hover {
+    background-color: #0056b3;
+}

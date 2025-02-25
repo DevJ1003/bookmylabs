@@ -7,6 +7,8 @@ if (!isset($_GET['lab_name']) || empty($_GET['lab_name'])) {
 $Lab_name = $_GET['lab_name'];
 ?>
 
+<!-- Custom css file -->
+<link rel="stylesheet" type="text/css" href="../src/styles/test.css">
 <div class="main-container">
   <div class="page-header">
     <div class="row">
@@ -24,6 +26,17 @@ $Lab_name = $_GET['lab_name'];
     </div>
   </div>
   <div class="pricing">
+
+
+
+
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="Search by Test Name...">
+      <button id="searchButton" hidden>Search</button>
+    </div>
+
+
+
     <table id="pricing-table">
       <thead>
         <tr>
