@@ -141,7 +141,6 @@ if (isset($_SESSION['id'])) {
                                     </div> -->
                                 </div>
                             </div>
-
                             <!-- Submit Button -->
                             <div class="form-group text-center">
                                 <input type="submit" name="updateProfile" class="btn btn-primary btn-sm w-25" value="Submit">
@@ -153,7 +152,6 @@ if (isset($_SESSION['id'])) {
         </div>
     </div>
 </div>
-
 
 <script>
     function previewImage(event) {
@@ -169,16 +167,14 @@ if (isset($_SESSION['id'])) {
         }
     }
 
-
-
     function openChangePasswordWindow() {
         var width = 500;
         var height = 400;
         var left = (screen.width - width) / 2;
         var top = (screen.height - height) / 2;
 
-        var franchiseId = <?php echo json_encode($_SESSION['id']); ?>; // Get franchise_id from session
-        var url = "change_password.php?franchise_id=" + franchiseId;
+        var Id = <?php echo json_encode($_SESSION['id']); ?>; // Get franchise_id from session
+        var url = "change_password.php?id=" + Id;
 
         window.open(url, "Change Password", "width=" + width + ", height=" + height + ", top=" + top + ", left=" + left + ", resizable=no, scrollbars=no");
     }

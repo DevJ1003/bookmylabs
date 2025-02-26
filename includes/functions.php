@@ -966,7 +966,7 @@ function addFranchise()
         // $aadhaar_upload = $_POST['aadhaar_upload'];
         $aadhaar_upload = $_FILES['aadhaar_upload']['name'];
         $aadhaar_temp_image = $_FILES['aadhaar_upload']['tmp_name'];
-        move_uploaded_file($aadhaar_temp_image, "src/images/add_franchise_images/$aadhaar_upload");
+        move_uploaded_file($aadhaar_temp_image, "src/images/test_form_images/$aadhaar_upload");
 
         $pan_number = $_POST['pan_number'];
         // $pan_upload = $_POST['pan_upload'];
@@ -1013,8 +1013,8 @@ function addFranchise()
 function updateProfile()
 {
     global $db_conn;
-    $franchise_id = $_GET['franchise_id'];
-    $franchise_id = mysqli_real_escape_string($db_conn, $franchise_id);
+    $id = $_SESSION['id'];
+    $id = mysqli_real_escape_string($db_conn, $id);
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['updateProfile'])) {
 
@@ -1028,7 +1028,7 @@ function updateProfile()
         $pan_number = $_POST['pan_number'];
 
         // Fetch existing owner image
-        $fetchImageQuery = "SELECT owner_image FROM franchises WHERE id = '$franchise_id'";
+        $fetchImageQuery = "SELECT owner_image FROM franchises WHERE id = '$id'";
         $result = query($fetchImageQuery);
         confirm($result);
         $row = fetch_array($result);
@@ -1051,14 +1051,14 @@ function updateProfile()
         $updateProfileQuery = "UPDATE `franchises` SET owner_name = '{$owner_name}', agency_name = '{$agency_name}', email = '{$email}', ";
         $updateProfileQuery .= "phone = '$phone', address = '$address', pin_code = '$pin_code', aadhaar_number = '$aadhaar_number', ";
         $updateProfileQuery .= "pan_number = '$pan_number', owner_image = '$owner_image' ";
-        $updateProfileQuery .= "WHERE id = '$franchise_id' ";
+        $updateProfileQuery .= "WHERE id = '$id' ";
         $query = query($updateProfileQuery);
         confirm($query);
 
         // check for usertype and redirect accordingly
         if ($_SESSION['usertype'] === 'Admin') {
             setMessage("Profile details updated!", "success");
-            redirect("viewFranchiseProfile?franchise_id=$franchise_id");
+            redirect("profile_admin");
         } else {
             setMessage("Profile details updated!", "success");
             redirect("profile");
@@ -1253,6 +1253,104 @@ function recentBookings()
     }
 }
 
+
+// function updateProfile() is used to update the profile of the franchise
+function updateProfileFranchise()
+{
+    global $db_conn;
+    $id = $_GET['franchise_id'];
+    $id = mysqli_real_escape_string($db_conn, $id);
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['updateProfile'])) {
+
+        $owner_name = $_POST['owner_name'];
+        $agency_name = $_POST['agency_name'];
+        $email = $_POST['email'];
+        $phone = $_POST['phone'];
+        $address = $_POST['address'];
+        $pin_code = $_POST['pin_code'];
+        $aadhaar_number = $_POST['aadhaar_number'];
+        $pan_number = $_POST['pan_number'];
+
+        // Fetch existing owner image
+        $fetchImageQuery = "SELECT owner_image FROM franchises WHERE id = '$id'";
+        $result = query($fetchImageQuery);
+        confirm($result);
+        $row = fetch_array($result);
+        $existing_image = $row['owner_image'];
+
+        // Check if a new image is uploaded
+        if (!empty($_FILES['owner_image']['name'])) {
+            $owner_image = $_FILES['owner_image']['name'];
+            $owner_image_temp = $_FILES['owner_image']['tmp_name'];
+
+            if ($_SESSION['usertype'] === 'Admin') {
+                move_uploaded_file($owner_image_temp, "../src/images/updateProfile/$owner_image");
+            } else {
+                move_uploaded_file($owner_image_temp, "src/images/updateProfile/$owner_image");
+            }
+        } else {
+            $owner_image = $existing_image;
+        }
+
+        $updateProfileQuery = "UPDATE `franchises` SET owner_name = '{$owner_name}', agency_name = '{$agency_name}', email = '{$email}', ";
+        $updateProfileQuery .= "phone = '$phone', address = '$address', pin_code = '$pin_code', aadhaar_number = '$aadhaar_number', ";
+        $updateProfileQuery .= "pan_number = '$pan_number', owner_image = '$owner_image' ";
+        $updateProfileQuery .= "WHERE id = '$id' ";
+        $query = query($updateProfileQuery);
+        confirm($query);
+
+        setMessage("Profile details updated!", "success");
+        redirect("viewFranchiseProfile?franchise_id=$id");
+    }
+}
+
+
+// function updatePassword() used to update password
+function updatePasswordAdmin($franchise_id)
+{
+    global $db_conn;
+
+    if (isset($_POST['changePassword'])) {
+
+        // CSRF protection
+        if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            die("CSRF Token mismatch! Possible CSRF attack.");
+        }
+
+        $current_password = $_POST['current_password'];
+        $new_password = $_POST['new_password'];
+        $confirm_password = $_POST['confirm_password'];
+
+        if ($new_password !== $confirm_password) {
+            echo "<script>alert('New passwords do not match!');</script>";
+        } else {
+            $selectOldPasswordQuery = "SELECT password FROM `franchises` WHERE id = $franchise_id";
+            $oldPasswordQuery = query($selectOldPasswordQuery);
+            confirm($oldPasswordQuery);
+
+            if ($row = mysqli_fetch_assoc($oldPasswordQuery)) {
+                $stored_hashed_password = $row['password'];
+
+                if (!password_verify($current_password, $stored_hashed_password)) {
+                    echo "<script>alert('Current password is incorrect!');</script>";
+                } else {
+                    $new_hashed_password = password_hash($new_password, PASSWORD_BCRYPT);
+
+                    $updatePasswordQuery = "UPDATE `franchises` SET password = '$new_hashed_password' WHERE id = $franchise_id";
+                    $newPasswordQuery = query($updatePasswordQuery);
+                    confirm($newPasswordQuery);
+
+                    if ($newPasswordQuery) {
+                        echo "<script>alert('Password changed successfully!'); window.close();</script>";
+                    } else {
+                        echo "<script>alert('Error updating password!');</script>";
+                    }
+                }
+            }
+        }
+    }
+}
 
 /************************************ END OF ADMIN MODULE FUNCTIONS **************************************/
 // 

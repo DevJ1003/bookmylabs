@@ -99,7 +99,7 @@ if ($_SESSION['usertype'] !== 'Admin') {
                         <span class="user-name">admin</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                        <a class="dropdown-item" href="../profile"><i class="dw dw-user1"></i> Profile</a>
+                        <a class="dropdown-item" href="profile_admin"><i class="dw dw-user1"></i> Profile</a>
                         <a class="dropdown-item" href="../logout"><i class="dw dw-logout"></i> Log Out</a>
                     </div>
                 </div>

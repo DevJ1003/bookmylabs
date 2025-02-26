@@ -1,18 +1,18 @@
 <?php
 
-include "includes/db.php";
-include "includes/functions.php";
+include "../includes/db.php";
+include "../includes/functions.php";
 
-if (!isset($_SESSION['id'])) {
+if (!isset($_GET['franchise_id'])) {
     die("Unauthorized access! Please log in.");
 }
 
-$franchise_id = (int) $_SESSION['id'];
+$franchise_id = (int) $_GET['franchise_id'];
 
-// Check if the franchise_id in the URL matches the logged-in user's ID
-if (!isset($_GET['id']) || (int)$_GET['id'] !== $franchise_id) {
-    die("Unauthorized access!");
-}
+// // Check if the franchise_id in the URL matches the logged-in user's ID
+// if (!isset($_GET['fraid']) || (int)$_GET['id'] !== $franchise_id) {
+//     die("Unauthorized access!");
+// }
 
 ?>
 
@@ -74,7 +74,7 @@ if (!isset($_GET['id']) || (int)$_GET['id'] !== $franchise_id) {
     <div class="card">
         <h4 class="title">Change Password</h4>
         <form action="" method="POST" id="update_password">
-            <?php updatePassword(); ?>
+            <?php updatePasswordAdmin($franchise_id); ?>
 
             <!-- CSRF Token -->
             <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">

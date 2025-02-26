@@ -57,7 +57,6 @@ if (isset($_GET['franchise_id'])) {
                                     </div>
                                 </div>
 
-
                                 <!-- Right: Owner Name and Agency Name -->
                                 <div class="col-md-8">
                                     <div class="form-group">
@@ -119,15 +118,6 @@ if (isset($_GET['franchise_id'])) {
                                     </div> -->
                                 </div>
                             </div>
-
-                            <!-- Submit Button -->
-                            <!-- <div class="form-group text-center">
-                                <input type="submit" name="updateProfile" class="btn btn-primary btn-sm w-25" value="Submit">
-                            </div>
-                            <div class="form-group text-center">
-                                <input type="submit" name="updateProfile" class="btn btn-primary btn-sm w-25" value="Submit">
-                            </div> -->
-
                             <div class="form-group text-center">
                                 <button type="button" class="btn btn-primary btn-sm w-25" onclick="window.location.href='updateFranchiseProfile?franchise_id=<?php echo $_GET['franchise_id']; ?>';">
                                     <i class="fa fa-user-add"></i> Update Profile
@@ -158,19 +148,5 @@ if (isset($_GET['franchise_id'])) {
             reader.readAsDataURL(file);
         }
     }
-
-
-
-    // function openChangePasswordWindow() {
-    //     var width = 500;
-    //     var height = 400;
-    //     var left = (screen.width - width) / 2;
-    //     var top = (screen.height - height) / 2;
-
-    //     var franchiseId = <?php echo json_encode($_SESSION['id']); ?>; // Get franchise_id from session
-    //     var url = "change_password.php?franchise_id=" + franchiseId;
-
-    //     window.open(url, "Change Password", "width=" + width + ", height=" + height + ", top=" + top + ", left=" + left + ", resizable=no, scrollbars=no");
-    // }
 </script>
 <?php include "includes/footer_admin.php"; ?>

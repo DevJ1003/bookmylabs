@@ -1,16 +1,16 @@
 <?php
 
-include "includes/db.php";
-include "includes/functions.php";
+include "../includes/db.php";
+include "../includes/functions.php";
 
 if (!isset($_SESSION['id'])) {
     die("Unauthorized access! Please log in.");
 }
 
-$franchise_id = (int) $_SESSION['id'];
+$id = (int) $_SESSION['id'];
 
 // Check if the franchise_id in the URL matches the logged-in user's ID
-if (!isset($_GET['id']) || (int)$_GET['id'] !== $franchise_id) {
+if (!isset($_GET['id']) || (int)$_GET['id'] !== $id) {
     die("Unauthorized access!");
 }
 

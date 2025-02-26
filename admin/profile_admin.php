@@ -1,8 +1,8 @@
 <?php include "includes/header_admin.php";
 
-if (isset($_GET['franchise_id'])) {
+if (isset($_SESSION['id'])) {
 
-    $id = $_GET['franchise_id'];
+    $id = $_SESSION['id'];
     $profile_update_fetch = "SELECT * FROM `franchises` WHERE id = '$id' ";
     $query = query($profile_update_fetch);
     confirm($query);
@@ -44,7 +44,7 @@ if (isset($_GET['franchise_id'])) {
                 <div class="col-md-12 mb-30">
                     <div class="pd-20 card-box">
                         <form action="" method="POST" id="update_profile" enctype="multipart/form-data">
-                            <?php updateProfileFranchise(); ?>
+                            <?php updateProfile(); ?>
 
                             <!-- CSRF Token -->
                             <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
@@ -141,7 +141,6 @@ if (isset($_GET['franchise_id'])) {
                                     </div> -->
                                 </div>
                             </div>
-
                             <!-- Submit Button -->
                             <div class="form-group text-center">
                                 <input type="submit" name="updateProfile" class="btn btn-primary btn-sm w-25" value="Submit">
@@ -153,7 +152,6 @@ if (isset($_GET['franchise_id'])) {
         </div>
     </div>
 </div>
-
 
 <script>
     function previewImage(event) {
@@ -169,16 +167,14 @@ if (isset($_GET['franchise_id'])) {
         }
     }
 
-
-
     function openChangePasswordWindow() {
         var width = 500;
         var height = 400;
         var left = (screen.width - width) / 2;
         var top = (screen.height - height) / 2;
 
-        var Id = <?php echo json_encode($_GET['franchise_id']); ?>; // Get franchise_id from session
-        var url = "change_password_admin_franchise.php?franchise_id=" + Id;
+        var Id = <?php echo json_encode($_SESSION['id']); ?>; // Get franchise_id from session
+        var url = "change_password_admin.php?id=" + Id;
 
         window.open(url, "Change Password", "width=" + width + ", height=" + height + ", top=" + top + ", left=" + left + ", resizable=no, scrollbars=no");
     }
