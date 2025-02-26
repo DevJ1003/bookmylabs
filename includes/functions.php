@@ -196,7 +196,6 @@ function loginUser()
                     $_SESSION['usertype'] = $row['usertype'];
                     $_SESSION['agency_name'] = $row['agency_name'];
 
-
                     // Handle "Remember Me" functionality
                     if ($remember) {
                         $token = bin2hex(random_bytes(32)); // Generate a secure token
@@ -211,10 +210,15 @@ function loginUser()
                         setcookie("remember_token", $token, $expires, "/", "", true, true);
                     }
 
-
-                    setMessage("Valid credentials. You are now logged in.", "success");
-                    redirect("index");
-                    exit();
+                    if ($_SESSION['usertype'] == 'Admin') {
+                        setMessage("Valid credentials. You are now logged in.", "success");
+                        redirect("admin");
+                        exit();
+                    } else {
+                        setMessage("Valid credentials. You are now logged in.", "success");
+                        redirect("index");
+                        exit();
+                    }
                 } else {
                     setMessage("Invalid credentials. Please try again.", "danger");
                     redirect("login");
@@ -1088,7 +1092,7 @@ function uploadReport()
 // function fetchFranchiseName() is used to fetch franchise name
 function fetchFranchiseName()
 {
-    $fetchFranchiseName = "SELECT agency_name FROM `franchises`";
+    $fetchFranchiseName = "SELECT agency_name FROM `franchises` WHERE usertype = 'Franchise'";
     $query = query($fetchFranchiseName);
     confirm($query);
 
@@ -1128,7 +1132,7 @@ function franchiseMonitor()
 {
     $fetchFranchisesDetails = "SELECT f.id, f.agency_name, COUNT(t.franchise_id) AS total_bookings, COALESCE(SUM(t.order_amount), 0) ";
     $fetchFranchisesDetails .= "AS total_revenue FROM `franchises` f LEFT JOIN `test_requests` t ON f.id = t.franchise_id ";
-    $fetchFranchisesDetails .= "GROUP BY f.id, f.agency_name";
+    $fetchFranchisesDetails .= "WHERE f.usertype = 'Franchise' GROUP BY f.id, f.agency_name";
     $query = query($fetchFranchisesDetails);
     confirm($query);
 

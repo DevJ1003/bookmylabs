@@ -3,8 +3,16 @@ include "functions.php";
 
 checkRememberedUser();
 
-if (!isset($_SESSION['id']) || !isset($_SESSION['email']) || !isset($_SESSION['agency_name'])) {
+if (!isset($_SESSION['id']) || !isset($_SESSION['email']) || !isset($_SESSION['agency_name']) || !isset($_SESSION['usertype'])) {
     redirect("login");
+    exit();
+}
+
+// access control - restricting admin to access franchise module
+
+// Restrict admin users from accessing franchise module
+if ($_SESSION['usertype'] !== 'Franchise') {
+    redirect("admin/index");
     exit();
 }
 
