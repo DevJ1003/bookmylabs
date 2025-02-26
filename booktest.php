@@ -132,7 +132,7 @@ include "includes/header.php";
                             <li class="mcon">
                                 <div>
                                     <div class="imagecontainer">
-                                        <img src="src/images/labs_images/<?php echo $lab['lab_logo']; ?>" alt="" style="max-width: 100%; height: auto;">
+                                        <img src="src/images/labsImages/<?php echo $lab['lab_logo']; ?>" alt="" style="max-width: 100%; height: auto;">
                                     </div>
                                     <div class="bottom">
                                         <h4> <img src="https://cdn-icons-png.flaticon.com/512/620/620423.png" style="margin-right: 12px;" alt=""> <a href="#"><?php echo htmlspecialchars($lab['lab_name']); ?></a></h4>

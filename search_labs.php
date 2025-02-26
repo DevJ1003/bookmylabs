@@ -15,7 +15,7 @@ if (mysqli_num_rows($result) > 0) {
         echo '<li class="mcon">
                 <div class="" style="">
                     <div class="imagecontainer" style="">
-                        <img src="src/images/labs_images/' . $lab['lab_logo'] . '" alt="" style="max-width: 100%; height: auto;">
+                        <img src="src/images/labsImages/' . $lab['lab_logo'] . '" alt="" style="max-width: 100%; height: auto;">
                     </div>
                     <div class="bottom" style="">
                         <h4> <img src="https://cdn-icons-png.flaticon.com/512/620/620423.png" style="margin-right: 12px;" alt=""> <a href="#">' . htmlspecialchars($lab['lab_name']) . '</a></h4>

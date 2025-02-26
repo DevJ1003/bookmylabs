@@ -68,7 +68,7 @@ if (isset($_SESSION['id'])) {
 
                                         <!-- Clickable Image with Upload Feature -->
                                         <label for="owner_image" style="cursor: pointer;">
-                                            <img id="preview" src="src/images/<?php echo $owner_photo; ?>"
+                                            <img id="preview" src="src/images/profileImages/<?php echo $owner_photo; ?>"
                                                 alt="Profile Image" class="avatar-photo" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover;">
                                         </label>
 

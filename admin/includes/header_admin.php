@@ -7,8 +7,15 @@ if (!isset($_SESSION['id']) || !isset($_SESSION['email']) || !isset($_SESSION['a
     exit();
 }
 
-// access control - restricting admin to access franchise module
+// this query is used to fetch only user image from using id from session
+$imageQuery = "SELECT owner_image FROM `franchises` WHERE id = {$_SESSION['id']}";
+$query = query($imageQuery);
+confirm($query);
 
+$row = fetch_array($query);
+$image = $row['owner_image'];
+
+// access control - restricting admin to access franchise module
 // Restrict franchise users from accessing admin module
 if ($_SESSION['usertype'] !== 'Admin') {
     redirect("../index");
@@ -94,7 +101,7 @@ if ($_SESSION['usertype'] !== 'Admin') {
                 <div class="dropdown">
                     <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown">
                         <span class="user-icon">
-                            <img src="../vendors/images/photo1.jpg" alt="">
+                            <img src="../src/images/profileImages/<?php echo $image; ?>" alt="">
                         </span>
                         <span class="user-name">admin</span>
                     </a>

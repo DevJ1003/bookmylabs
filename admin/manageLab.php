@@ -206,7 +206,7 @@ if (isset($_GET['error']) && $_GET['error'] == 'wrong_password') {
             labList.innerHTML += `
                 <tr>
                     <td>${lab.name}</td>
-                    <td><img src="../src/images/add_lab_image/${lab.logo}" alt="Lab Logo" width="50"></td>
+                    <td><img src="../src/images/labs_image/${lab.logo}" alt="Lab Logo" width="50"></td>
                     <td>
                         <button class="btn btn-warning btn-sm" onclick="openLabModal(${index})">Edit</button>
                         <button class="btn btn-danger btn-sm" onclick="deleteLab(${index})">Delete</button>

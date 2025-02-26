@@ -515,7 +515,7 @@ function rechargeRequests()
 
         $image = $_FILES['file']['name'];
         $temp_image = $_FILES['file']['tmp_name'];
-        move_uploaded_file($temp_image, "src/images/received_images/$image");
+        move_uploaded_file($temp_image, "src/images/upiReferenceImages/$image");
 
         if ($amount <= 0) {
             setMessage("Invalid amount. Please enter a possitive value.", "warning");
@@ -740,7 +740,7 @@ function viewAllLabs()
 
         echo "<tr>";
         echo "<td>{$lab_name}</td>";
-        echo "<td><img src='../src/images/labs_images/$lab_logo' alt='Lab Logo' style='width: 50px; height: 50px;'></td>";
+        echo "<td><img src='../src/images/labsImages/$lab_logo' alt='Lab Logo' style='width: 50px; height: 50px;'></td>";
         echo "<td>
                 <a class='edit-button' href='lab_update?update=$lab_id'>Edit</a>
                 <a class='delete-button' href='#' onclick='confirmDelete($lab_id)'>Delete</a>
@@ -761,7 +761,7 @@ function addLabs()
 
         $lab_logo = $_FILES['labLogo']['name'];
         $temp_image = $_FILES['labLogo']['tmp_name'];
-        move_uploaded_file($temp_image, "src/images/add_lab_images/$lab_logo");
+        move_uploaded_file($temp_image, "src/images/labsImages/$lab_logo");
 
         $addLabsQuery = "INSERT INTO `labs` (lab_name, lab_logo, created_at) ";
         $addLabsQuery .= "VALUES ('$lab_name', '$lab_logo', NOW())";
@@ -815,7 +815,7 @@ function updateLabDetails($lab_id, $lab_name)
         $lab_name_updated = $_POST['labName_updated'];
         $lab_logo_updated = $_FILES['labLogo_updated']['name'];
         $lab_logo_updated_image = $_FILES['labLogo_updated']['tmp_name'];
-        move_uploaded_file($lab_logo_updated_image, "src/images/add_lab_images/$lab_logo_updated");
+        move_uploaded_file($lab_logo_updated_image, "src/images/labsImages/$lab_logo_updated");
 
         $updateLabDetailsQuery = "UPDATE `labs` SET lab_name = '{$lab_name_updated}', lab_logo = '{$lab_logo_updated}' ";
         $updateLabDetailsQuery .= "WHERE id = '{$lab_id}' ";
@@ -966,23 +966,23 @@ function addFranchise()
         // $aadhaar_upload = $_POST['aadhaar_upload'];
         $aadhaar_upload = $_FILES['aadhaar_upload']['name'];
         $aadhaar_temp_image = $_FILES['aadhaar_upload']['tmp_name'];
-        move_uploaded_file($aadhaar_temp_image, "src/images/test_form_images/$aadhaar_upload");
+        move_uploaded_file($aadhaar_temp_image, "src/images/franchiseDocuments/$aadhaar_upload");
 
         $pan_number = $_POST['pan_number'];
         // $pan_upload = $_POST['pan_upload'];
         $pan_upload = $_FILES['pan_upload']['name'];
         $pan_temp_image = $_FILES['pan_upload']['tmp_name'];
-        move_uploaded_file($pan_temp_image, "src/images/test_form_images/$pan_upload");
+        move_uploaded_file($pan_temp_image, "src/images/franchiseDocuments/$pan_upload");
 
         // $owner_image_upload = $_POST['owner_image_upload'];
         $owner_image = $_FILES['owner_image']['name'];
         $owner_image_temp = $_FILES['owner_image']['tmp_name'];
-        move_uploaded_file($owner_image_temp, "src/images/test_form_images/$owner_image");
+        move_uploaded_file($owner_image_temp, "src/images/profileImages/$owner_image");
 
         // $owner_signature_upload = $_POST['owner_signature_upload'];
         $owner_signature = $_FILES['owner_signature']['name'];
         $owner_signature_temp = $_FILES['owner_signature']['tmp_name'];
-        move_uploaded_file($owner_signature_temp, "src/images/test_form_images/$owner_signature");
+        move_uploaded_file($owner_signature_temp, "src/images/franchiseDocuments/$owner_signature");
 
         $hashed_password = "$2y$10$76BI4UydJt1h49zb7zn7IutxQ9Lv2Z5N6RZQK7TSCTTB2194VNkzi";  //Default password: password
 
@@ -1040,9 +1040,9 @@ function updateProfile()
             $owner_image_temp = $_FILES['owner_image']['tmp_name'];
 
             if ($_SESSION['usertype'] === 'Admin') {
-                move_uploaded_file($owner_image_temp, "../src/images/updateProfile/$owner_image");
+                move_uploaded_file($owner_image_temp, "../src/images/profileImages/$owner_image");
             } else {
-                move_uploaded_file($owner_image_temp, "src/images/updateProfile/$owner_image");
+                move_uploaded_file($owner_image_temp, "src/images/profileImages/$owner_image");
             }
         } else {
             $owner_image = $existing_image;
@@ -1285,9 +1285,9 @@ function updateProfileFranchise()
             $owner_image_temp = $_FILES['owner_image']['tmp_name'];
 
             if ($_SESSION['usertype'] === 'Admin') {
-                move_uploaded_file($owner_image_temp, "../src/images/updateProfile/$owner_image");
+                move_uploaded_file($owner_image_temp, "../src/images/profileImages/$owner_image");
             } else {
-                move_uploaded_file($owner_image_temp, "src/images/updateProfile/$owner_image");
+                move_uploaded_file($owner_image_temp, "src/images/profileImages/$owner_image");
             }
         } else {
             $owner_image = $existing_image;
@@ -1498,7 +1498,7 @@ function fetchRechargeRequests()
         echo "<td>{$franchise_name}</td>";
         echo "<td>₹{$amount}</td>";
         echo "<td>{$upi_reference}</td>";
-        echo "<td><a href='../src/images/received_images/{$attachments}' target='_blank'>View Proof</a></td>";
+        echo "<td><a href='../src/images/upiReferenceImages/{$attachments}' target='_blank'>View Proof</a></td>";
         echo "<td>{$status}</td>";
         echo "<td>
                 <a class='btn btn-success' href='requestApproved?id=$recharge_id' style='color: white;'>Approve</a>

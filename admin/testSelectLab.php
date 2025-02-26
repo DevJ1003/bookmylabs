@@ -44,7 +44,7 @@
                             <li class="mcon">
                                 <div class="" style="">
                                     <div class="imagecontainer" style="">
-                                        <img src="../src/images/labs_images/<?php echo $lab['lab_logo']; ?>" alt="" style="max-width: 100%; height: auto;">
+                                        <img src="../src/images/labsImages/<?php echo $lab['lab_logo']; ?>" alt="" style="max-width: 100%; height: auto;">
                                     </div>
                                     <div class="bottom" style="">
                                         <h4> <img src="https://cdn-icons-png.flaticon.com/512/620/620423.png" alt=""> <a href="#"><?php echo htmlspecialchars($lab['lab_name']); ?></a></h4>
