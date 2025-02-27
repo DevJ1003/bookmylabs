@@ -7,6 +7,11 @@ $dispatch_option = isset($_GET['dispatch_option']) ? trim($_GET['dispatch_option
 $lab_name = isset($_GET['lab_name']) ? trim($_GET['lab_name']) : '';
 $selected_date = isset($_GET['date']) ? trim($_GET['date']) : '';
 
+// If status is not set or empty, default to 'Pending'
+if ($status === null || $status === '') {
+    $status = 'Pending';
+}
+
 // Base query
 $searchQuery = "SELECT * FROM test_requests WHERE 1";
 $params = [];
@@ -18,7 +23,7 @@ if (!empty($query)) {
     $params[] = "%$query%";
     $param_types .= "s";
 }
-if (!empty($status)) {
+if ($status !== 'all') {
     $searchQuery .= " AND status = ?";
     $params[] = $status;
     $param_types .= "s";

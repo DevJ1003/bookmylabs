@@ -427,7 +427,7 @@ function recentBookingsFranchise()
     $franchise_id = $_SESSION['id'];
     $franchise_id = mysqli_real_escape_string($db_conn, $franchise_id);
 
-    $recentBookingsQuery = "SELECT * FROM `test_requests` WHERE franchise_id = $franchise_id ORDER BY created_at DESC";
+    $recentBookingsQuery = "SELECT * FROM `test_requests` WHERE franchise_id = $franchise_id AND status = 'Pending' ORDER BY created_at DESC";
     $query = query($recentBookingsQuery);
     confirm($query);
 
@@ -1162,7 +1162,7 @@ function franchiseBookings()
     if (isset($_GET['franchise_id'])) {
 
         $franchise_id = $_GET['franchise_id'];
-        $franchiseBookingsQuery = "SELECT * FROM `test_requests` WHERE franchise_id = $franchise_id ORDER BY created_at DESC";
+        $franchiseBookingsQuery = "SELECT * FROM `test_requests` WHERE franchise_id = $franchise_id AND status = 'Pending' ORDER BY created_at DESC";
         $query = query($franchiseBookingsQuery);
         confirm($query);
 
@@ -1211,7 +1211,7 @@ function franchiseBookings()
 // function recentBookings() fetches all bookings
 function recentBookings()
 {
-    $recentBookingsQuery = "SELECT * FROM `test_requests` ORDER BY created_at DESC";
+    $recentBookingsQuery = "SELECT * FROM `test_requests` WHERE status = 'Pending' ORDER BY created_at DESC";
     $query = query($recentBookingsQuery);
     confirm($query);
 

@@ -1,28 +1,34 @@
 <?php
+
 include "includes/db.php";
 
 $query = isset($_GET['query']) ? trim($_GET['query']) : '';
-$status = isset($_GET['status']) ? trim($_GET['status']) : '';
+$status = isset($_GET['status']) ? trim($_GET['status']) : null; // Accept null if cleared
 $dispatch_option = isset($_GET['dispatch_option']) ? trim($_GET['dispatch_option']) : '';
 $lab_name = isset($_GET['lab_name']) ? trim($_GET['lab_name']) : '';
 $selected_date = isset($_GET['date']) ? trim($_GET['date']) : '';
 
-// Base query
+// If status is not set or empty, default to 'Pending'
+if ($status === null || $status === '') {
+    $status = 'Pending';
+}
+
 $searchQuery = "SELECT * FROM test_requests WHERE 1";
 $params = [];
 $param_types = "";
 
-// Dynamically add conditions & parameters
 if (!empty($query)) {
     $searchQuery .= " AND patient_name LIKE ?";
     $params[] = "%$query%";
     $param_types .= "s";
 }
-if (!empty($status)) {
+
+if ($status !== 'all') {
     $searchQuery .= " AND status = ?";
     $params[] = $status;
     $param_types .= "s";
 }
+
 if (!empty($dispatch_option)) {
     $searchQuery .= " AND dispatch_option = ?";
     $params[] = $dispatch_option;
@@ -41,7 +47,6 @@ if (!empty($selected_date)) {
 
 $searchQuery .= " ORDER BY created_at DESC";
 
-// Prepare and Bind Parameters
 $stmt = mysqli_prepare($db_conn, $searchQuery);
 
 if (!empty($params)) {
@@ -51,7 +56,6 @@ if (!empty($params)) {
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 
-// Output Data
 if (mysqli_num_rows($result) > 0) {
     while ($row = mysqli_fetch_assoc($result)) {
         echo "<tr>
