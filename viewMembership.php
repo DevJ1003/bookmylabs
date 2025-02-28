@@ -137,5 +137,31 @@
     //     // Redirect to export_to_excel.php with filters as query parameters
     //     window.location.href = `export_to_excel.php?query=${query}&status=${status}&dispatch_option=${dispatchOption}&lab_name=${labName}&date=${selectedDate}`;
     // });
+    document.addEventListener("DOMContentLoaded", function() {
+        const searchInput = document.getElementById("searchInput");
+        const searchButton = document.getElementById("searchButton");
+        const resultsTable = document.querySelector(".data-table-export-recent-booking tbody");
+
+        function fetchFilteredResults() {
+            const query = searchInput.value.trim();
+
+            fetch(`search_membership_franchise.php?query=${encodeURIComponent(query)}`)
+                .then(response => response.text())
+                .then(data => {
+                    resultsTable.innerHTML = data;
+                })
+                .catch(error => console.error("Error fetching filtered results:", error));
+        }
+
+        searchButton.addEventListener("click", function() {
+            fetchFilteredResults();
+        });
+
+        searchInput.addEventListener("keyup", function(event) {
+            if (event.key === "Enter") {
+                fetchFilteredResults();
+            }
+        });
+    });
 </script>
 <?php include "includes/footer.php"; ?>

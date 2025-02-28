@@ -821,7 +821,11 @@ function viewMembership()
         $phone = $row['phone'];
         $address = $row['address'];
         $upi_reference = $row['upi_reference'];
+        // date formatting
         $created_at = $row['created_at'];
+        $originalDate = $created_at;
+        $date = new DateTime($originalDate);
+        $formattedDate = $date->format('jS F Y, h:i A');
 
         echo "<tr>";
         // echo "<td><input type='checkbox'></td>";
@@ -831,7 +835,7 @@ function viewMembership()
         echo "<td>$phone</td>";
         echo "<td>$address</td>";
         echo "<td>$upi_reference</td>";
-        echo "<td>$created_at</td>";
+        echo "<td>$formattedDate</td>";
         echo "</tr>";
     }
 }
