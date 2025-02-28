@@ -61,24 +61,19 @@ if (isset($_GET['error']) && $_GET['error'] == 'wrong_password') {
 ?>
 <!-- ================================================================================================================ -->
 
-
-
-
-
-
 <!-- Password Verification Modal -->
 <div id="passwordModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Enter Password</h4>
+        <h4 class="modal-title">Enter Profile Password</h4>
         <button type="button" class="close custom-close-btn" onclick="redirectToIndex()">×</button>
       </div>
       <div class="modal-body">
         <form id="passwordForm" method="POST" action="verify_password_test">
           <div class="form-group">
-            <label>Enter Admin Password:</label>
-            <input type="password" name="admin_password" id="admin_password" class="form-control" required>
+            <label>Enter Profile Password:</label>
+            <input type="password" name="profile_password" id="profile_password" class="form-control" required>
             <input type="hidden" name="lab_name" id="lab_name" class="form-control" value="<?php echo $Lab_name; ?>">
           </div>
           <button type="submit" class="btn btn-primary">Verify</button>

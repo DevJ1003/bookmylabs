@@ -127,6 +127,7 @@ if (isset($_SESSION['id'])) {
                                         <input type="text" class="form-control" id="pan_no" name="pan_number" value="<?php echo $pan_number; ?>" required>
                                     </div>
                                     <a href="javascript:void(0);" onclick="openChangePasswordWindow();" class="btn btn-danger">Change Password</a>
+                                    <a href="javascript:void(0);" onclick="openChangeProfilePasswordWindow();" class="btn btn-danger">Change Profile Password</a>
                                     <!-- <div class="form-group">
                                         <label for="pan_upload">PAN Upload</label>
                                         <input type="file" class="form-control" id="pan_upload" name="pan_upload" accept="image/*,.pdf" required>
@@ -177,6 +178,18 @@ if (isset($_SESSION['id'])) {
         var url = "change_password_admin.php?id=" + Id;
 
         window.open(url, "Change Password", "width=" + width + ", height=" + height + ", top=" + top + ", left=" + left + ", resizable=no, scrollbars=no");
+    }
+
+    function openChangeProfilePasswordWindow() {
+        var width = 500;
+        var height = 400;
+        var left = (screen.width - width) / 2;
+        var top = (screen.height - height) / 2;
+
+        var Id = <?php echo json_encode($_SESSION['id']); ?>; // Get franchise_id from session
+        var url = "change_profile_password_admin.php?id=" + Id;
+
+        window.open(url, "Change Profile Password", "width=" + width + ", height=" + height + ", top=" + top + ", left=" + left + ", resizable=no, scrollbars=no");
     }
 </script>
 <?php include "includes/footer_admin.php"; ?>

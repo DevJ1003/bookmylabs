@@ -717,6 +717,53 @@ function updatePassword()
     }
 }
 
+// function updatePassword() used to update password
+function updateProfilePassword()
+{
+    global $db_conn;
+    $franchise_id = $_SESSION['id'];
+
+    if (isset($_POST['changeProfilePassword'])) {
+
+        // CSRF protection
+        if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            die("CSRF Token mismatch! Possible CSRF attack.");
+        }
+
+        $current_profile_password = $_POST['current_profile_password'];
+        $new_profile_password = $_POST['new_profile_password'];
+        $confirm_profile_password = $_POST['confirm_profile_password'];
+
+        if ($new_profile_password !== $confirm_profile_password) {
+            echo "<script>alert('New profile passwords do not match!');</script>";
+        } else {
+            $selectOldProfilePasswordQuery = "SELECT profile_password FROM `franchises` WHERE id = $franchise_id AND usertype = 'Admin'";
+            $oldProfilePasswordQuery = query($selectOldProfilePasswordQuery);
+            confirm($oldProfilePasswordQuery);
+
+            if ($row = mysqli_fetch_assoc($oldProfilePasswordQuery)) {
+                $stored_hashed_profile_password = $row['profile_password'];
+
+                if (!password_verify($current_profile_password, $stored_hashed_profile_password)) {
+                    echo "<script>alert('Current profile password is incorrect!');</script>";
+                } else {
+                    $new_hashed_profile_password = password_hash($new_profile_password, PASSWORD_BCRYPT);
+
+                    $updateProfilePasswordQuery = "UPDATE `franchises` SET profile_password = '$new_hashed_profile_password' WHERE id = $franchise_id AND usertype = 'Admin'";
+                    $newProfilePasswordQuery = query($updateProfilePasswordQuery);
+                    confirm($newProfilePasswordQuery);
+
+                    if ($newProfilePasswordQuery) {
+                        echo "<script>alert('Profile Password changed successfully!'); window.close();</script>";
+                    } else {
+                        echo "<script>alert('Error updating profile password!');</script>";
+                    }
+                }
+            }
+        }
+    }
+}
+
 // function joinMembership() used to create new memberships
 function joinMembership()
 {
@@ -742,10 +789,16 @@ function joinMembership()
         $query = query($joinMembershipQuery);
         confirm($query);
 
-        var_dump($query);
+        // setMessage("New Membership created successfully!", "success");
+        // redirect("viewMembership");
 
-        setMessage("New Membership created successfully!", "success");
-        redirect("viewMembership");
+        if ($query) {
+            include 'sendMembershipEmail.php';
+            sendMembershipEmail($name, $email, $phone, $address, $upi_reference, $franchise_name);
+
+            setMessage("New Membership created successfully!", "success");
+            redirect("viewMembership");
+        }
     }
 }
 

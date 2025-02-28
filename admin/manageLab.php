@@ -46,7 +46,7 @@ if (isset($_SESSION['lab_access_granted']) && $_SESSION['lab_access_granted'] ==
 }
 
 if (isset($_GET['error']) && $_GET['error'] == 'wrong_password') {
-    echo '<script>alert("Wrong password, not allowed for performing operations.");</script>';
+    echo '<script>alert("Wrong profile password, not allowed for performing operations.");</script>';
 }
 ?>
 <!-- ================================================================================================================ -->
@@ -56,14 +56,14 @@ if (isset($_GET['error']) && $_GET['error'] == 'wrong_password') {
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Enter Password</h4>
+                <h4 class="modal-title">Enter Profile Password</h4>
                 <button type="button" class="close custom-close-btn" onclick="redirectToIndex()">×</button>
             </div>
             <div class="modal-body">
-                <form id="passwordForm" method="POST" action="verify_password_manageLab">
+                <form id="profilePasswordForm" method="POST" action="verify_password_manageLab">
                     <div class="form-group">
-                        <label>Enter Admin Password:</label>
-                        <input type="password" name="admin_password" id="admin_password" class="form-control" required>
+                        <label>Enter Profile Password:</label>
+                        <input type="password" name="profile_password" id="profile_password" class="form-control" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Verify</button>
                 </form>
