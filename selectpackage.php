@@ -37,7 +37,7 @@
                                 <ul>
                                     <li>100% Revenue Share</li>
                                     <li>Limited Lab Access</li>
-                                    
+
                                 </ul>
                             </div>
                         </div>
@@ -55,16 +55,16 @@
                             </div>
                             <div class="right">
                                 <div class="pricing-price">
-                                Rs 25000<span></span>
+                                    Rs 25000<span></span>
                                 </div>
                             </div>
                         </div>
                         <div class="pricing-card-body">
                             <div class="pricing-points">
-                            <ul>
+                                <ul>
                                     <li>100% Revenue Share</li>
                                     <li>Limited Lab Access</li>
-                                    
+
                                 </ul>
                             </div>
                         </div>
@@ -82,16 +82,16 @@
                             </div>
                             <div class="right">
                                 <div class="pricing-price">
-                                Rs 25000<span></span>
+                                    Rs 25000<span></span>
                                 </div>
                             </div>
                         </div>
                         <div class="pricing-card-body">
                             <div class="pricing-points">
-                            <ul>
+                                <ul>
                                     <li>100% Revenue Share</li>
                                     <li>Limited Lab Access</li>
-                                    
+
                                 </ul>
                             </div>
                         </div>
@@ -109,16 +109,16 @@
                             </div>
                             <div class="right">
                                 <div class="pricing-price">
-                                Rs 25000<span></span>
+                                    Rs 25000<span></span>
                                 </div>
                             </div>
                         </div>
                         <div class="pricing-card-body">
                             <div class="pricing-points">
-                            <ul>
+                                <ul>
                                     <li>100% Revenue Share</li>
                                     <li>Limited Lab Access</li>
-                                    
+
                                 </ul>
                             </div>
                         </div>

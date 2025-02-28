@@ -146,6 +146,12 @@ if ($_SESSION['usertype'] !== 'Franchise') {
                         </a>
                     </li>
                     <li>
+                        <a href="viewMembership" class="dropdown-toggle no-arrow">
+                            <span class="micon dw dw-user" style="color:black;"></span>
+                            <span class="mtext" style="color:black;"><b>Membership</b></span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="logout" class="dropdown-toggle no-arrow" style="position: fixed; bottom: 0;">
                             <span class="micon dw dw-logout" style="color:black;"></span>
                             <span class="mtext" style="color:black;"><b>Logout</b></span>

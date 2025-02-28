@@ -149,7 +149,6 @@ function registerUser()
         $password = $_POST['password'];
         $hashed_password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 10));
 
-
         $registerQuery = "INSERT INTO `users` (username, email, city, state, usertype, password) ";
         $registerQuery .= "VALUES('{$username}', '{$email}', '{$city}', '{$state}', '{$usertype}' , '{$hashed_password}') ";
         $query = query($registerQuery);
@@ -715,6 +714,72 @@ function updatePassword()
                 }
             }
         }
+    }
+}
+
+// function joinMembership() used to create new memberships
+function joinMembership()
+{
+
+    global $db_conn;
+    $franchise_id = $_SESSION['id'];
+    $franchise_name = $_SESSION['agency_name'];
+
+    $franchise_id = mysqli_real_escape_string($db_conn, $franchise_id);
+    $franchise_name = mysqli_real_escape_string($db_conn, $franchise_name);
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['joinMembership'])) {
+
+        $name = $_POST['full_name'];
+        $email = $_POST['email'];
+        $phone = $_POST['phone'];
+        $address = $_POST['address'];
+        $upi_reference = $_POST['upi_reference'];
+
+        $joinMembershipQuery = "INSERT INTO `membership` (franchise_id, franchise_name, name, email, phone, address, ";
+        $joinMembershipQuery .= " upi_reference, created_at) VALUES ('$franchise_id', '$franchise_name', '$name', '$email', ";
+        $joinMembershipQuery .= " '$phone', '$address', '$upi_reference', NOW())";
+        $query = query($joinMembershipQuery);
+        confirm($query);
+
+        var_dump($query);
+
+        setMessage("New Membership created successfully!", "success");
+        redirect("viewMembership");
+    }
+}
+
+// function viewMembership() used to view all memberships
+function viewMembership()
+{
+    global $db_conn;
+    $franchise_id = $_SESSION['id'];
+    $franchise_id = mysqli_real_escape_string($db_conn, $franchise_id);
+
+    $viewMembershipQuery = "SELECT * FROM `membership` WHERE franchise_id = '$franchise_id'";
+    $query = query($viewMembershipQuery);
+    confirm($query);
+
+    while ($row = mysqli_fetch_array($query)) {
+
+        $sr_no = $row['id'];
+        $full_name = $row['name'];
+        $email = $row['email'];
+        $phone = $row['phone'];
+        $address = $row['address'];
+        $upi_reference = $row['upi_reference'];
+        $created_at = $row['created_at'];
+
+        echo "<tr>";
+        // echo "<td><input type='checkbox'></td>";
+        echo "<td>$sr_no</td>";
+        echo "<td>$full_name</td>";
+        echo "<td>$email</td>";
+        echo "<td>$phone</td>";
+        echo "<td>$address</td>";
+        echo "<td>$upi_reference</td>";
+        echo "<td>$created_at</td>";
+        echo "</tr>";
     }
 }
 
