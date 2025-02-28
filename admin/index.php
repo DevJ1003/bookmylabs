@@ -39,6 +39,12 @@
                             <p id="netPartners"><?php totalFranchise(); ?></p>
                         </div>
                     </div>
+                    <div class="col-md-4" style="margin-bottom: 20px; cursor: pointer;" onclick="window.location.href='viewMembershipAdmin'">
+                        <div class="dashboard-card membership">
+                            <h5>Memberships</h5>
+                            <p id="totalRejected"><?php fetchNumberOfMemberships(); ?></p>
+                        </div>
+                    </div>
                     <div class="col-md-4" style="margin-bottom: 20px; cursor: pointer;" onclick="window.location.href='recentBookings'">
                         <div class="dashboard-card rejected">
                             <h5>Total Rejected</h5>
@@ -201,6 +207,14 @@
 
     .rejected::after {
         background-image: url('https://cdn-icons-png.flaticon.com/512/3293/3293868.png');
+    }
+
+    .membership {
+        background: #e0ffe0;
+    }
+
+    .membership::after {
+        background-image: url('https://img.icons8.com/?size=100&id=22118&format=png&color=000000');
     }
 
     .completed {

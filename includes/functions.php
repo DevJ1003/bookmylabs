@@ -1249,6 +1249,7 @@ function franchiseBookings()
             $originalDate = $created_at;
             $date = new DateTime($originalDate);
             $formattedDate = $date->format('jS F Y, h:i A');
+
             $status = $row['status'];
 
             echo "<tr>";
@@ -1290,7 +1291,13 @@ function recentBookings()
         $order_amount = $row['order_amount'];
         $b2b_amount = $row['b2b_amount'];
         $test_names = $row['selected_test'];
-        $booking_date = date("d-m-Y h:i A", strtotime($row['created_at']));
+
+        // date formatting
+        $created_at = $row['created_at'];
+        $originalDate = $created_at;
+        $date = new DateTime($originalDate);
+        $formattedDate = $date->format('jS F Y, h:i A');
+
         $status = $row['status'];
         $rejection_reason = $row['rejection_reason'];
 
@@ -1304,7 +1311,7 @@ function recentBookings()
         echo "<td>₹{$order_amount}</td>";
         echo "<td>₹{$b2b_amount}</td>";
         echo "<td>{$test_names}</td>";
-        echo "<td>{$booking_date}</td>";
+        echo "<td>{$formattedDate}</td>";
         echo "<td>{$status}</td>";
         echo "<td>
                 <div style='display: flex; gap: 5px;'>
@@ -1417,6 +1424,43 @@ function updatePasswordAdmin($franchise_id)
     }
 }
 
+// function viewMembershipAdmin() used to show all memberships created by franchises
+function viewMembershipAdmin()
+{
+    $viewMembershipAdminQuery = "SELECT * FROM `membership`";
+    $query = query($viewMembershipAdminQuery);
+    confirm($query);
+
+    while ($row = mysqli_fetch_array($query)) {
+
+        $sr_no = $row['id'];
+        $franchise_name = $row['franchise_name'];
+        $full_name = $row['name'];
+        $email = $row['email'];
+        $phone = $row['phone'];
+        $address = $row['address'];
+        $upi_reference = $row['upi_reference'];
+
+        // date formatting
+        $created_at = $row['created_at'];
+        $originalDate = $created_at;
+        $date = new DateTime($originalDate);
+        $formattedDate = $date->format('jS F Y, h:i A');
+
+        echo "<tr>";
+        // echo "<td><input type='checkbox'></td>";
+        echo "<td>$sr_no</td>";
+        echo "<td>$franchise_name</td>";
+        echo "<td>$full_name</td>";
+        echo "<td>$email</td>";
+        echo "<td>$phone</td>";
+        echo "<td>$address</td>";
+        echo "<td>$upi_reference</td>";
+        echo "<td>$formattedDate</td>";
+        echo "</tr>";
+    }
+}
+
 /************************************ END OF ADMIN MODULE FUNCTIONS **************************************/
 // 
 // 
@@ -1490,6 +1534,22 @@ function fetchTestStatusAdmin($status)
 {
     $fetchTestStatusAdminQuery = "SELECT COUNT(*) AS count FROM test_requests WHERE status = '$status'";
     $query = query($fetchTestStatusAdminQuery);
+    confirm($query);
+
+    $row = mysqli_fetch_assoc($query);
+    if ($row) {
+        echo $row['count'];
+    }
+
+    return null;
+}
+
+
+// function fetchNumberOfMemberships() used to fetch number of total memberships
+function fetchNumberOfMemberships()
+{
+    $fetchNumberOfMemberships = "SELECT COUNT(*) AS count FROM membership";
+    $query = query($fetchNumberOfMemberships);
     confirm($query);
 
     $row = mysqli_fetch_assoc($query);

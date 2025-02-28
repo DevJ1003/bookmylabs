@@ -163,6 +163,11 @@ if ($_SESSION['usertype'] !== 'Admin') {
                         </a>
                     </li>
                     <li>
+                        <a href="viewMembershipAdmin" class="dropdown-toggle no-arrow">
+                            <span class="micon dw dw-calenda"><img src="../src/images/group.png"></span><span class="mtext">View Membership</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="reportUpload" class="dropdown-toggle no-arrow">
                             <span class="micon dw dw-uploa"><img src="https://img.icons8.com/?size=100&id=dM-cqlhsN3-n&format=png&color=FFFFFF"></span><span class="mtext">Upload Reports</span>
                         </a>
