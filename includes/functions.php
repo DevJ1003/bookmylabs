@@ -2,6 +2,12 @@
 
 include "db.php";
 include "helpers/csrf_token.php";
+require_once __DIR__ . "/../vendor/autoload.php";
+
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\ErrorCorrectionLevel;
 
 // This file contains all the functions that are required to perform CRUD operations on the database
 
@@ -1070,9 +1076,7 @@ function updateTestPrice($Lab_name, $test_id)
 // function addFranchise() is used to add a new franchise
 function addFranchise()
 {
-    require_once __DIR__ . "/../phpqrcode/qrlib.php";
     global $db_conn;
-
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addFranchise'])) {
 
         $owner_name = mysqli_real_escape_string($db_conn, $_POST['owner_name']);
@@ -1110,7 +1114,7 @@ function addFranchise()
         $secure_token = bin2hex(random_bytes(16));
 
         // Generate Booking URL with Secure Token
-        $booking_url = "localhost/newtemp/admin/clientTestBooking?franchise_name=" . urlencode($owner_name) . "&token=" . $secure_token;
+        $booking_url = "https://localhost/newtemp/admin/clientTestBooking?franchise_name=" . urlencode($owner_name) . "&token=" . $secure_token;
 
         // Ensure QR Code Directory Exists
         $qr_directory = "../src/images/booking_qr";
@@ -1122,8 +1126,15 @@ function addFranchise()
         $qr_filename = preg_replace('/[^a-zA-Z0-9]/', '_', strtolower($agency_name)) . "_qr.png";
         $qr_code_path = "$qr_directory/$qr_filename";
 
-        // Generate and save QR Code
-        QRcode::png($booking_url, $qr_code_path, QR_ECLEVEL_L, 10);
+        // ✅ Generate and save QR Code using Endroid QR Code v6
+        $qrCode = (new Builder(
+            writer: new PngWriter(),
+            data: $booking_url,
+            encoding: new Encoding('UTF-8'),
+            errorCorrectionLevel: ErrorCorrectionLevel::Low
+        ))->build();
+
+        file_put_contents($qr_code_path, $qrCode->getString()); // Save QR code
 
         // Insert into Database
         $hashed_password = password_hash("password", PASSWORD_DEFAULT);
@@ -1141,6 +1152,9 @@ function addFranchise()
         }
     }
 }
+
+
+
 
 // function updateProfile() is used to update the profile of the franchise
 function updateProfile()

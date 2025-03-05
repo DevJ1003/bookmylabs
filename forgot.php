@@ -42,15 +42,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 			try {
 				// Server settings
 				$mail->isSMTP();
-				$mail->Host = 'mail.bookmylabs.in'; // SMTP Server
+				$mail->Host = ''; // SMTP Server
 				$mail->SMTPAuth = true;
-				$mail->Username = 'crm@bookmylabs.in';  // Use your Gmail
-				$mail->Password = 'bookmylabs@8517';      // Use App Password (DO NOT use your real password)
+				$mail->Username = '';  // Use your Gmail
+				$mail->Password = '';      // Use App Password (DO NOT use your real password)
 				$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
 				$mail->Port = 587;
 
 				// Email details
-				$mail->setFrom('crm@bookmylabs.in', 'BookMyLabs Support');
+				$mail->setFrom('', 'BookMyLabs Support');
 				$mail->addAddress($email);
 				$mail->isHTML(true);
 				$mail->Subject = 'BookMyLabs Support - Password Reset Link Request';

@@ -80,14 +80,14 @@ function sendEmail($to, $subject, $body)
     $mail = new PHPMailer(true);
     try {
         $mail->isSMTP();
-        $mail->Host = 'mail.bookmylabs.in'; // SMTP Server
+        $mail->Host = ''; // SMTP Server
         $mail->SMTPAuth = true;
-        $mail->Username = 'crm@bookmylabs.in'; // Your email
-        $mail->Password = 'bookmylabs@8517'; // Your email password
+        $mail->Username = ''; // Your email
+        $mail->Password = ''; // Your email password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
-        $mail->setFrom('crm@bookmylabs.in', 'BookMyLabs Support');
+        $mail->setFrom('', 'BookMyLabs Support');
         $mail->addAddress($to);
         $mail->isHTML(true);
         $mail->Subject = $subject;
