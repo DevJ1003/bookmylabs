@@ -1067,67 +1067,78 @@ function updateTestPrice($Lab_name, $test_id)
     }
 }
 
-// function addFranchise() is used to add new franchise
+// function addFranchise() is used to add a new franchise
 function addFranchise()
 {
+    require_once __DIR__ . "/../phpqrcode/qrlib.php";
     global $db_conn;
-    // $franchise_id = $_SESSION['id'];
-    // $franchise_id = mysqli_real_escape_string($db_conn, $franchise_id);
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addFranchise'])) {
 
-        $owner_name = $_POST['owner_name'];
-        $agency_name = $_POST['agency_name'];
-        $email = $_POST['email'];
-        $phone = $_POST['phone'];
-        $address = $_POST['address'];
-        $pin_code = $_POST['pin_code'];
-        $package = $_POST['package'];
+        $owner_name = mysqli_real_escape_string($db_conn, $_POST['owner_name']);
+        $agency_name = mysqli_real_escape_string($db_conn, $_POST['agency_name']);
+        $email = mysqli_real_escape_string($db_conn, $_POST['email']);
+        $phone = mysqli_real_escape_string($db_conn, $_POST['phone']);
+        $address = mysqli_real_escape_string($db_conn, $_POST['address']);
+        $pin_code = mysqli_real_escape_string($db_conn, $_POST['pin_code']);
+        $package = mysqli_real_escape_string($db_conn, $_POST['package']);
+        $aadhaar_number = mysqli_real_escape_string($db_conn, $_POST['aadhaar_number']);
+        $pan_number = mysqli_real_escape_string($db_conn, $_POST['pan_number']);
 
-        $aadhaar_number = $_POST['aadhaar_number'];
-        // $aadhaar_upload = $_POST['aadhaar_upload'];
+        // File Uploads
         $aadhaar_upload = $_FILES['aadhaar_upload']['name'];
-        $aadhaar_temp_image = $_FILES['aadhaar_upload']['tmp_name'];
-        move_uploaded_file($aadhaar_temp_image, "src/images/franchiseDocuments/$aadhaar_upload");
+        move_uploaded_file($_FILES['aadhaar_upload']['tmp_name'], "../src/images/franchiseDocuments/$aadhaar_upload");
 
-        $pan_number = $_POST['pan_number'];
-        // $pan_upload = $_POST['pan_upload'];
         $pan_upload = $_FILES['pan_upload']['name'];
-        $pan_temp_image = $_FILES['pan_upload']['tmp_name'];
-        move_uploaded_file($pan_temp_image, "src/images/franchiseDocuments/$pan_upload");
+        move_uploaded_file($_FILES['pan_upload']['tmp_name'], "../src/images/franchiseDocuments/$pan_upload");
 
-        // $owner_image_upload = $_POST['owner_image_upload'];
         $owner_image = $_FILES['owner_image']['name'];
-        $owner_image_temp = $_FILES['owner_image']['tmp_name'];
-        move_uploaded_file($owner_image_temp, "src/images/profileImages/$owner_image");
+        move_uploaded_file($_FILES['owner_image']['tmp_name'], "../src/images/profileImages/$owner_image");
 
-        // $owner_signature_upload = $_POST['owner_signature_upload'];
         $owner_signature = $_FILES['owner_signature']['name'];
-        $owner_signature_temp = $_FILES['owner_signature']['tmp_name'];
-        move_uploaded_file($owner_signature_temp, "src/images/franchiseDocuments/$owner_signature");
+        move_uploaded_file($_FILES['owner_signature']['tmp_name'], "../src/images/franchiseDocuments/$owner_signature");
 
-        $hashed_password = "$2y$10$76BI4UydJt1h49zb7zn7IutxQ9Lv2Z5N6RZQK7TSCTTB2194VNkzi";  //Default password: password
-
-        // Check if the email already exists in the database
-        $emailCheckQuery = "SELECT * FROM franchises WHERE email = '$email'";
-        $emailCheckResult = mysqli_query($db_conn, $emailCheckQuery);
-
+        // Check if the email already exists
+        $emailCheckResult = mysqli_query($db_conn, "SELECT email FROM franchises WHERE email = '$email'");
         if (mysqli_num_rows($emailCheckResult) > 0) {
-            setMessage("The email address '$email' is already taken. Please choose a different one.", "warning");
+            setMessage("The email '$email' is already registered.", "warning");
             redirect("addfranchise");
             exit();
         }
 
-        $addFranchiseQuery = "INSERT INTO `franchises` (owner_name, agency_name, email, phone, address, pin_code, package, ";
-        $addFranchiseQuery .= "aadhaar_number, aadhaar_image, pan_number, pan_image, owner_image, owner_signature, password, ";
-        $addFranchiseQuery .= " created_at) VALUES ('$owner_name', '$agency_name', '$email', '$phone', '$address', ";
-        $addFranchiseQuery .= "'$pin_code', '$package', '$aadhaar_number', '$aadhaar_upload', '$pan_number', '$pan_upload', ";
-        $addFranchiseQuery .= "'$owner_image', '$owner_signature', '$hashed_password', NOW())";
-        $query = query($addFranchiseQuery);
-        confirm($query);
+        // Generate a unique, secure token
+        $secure_token = bin2hex(random_bytes(16));
 
-        setMessage("User Registered!", "success");
-        redirect("index");
+        // Generate Booking URL with Secure Token
+        $booking_url = "localhost/newtemp/admin/clientTestBooking?franchise_name=" . urlencode($owner_name) . "&token=" . $secure_token;
+
+        // Ensure QR Code Directory Exists
+        $qr_directory = "../src/images/booking_qr";
+        if (!is_dir($qr_directory)) {
+            mkdir($qr_directory, 0777, true);
+        }
+
+        // Generate sanitized filename for QR code
+        $qr_filename = preg_replace('/[^a-zA-Z0-9]/', '_', strtolower($agency_name)) . "_qr.png";
+        $qr_code_path = "$qr_directory/$qr_filename";
+
+        // Generate and save QR Code
+        QRcode::png($booking_url, $qr_code_path, QR_ECLEVEL_L, 10);
+
+        // Insert into Database
+        $hashed_password = password_hash("password", PASSWORD_DEFAULT);
+        $addFranchiseQuery = "INSERT INTO `franchises` (owner_name, agency_name, email, phone, address, pin_code, package, 
+            aadhaar_number, aadhaar_image, pan_number, pan_image, owner_image, owner_signature, password, booking_qr, secure_token, created_at) 
+            VALUES ('$owner_name', '$agency_name', '$email', '$phone', '$address', '$pin_code', '$package', 
+            '$aadhaar_number', '$aadhaar_upload', '$pan_number', '$pan_upload', 
+            '$owner_image', '$owner_signature', '$hashed_password', '$qr_filename', '$secure_token', NOW())";
+
+        if (mysqli_query($db_conn, $addFranchiseQuery)) {
+            setMessage("Franchise Added Successfully!", "success");
+            redirect("franchisemonitor");
+        } else {
+            setMessage("Error Adding Franchise: " . mysqli_error($db_conn), "danger");
+        }
     }
 }
 
@@ -1691,3 +1702,20 @@ function fetchRechargeRequests()
 }
 
 /*********************************** END OF ADMIN DASHBOARD FUNCTIONS ************************************/
+
+
+function clientFormTestNames()
+{
+    $clientFormTestNamesQuery = "SELECT * FROM `tests_thyrocare`";
+    $query = query($clientFormTestNamesQuery);
+    confirm($query);
+
+    while ($row = mysqli_fetch_assoc($query)) {
+        echo "<tr>
+                <td><input type='checkbox' data-test-code='{$row['code']}' data-test-name='{$row['test_name']}' data-test-price='{$row['B2C']}'></td>
+                <td>" . htmlspecialchars($row['code']) . "</td>
+                <td>" . htmlspecialchars($row['test_name']) . "</td>
+                <td>₹" . htmlspecialchars($row['B2C']) . "</td>
+              </tr>";
+    }
+}

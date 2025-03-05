@@ -1,5 +1,78 @@
 <?php include "includes/header_admin.php"; ?>
 
+<!-- ============================================ password verification modal ========================================= -->
+<style>
+    .modal {
+        z-index: 1050;
+        /* Bootstrap default for modals */
+    }
+
+    .modal-backdrop {
+        z-index: 1040;
+        /* Bootstrap default for modal backdrop */
+    }
+
+    .custom-close-btn {
+        color: grey;
+        font-size: 24px;
+        font-weight: bold;
+        background: transparent;
+        border: none;
+        opacity: 1;
+        transition: background 0.3s ease, color 0.3s ease;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+
+    .custom-close-btn:hover {
+        background: red;
+        color: white;
+    }
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+<script>
+    function redirectToIndex() {
+        window.location.href = "index";
+    }
+</script>
+<!-- ================================================================================================================ -->
+
+<?php
+if (isset($_SESSION['lab_access_granted_addFranchise']) && $_SESSION['lab_access_granted_addFranchise'] === true) {
+    // If access is granted, continue
+} else {
+    echo '<script>$(document).ready(function() { $("#passwordModal").modal("show"); });</script>';
+}
+
+if (isset($_GET['error']) && $_GET['error'] == 'wrong_password') {
+    echo '<script>alert("Wrong profile password, not allowed for performing operations.");</script>';
+}
+?>
+<!-- ================================================================================================================ -->
+
+<!-- Password Verification Modal -->
+<div id="passwordModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Enter Profile Password</h4>
+                <button type="button" class="close custom-close-btn" onclick="redirectToIndex()">×</button>
+            </div>
+            <div class="modal-body">
+                <form id="profilePasswordForm" method="POST" action="verify_password_addFranchise">
+                    <div class="form-group">
+                        <label>Enter Profile Password:</label>
+                        <input type="password" name="profile_password" id="profile_password" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Verify</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Password Verification Modal -->
+
 <div class="main-container">
     <div class="pd-ltr-20 xs-pd-20-10">
         <div class="min-height-200px">
@@ -21,7 +94,7 @@
             <div class="row">
                 <div class="col-md-12 mb-30">
                     <div class="pd-20 card-box">
-                        <form action="addfranchise" method="POST" enctype="multipart/form-data">
+                        <form action="addFranchise" method="POST" enctype="multipart/form-data">
                             <?php addFranchise();
                             displayMessage();
                             ?>
