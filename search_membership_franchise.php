@@ -1,15 +1,25 @@
 <?php
+
 include "includes/db.php";
+include "includes/functions.php";
+
+checkRememberedUser();
+// Check if session variable is set
+if (!isset($_SESSION['agency_name'])) {
+    die("<tr><td colspan='8'>Error: Franchise not found. Please log in again.</td></tr>");
+}
+
+$agency_name = mysqli_real_escape_string($db_conn, $_SESSION['agency_name']);
 
 if (isset($_GET['query'])) {
     $query = $_GET['query'];
     $query = mysqli_real_escape_string($db_conn, $query);
 
     $sql = "SELECT * FROM `membership` 
-            WHERE name LIKE '%$query%' 
-            OR email LIKE '%$query%' 
-            OR phone LIKE '%$query%' 
-            OR franchise_name LIKE '%$query%'";
+    WHERE franchise_name = '$agency_name' 
+    AND (name LIKE '%$query%' 
+    OR email LIKE '%$query%' 
+    OR phone LIKE '%$query%')";
 
     $result = mysqli_query($db_conn, $sql);
 
