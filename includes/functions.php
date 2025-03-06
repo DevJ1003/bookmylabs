@@ -1114,7 +1114,7 @@ function addFranchise()
         $secure_token = bin2hex(random_bytes(16));
 
         // Generate Booking URL with Secure Token
-        $booking_url = "https://localhost/newtemp/admin/clientTestBooking?franchise_name=" . urlencode($owner_name) . "&token=" . $secure_token;
+        $booking_url = "https://localhost/newtemp/admin/clientTestBooking?franchise_name=" . urlencode($agency_name) . "&token=" . $secure_token;
 
         // Ensure QR Code Directory Exists
         $qr_directory = "../src/images/booking_qr";
