@@ -2,11 +2,18 @@
 
 $franchise_name = $_SESSION['agency_name'];
 
-$qrQuery = "SELECT booking_qr FROM franchises WHERE `owner_name` = '$franchise_name'";
+$qrQuery = "SELECT booking_qr FROM franchises WHERE `agency_name` = '$franchise_name'";
 $result = query($qrQuery);
 confirm($result);
 $row = mysqli_fetch_assoc($result);
 
+var_dump($qrQuery);
+
+if (!$row || empty($row['booking_qr'])) {
+    echo "<p style='color:red;'>QR Code not found.</p>";
+} else {
+    $qrPath = "src/images/booking_qr/" . $row['booking_qr'];
+}
 ?>
 
 <!-- Custom css file -->

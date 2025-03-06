@@ -8,7 +8,7 @@ $franchise_name = $_GET['franchise_name'] ?? '';
 $token = $_GET['token'] ?? '';
 
 // Validate the secure token from the database
-$query = "SELECT * FROM franchises WHERE owner_name = '$franchise_name' AND secure_token = '$token'";
+$query = "SELECT * FROM franchises WHERE agency_name = '$franchise_name' AND secure_token = '$token'";
 $result = mysqli_query($db_conn, $query);
 
 if (!$result || mysqli_num_rows($result) == 0) {
@@ -51,12 +51,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_booking'])) {
             echo "<p class='error-message'>❌ Error uploading file!</p>";
         }
     }
-
-
-
-
-
-
 
     $insertQuery = "INSERT INTO `test_requests` (franchise_name, patient_id, patient_name, age, patient_email, selected_test, mobile, address, attachments, order_amount, created_at) 
                     VALUES ('$franchise_name', '$patient_id', '$patient_name', '$patient_age', '$patient_email', '$test_type', '$patient_phone', '$patient_address', '$prescription', '$orderAmount', NOW())";
@@ -469,22 +463,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_booking'])) {
         }
 
         function confirmSelection() {
-            let selectedTests = [];
+            let selectedTestNames = [];
             let selectedTestDetails = [];
             let totalPrice = 0;
 
             document.querySelectorAll("#testList input[type='checkbox']:checked").forEach(checkbox => {
-                let testCode = checkbox.dataset.testCode;
                 let testName = checkbox.dataset.testName;
                 let testPrice = parseFloat(checkbox.dataset.testPrice);
 
-                selectedTests.push(testCode);
+                selectedTestNames.push(testName);
                 selectedTestDetails.push(`${testName} - ₹${testPrice.toFixed(2)}`);
                 totalPrice += testPrice;
             });
 
-            // Store selected test codes
-            document.getElementById("selected_test").value = selectedTests.join(", ");
+            // Store selected test names instead of test codes
+            document.getElementById("selected_test").value = selectedTestNames.join(", ");
 
             // Update total price in hidden field
             document.getElementById("orderAmount").value = totalPrice.toFixed(2);
@@ -502,7 +495,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_booking'])) {
             closeModal();
         }
 
-
         document.addEventListener("DOMContentLoaded", function() {
             document.querySelectorAll("form").forEach(form => {
                 form.addEventListener("submit", function(event) {
@@ -516,7 +508,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_booking'])) {
                 document.getElementById("orderAmount").value = totalAmount;
             }
 
-            // Example: Assuming you already calculate totalAmount somewhere in your code
             let totalAmount = calculateTotalAmount(); // Your function to calculate total
             updateOrderAmount(totalAmount);
         });
