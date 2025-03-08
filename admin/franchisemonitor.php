@@ -35,6 +35,7 @@ displayMessage();
                         <th>Total Bookings</th>
                         <th>Total Revenue</th>
                         <th>View Bookings</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -69,5 +70,11 @@ displayMessage();
         }
     }
 </script>
-
+<script>
+    function confirmDelete(franchiseId) {
+        if (confirm("Are you sure you want to delete this franchise? This action cannot be undone.")) {
+            window.location.href = "franchise_delete.php?delete=" + franchiseId;
+        }
+    }
+</script>
 <?php include "includes/footer_admin.php"; ?>

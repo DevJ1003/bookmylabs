@@ -1299,6 +1299,7 @@ function franchiseMonitor()
         echo "<td>
                 <a href=franchiseBooking?franchise_id=$franchise_id>View</a>
                 </td>";
+        echo "<td><a class='delete-button' href='#' onclick='confirmDelete($franchise_id)'>Delete</a></td>";
         echo "</tr>";
     }
 }
