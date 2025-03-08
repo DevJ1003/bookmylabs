@@ -3,7 +3,7 @@ include "includes/functions.php";
 
 $franchise_name = $_SESSION['agency_name'];
 
-$qrQuery = "SELECT booking_qr FROM franchises WHERE `owner_name` = '$franchise_name'";
+$qrQuery = "SELECT booking_qr FROM franchises WHERE `agency_name` = '$franchise_name'";
 $result = query($qrQuery);
 confirm($result);
 $row = mysqli_fetch_assoc($result);
