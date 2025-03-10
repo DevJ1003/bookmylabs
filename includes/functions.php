@@ -842,6 +842,7 @@ function viewMembership()
         echo "<td>$address</td>";
         echo "<td>$upi_reference</td>";
         echo "<td>$formattedDate</td>";
+        echo "<td><a href='invoiceMembership?sr_no=$sr_no&membership=$full_name' target='_blank'>View Membership</a></td>";
         echo "</tr>";
     }
 }

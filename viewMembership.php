@@ -24,6 +24,7 @@
                         <th>Address</th>
                         <th>UPI Reference</th>
                         <th>Created at</th>
+                        <th>View</th>
                     </tr>
                 </thead>
                 <tbody>
