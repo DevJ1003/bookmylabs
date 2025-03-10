@@ -41,7 +41,7 @@ $pdf->Image('vendors/images/BOOK-MY-LAB.jpg', 60, 10, 80, 25, '', '', '', true, 
 $pdf->Ln(30);
 $pdf->SetFont('dejavusans', 'B', 14);
 $pdf->Cell(0, 10, "INVOICE", 0, 1, 'C');
-$pdf->Ln(5);
+$pdf->Ln(2);
 
 $pdf->SetFont('dejavusans', '', 12);
 
