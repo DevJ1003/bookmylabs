@@ -1,73 +1,200 @@
-<?php include "../includes/db.php";
-include "../includes/functions.php";
-?>
-
 <?php
-// Get parameters from URL
-$franchise_name = $_GET['franchise_name'] ?? '';
-$token = $_GET['token'] ?? '';
 
-// Validate the secure token from the database
-$query = "SELECT * FROM franchises WHERE agency_name = '$franchise_name' AND secure_token = '$token'";
-$result = mysqli_query($db_conn, $query);
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
-if (!$result || mysqli_num_rows($result) == 0) {
+require '../vendor/autoload.php'; // Include PHPMailer
+
+include "../includes/db.php";
+include "../includes/functions.php";
+
+// Admin email (Static)
+$admin_email = 'devjoshi1384@gmail.com';
+
+// Get parameters from URL securely
+$franchise_name = mysqli_real_escape_string($db_conn, $_GET['franchise_name'] ?? '');
+$token = mysqli_real_escape_string($db_conn, $_GET['token'] ?? '');
+
+// Validate secure token using prepared statement
+$query = "SELECT * FROM franchises WHERE agency_name = ? AND secure_token = ?";
+$stmt = mysqli_prepare($db_conn, $query);
+mysqli_stmt_bind_param($stmt, "ss", $franchise_name, $token);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+
+if (!$result || mysqli_num_rows($result) === 0) {
     die("<div class='error-message'>⛔ Invalid or tampered URL! Access denied.</div>");
 }
 
-// Generate Unique Patient ID
-$patient_id = generatePatientID($db_conn);
-
-// Fetch franchise details
 $franchise = mysqli_fetch_assoc($result);
+mysqli_stmt_close($stmt);
 
-// Process form submission
+// Extract franchise email
+$franchise_email = $franchise['email'] ?? '';
+
+// Generate unique Patient ID
+$patient_id = generatePatientIDTest($db_conn);
+
+// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_booking'])) {
-    $patient_name = mysqli_real_escape_string($db_conn, $_POST['patient_name']);
-    $patient_age = mysqli_real_escape_string($db_conn, $_POST['patient_age']);
-    $patient_email = mysqli_real_escape_string($db_conn, $_POST['patient_email']);
-    $patient_phone = mysqli_real_escape_string($db_conn, $_POST['patient_phone']);
-    $patient_address = mysqli_real_escape_string($db_conn, $_POST['patient_address']);
-    $test_type = mysqli_real_escape_string($db_conn, $_POST['test_type']);
-    $orderAmount = $_POST['order_amount'];
+    // Sanitize form data
+    $patient_name = trim(mysqli_real_escape_string($db_conn, $_POST['patient_name']));
+    $patient_age = intval($_POST['patient_age']);
+    $patient_email = filter_var($_POST['patient_email'], FILTER_SANITIZE_EMAIL);
+    $patient_phone = trim(mysqli_real_escape_string($db_conn, $_POST['patient_phone']));
+    $patient_address = trim(mysqli_real_escape_string($db_conn, $_POST['patient_address']));
+    $test_type = trim(mysqli_real_escape_string($db_conn, $_POST['test_type']));
+    $orderAmount = floatval($_POST['order_amount']);
 
-    // File Upload Handling (Prescription)
+    // Handle file upload securely
     $prescription = "";
-    $uploadDir = "../src/images/test_form_images/"; // Define the upload directory
+    $uploadDir = "../src/images/test_form_images/";
 
     if (!empty($_FILES['prescription']['name'])) {
         $fileName = basename($_FILES['prescription']['name']);
-        $targetFilePath = $uploadDir . $fileName; // Full path for saving the file
+        $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+        $allowedExtensions = ['jpg', 'jpeg', 'png', 'pdf'];
 
-        // Create directory if it doesn't exist
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0777, true);
-        }
+        if (in_array($fileExtension, $allowedExtensions)) {
+            $newFileName = uniqid() . '.' . $fileExtension;
+            $targetFilePath = $uploadDir . $newFileName;
 
-        // Move uploaded file to target directory
-        if (move_uploaded_file($_FILES['prescription']['tmp_name'], $targetFilePath)) {
-            $prescription = $fileName; // Store only the filename in the database
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+
+            if (move_uploaded_file($_FILES['prescription']['tmp_name'], $targetFilePath)) {
+                $prescription = $newFileName;
+            } else {
+                echo "<p class='error-message'>❌ Error uploading file!</p>";
+            }
         } else {
-            echo "<p class='error-message'>❌ Error uploading file!</p>";
+            echo "<p class='error-message'>❌ Invalid file type!</p>";
         }
     }
 
-    $insertQuery = "INSERT INTO `test_requests` (franchise_name, patient_id, patient_name, age, patient_email, selected_test, mobile, address, attachments, order_amount, created_at) 
-                    VALUES ('$franchise_name', '$patient_id', '$patient_name', '$patient_age', '$patient_email', '$test_type', '$patient_phone', '$patient_address', '$prescription', '$orderAmount', NOW())";
+    // Insert data using prepared statement
+    $insertQuery = "INSERT INTO `test_requests` 
+        (franchise_name, patient_id, patient_name, age, patient_email, selected_test, mobile, address, attachments, order_amount, created_at) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
 
-    if (mysqli_query($db_conn, $insertQuery)) {
-        // echo "<p class='success-message'>✅ Booking successful!</p>";
-        // redirect("confirmation.php");
-        // exit();
+    $stmt = mysqli_prepare($db_conn, $insertQuery);
+    mysqli_stmt_bind_param(
+        $stmt,
+        "sssssssssd",
+        $franchise_name,
+        $patient_id,
+        $patient_name,
+        $patient_age,
+        $patient_email,
+        $test_type,
+        $patient_phone,
+        $patient_address,
+        $prescription,
+        $orderAmount
+    );
+
+    if (mysqli_stmt_execute($stmt)) {
+        // Send confirmation emails to patient, franchise, and admin
+        sendBookingEmail($patient_email, $patient_name, $test_type, $orderAmount);
+        sendBookingEmail($franchise_email, $patient_name, $test_type, $orderAmount); // Franchise email
+        sendBookingEmail($admin_email, $patient_name, $test_type, $orderAmount); // Admin email
+
         echo "<script>
-        window.location.href = 'confirmation.php';
-    </script>";
-        exit();
+            alert('Booking successful! Confirmation email sent.');
+            window.location.href = 'confirmation.php';
+        </script>";
     } else {
-        echo "<p class='error-message'>❌ Error: " . mysqli_error($db_conn) . "</p>";
+        echo "<p class='error-message'>❌ Failed to save booking!</p>";
+    }
+
+    mysqli_stmt_close($stmt);
+}
+
+// Function to send booking confirmation email
+function sendBookingEmail($toEmail, $patientName, $testType, $orderAmount)
+{
+    $mail = new PHPMailer(true);
+
+    try {
+        // SMTP settings
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'devjoshi1384@gmail.com'; // Replace with your Gmail address
+        $mail->Password = 'cxry slzk yhhj hlyn';   // Replace with your Gmail app password
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
+
+        // Email details
+        $mail->setFrom('devjoshi1384@gmail.com', 'BookMyLabs Support!');
+        $mail->addAddress($toEmail);
+
+        // Content
+        $mail->isHTML(true);
+        $mail->Subject = 'Test Booking Confirmation';
+        $mail->addEmbeddedImage('../vendors/images/BOOK-MY-LAB.jpg', 'logo', 'BOOK-MY-LAB.jpg');
+
+        $mail->Body = "
+            <div style='font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px; color: #333; border: 1px solid #ddd; border-radius: 8px; max-width: 600px; margin: auto;'>
+                <!-- Logo Section -->
+                <div style='text-align: center; margin-bottom: 20px;'>
+                    <img src='cid:logo' alt='Lab Logo' style='max-width: 150px; height: auto;'>
+                </div>
+                <div style='background-color: #0056b3; padding: 15px; border-radius: 8px 8px 0 0; color: #ffffff; text-align: center;'>
+                    <h2 style='margin: 0; font-size: 24px;'>Booking Confirmation</h2>
+                </div>
+                <div style='padding: 20px;'>
+                    <p style='font-size: 16px; line-height: 1.6;'>
+                        Hi <strong style='color: #0056b3;'>$patientName</strong>,
+                    </p>
+                    <p style='font-size: 16px; line-height: 1.6;'>
+                        Your booking for <strong>$testType</strong> has been confirmed.
+                    </p>
+                    <table style='width: 100%; margin-top: 15px; border-collapse: collapse;'>
+                        <tr>
+                            <td style='padding: 10px; border: 1px solid #ddd; background-color: #f1f1f1; font-weight: bold; width: 50%;'>Patient Name:</td>
+                            <td style='padding: 10px; border: 1px solid #ddd;'>$patientName</td>
+                        </tr>
+                        <tr>
+                            <td style='padding: 10px; border: 1px solid #ddd; background-color: #f1f1f1; font-weight: bold;'>Test Type:</td>
+                            <td style='padding: 10px; border: 1px solid #ddd;'>$testType</td>
+                        </tr>
+                        <tr>
+                            <td style='padding: 10px; border: 1px solid #ddd; background-color: #f1f1f1; font-weight: bold;'>Order Amount:</td>
+                            <td style='padding: 10px; border: 1px solid #ddd;'>₹" . number_format($orderAmount, 2) . "</td>
+                        </tr>
+                    </table>
+                    <p style='font-size: 16px; line-height: 1.6; margin-top: 20px;'>
+                        Thank you for choosing our service!
+                    </p>
+                </div>
+                <div style='background-color: #f1f1f1; padding: 10px; border-radius: 0 0 8px 8px; text-align: center; font-size: 14px; color: #777;'>
+                    If you have any questions, please contact us at <a href='mailto:support@bookmylab.com' style='color: #0056b3; text-decoration: none;'>support@bookmylab.com</a>.
+                </div>
+            </div>
+        ";
+
+        $mail->send();
+    } catch (Exception $e) {
+        error_log("Email failed: {$mail->ErrorInfo}");
     }
 }
+
+// Function to generate a unique patient ID
+function generatePatientIDTest($conn)
+{
+    do {
+        $patient_id = 'P' . mt_rand(100000, 999999);
+        $query = "SELECT COUNT(*) FROM `test_requests` WHERE patient_id = '$patient_id'";
+        $result = mysqli_query($conn, $query);
+        $count = mysqli_fetch_array($result)[0];
+    } while ($count > 0);
+
+    return $patient_id;
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
