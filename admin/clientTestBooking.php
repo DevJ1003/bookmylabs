@@ -175,6 +175,8 @@ function sendBookingEmail($toEmail, $patientName, $testType, $orderAmount)
             </div>
         ";
 
+        $mail->Timeout = 300;
+        $mail->SMTPKeepAlive = true;
         $mail->send();
     } catch (Exception $e) {
         error_log("Email failed: {$mail->ErrorInfo}");

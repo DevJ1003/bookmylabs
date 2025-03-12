@@ -96,7 +96,8 @@ function sendEmail($to, $subject, $body)
         $mail->addEmbeddedImage('vendors/images/BOOK-MY-LAB.jpg', 'logo', 'BOOK-MY-LAB.jpg');
 
         $mail->Body = $body;
-
+        $mail->Timeout = 300;
+        $mail->SMTPKeepAlive = true;
         $mail->send();
     } catch (Exception $e) {
         error_log("Email could not be sent. Error: {$mail->ErrorInfo}");

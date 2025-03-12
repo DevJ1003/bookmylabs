@@ -103,6 +103,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 ";
 
 				$mail->addEmbeddedImage('vendors/images/BOOK-MY-LAB.jpg', 'logo', 'BOOK-MY-LAB.jpg');
+				$mail->Timeout = 300;
+				$mail->SMTPKeepAlive = true;
 				$mail->send();
 
 				setMessage("Password reset link sent to your email!", "success");
