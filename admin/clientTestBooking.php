@@ -9,7 +9,7 @@ include "../includes/db.php";
 include "../includes/functions.php";
 
 // Admin email (Static)
-$admin_email = 'devjoshi1384@gmail.com';
+$admin_email = '';
 
 // Get parameters from URL securely
 $franchise_name = mysqli_real_escape_string($db_conn, $_GET['franchise_name'] ?? '');
@@ -96,9 +96,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_booking'])) {
 
     if (mysqli_stmt_execute($stmt)) {
         // Send confirmation emails to patient, franchise, and admin
-        sendBookingEmail($patient_email, $patient_name, $test_type, $orderAmount);
-        sendBookingEmail($franchise_email, $patient_name, $test_type, $orderAmount); // Franchise email
-        sendBookingEmail($admin_email, $patient_name, $test_type, $orderAmount); // Admin email
+        sendBookingEmail($patient_email, $patient_name, $patient_age, $patient_email, $patient_phone, $patient_address, $test_type, $orderAmount);
+        sendBookingEmail($franchise_email, $patient_name, $patient_age, $patient_email, $patient_phone, $patient_address, $test_type, $orderAmount); // Franchise email
+        sendBookingEmail($admin_email, $patient_name, $patient_age, $patient_email, $patient_phone, $patient_address, $test_type, $orderAmount); // Admin email
 
         echo "<script>
             alert('Booking successful! Confirmation email sent.');
@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_booking'])) {
 }
 
 // Function to send booking confirmation email
-function sendBookingEmail($toEmail, $patientName, $testType, $orderAmount)
+function sendBookingEmail($toEmail, $patientName, $patientAge, $patientEmail, $patientPhone, $patientAddress, $testType, $orderAmount)
 {
     $mail = new PHPMailer(true);
 
@@ -121,13 +121,13 @@ function sendBookingEmail($toEmail, $patientName, $testType, $orderAmount)
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'devjoshi1384@gmail.com'; // Replace with your Gmail address
-        $mail->Password = 'cxry slzk yhhj hlyn';   // Replace with your Gmail app password
+        $mail->Username = ''; // Replace with your Gmail address
+        $mail->Password = '';   // Replace with your Gmail app password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
         // Email details
-        $mail->setFrom('devjoshi1384@gmail.com', 'BookMyLabs Support!');
+        $mail->setFrom('', 'BookMyLabs Support!');
         $mail->addAddress($toEmail);
 
         // Content
@@ -155,6 +155,22 @@ function sendBookingEmail($toEmail, $patientName, $testType, $orderAmount)
                         <tr>
                             <td style='padding: 10px; border: 1px solid #ddd; background-color: #f1f1f1; font-weight: bold; width: 50%;'>Patient Name:</td>
                             <td style='padding: 10px; border: 1px solid #ddd;'>$patientName</td>
+                        </tr>
+                        <tr>
+                            <td style='padding: 10px; border: 1px solid #ddd; background-color: #f1f1f1; font-weight: bold; width: 50%;'>Patient Age:</td>
+                            <td style='padding: 10px; border: 1px solid #ddd;'>$patientAge</td>
+                        </tr>
+                        <tr>
+                            <td style='padding: 10px; border: 1px solid #ddd; background-color: #f1f1f1; font-weight: bold; width: 50%;'>Patient Email:</td>
+                            <td style='padding: 10px; border: 1px solid #ddd;'>$patientEmail</td>
+                        </tr>
+                        <tr>
+                            <td style='padding: 10px; border: 1px solid #ddd; background-color: #f1f1f1; font-weight: bold; width: 50%;'>Patient Name:</td>
+                            <td style='padding: 10px; border: 1px solid #ddd;'>$patientPhone</td>
+                        </tr>
+                        <tr>
+                            <td style='padding: 10px; border: 1px solid #ddd; background-color: #f1f1f1; font-weight: bold; width: 50%;'>Patient Address:</td>
+                            <td style='padding: 10px; border: 1px solid #ddd;'>$patientAddress</td>
                         </tr>
                         <tr>
                             <td style='padding: 10px; border: 1px solid #ddd; background-color: #f1f1f1; font-weight: bold;'>Test Type:</td>
