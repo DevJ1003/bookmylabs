@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Feb 21, 2025 at 01:08 PM
+-- Generation Time: Mar 15, 2025 at 11:01 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -43,9 +43,13 @@ CREATE TABLE `franchises` (
   `owner_image` text NOT NULL,
   `owner_signature` text NOT NULL,
   `password` text NOT NULL,
+  `profile_password` varchar(255) NOT NULL,
   `usertype` enum('Admin','Franchise') NOT NULL DEFAULT 'Franchise',
   `wallet_balance` int(25) NOT NULL,
+  `booking_qr` text NOT NULL,
+  `secure_token` varchar(255) NOT NULL,
   `created_at` datetime(6) NOT NULL,
+  `remember_token` varchar(255) NOT NULL,
   `reset_token` varchar(255) NOT NULL,
   `reset_token_expiry` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -54,12 +58,13 @@ CREATE TABLE `franchises` (
 -- Dumping data for table `franchises`
 --
 
-INSERT INTO `franchises` (`id`, `owner_name`, `agency_name`, `email`, `phone`, `address`, `pin_code`, `package`, `aadhaar_number`, `aadhaar_image`, `pan_number`, `pan_image`, `owner_image`, `owner_signature`, `password`, `usertype`, `wallet_balance`, `created_at`, `reset_token`, `reset_token_expiry`) VALUES
-(1, 'test_updated', 'test_updated', 'testupdated@gmail.com', 2147483647, 'old delhi junction', 523691, '', 2147483647, '', 'edrft9137w', '', 'banner-img.png', '', '$2y$10$76BI4UydJt1h49zb7zn7IutxQ9Lv2Z5N6RZQK7TSCTTB2194VNkzi', 'Admin', 396, '0000-00-00 00:00:00.000000', 'f338383ba45868643eff5cb2da03d5a6b0a8cdba9da028a3ab7b6d78d2d17785354d1abcd8d5e023507d882163d9e5f9cae8', '2025-02-20 20:58:12'),
-(3, 'test', 'test1', 't@gmail.com', 2147483647, 'mfdkvvfdml,', 45612, 'Advanced', 0, '', '7485edfdc', '', '', '', '$2y$10$vSl4jMvQcJ7E7nbzFsjjBO/t3nmtL0aQmYMwKgdU00e7Uv.oyMHl2', 'Franchise', 0, '2025-02-01 15:00:13.000000', '', NULL),
-(4, 'test', 'test2', 'test2@gmail.com', 45789523, 'indvkmlomdfps,l', 451263, 'Premium', 0, 'chat-img2.jpg', '7485edfdc', 'check-mark.png', 'caution-sign.png', 'check-mark-green.png', '$2y$10$sparhTY36ZzWU9GUjowRCeIIMvGehLgT4HcanlGvxkvRVN/Od19Q6', 'Franchise', 0, '2025-02-01 15:05:48.000000', '', NULL),
-(5, 'test', 'test3', 'test23@gmail.com', 2147483647, 'jnbskmdfvsilbdkm', 785236, 'Advanced', 2147483647, 'check-mark.png', '7485edfdc', 'chat-img1.jpg', 'caution-sign.png', 'check-mark-green.png', '$2y$10$5rChuaJdUKsd3OD11CeHGuaXe4wYHO.Gwe8JQqLERYqji5B3q1Jc2', 'Franchise', 0, '2025-02-01 15:09:35.000000', '', NULL),
-(6, 'new', 'new again', 'new@gmail.com', 7946135, 'delhi', 451263, 'Standard', 2147483647, 'apple-touch-icon.png', 'lokij5478p', 'banner-img.png', 'caution-sign.png', 'chat-img2.jpg', '$2y$10$grPXUXC7iYIaYKeL9GlgGOqe2TEVlP1r1Y2xfjtC6/5PGdxYCr8Aa', 'Franchise', 0, '2025-02-20 17:13:57.000000', '', NULL);
+INSERT INTO `franchises` (`id`, `owner_name`, `agency_name`, `email`, `phone`, `address`, `pin_code`, `package`, `aadhaar_number`, `aadhaar_image`, `pan_number`, `pan_image`, `owner_image`, `owner_signature`, `password`, `profile_password`, `usertype`, `wallet_balance`, `booking_qr`, `secure_token`, `created_at`, `remember_token`, `reset_token`, `reset_token_expiry`) VALUES
+(1, 'admin', 'admin', 'admin@gmail.com', 7946135, 'delhi', 451263, '', 2147483647, '', 'lokij5478p', '', 'img.jpg', '', '$2y$10$3fp5hKicykqUSGwTPIu43u.Xd5LVg6idqxLo5jjPfRjfgx2YKO9U2', '$2y$10$KiosaYtOLLpZCxBaxWbDm.b1DrJmOFXDimhVXETTiX57N6v/aCg8.', 'Admin', 0, '', '', '0000-00-00 00:00:00.000000', '', '', NULL),
+(3, 'test', 'test', 't@gmail.com', 2147483647, 'mfdkvvfdml,', 45612, 'Advanced', 0, '', '7485edfdc', '', 'product-img3.jpg', '', '$2y$10$vSl4jMvQcJ7E7nbzFsjjBO/t3nmtL0aQmYMwKgdU00e7Uv.oyMHl2', '', 'Franchise', 0, '', '', '2025-02-01 15:00:13.000000', '', '', NULL),
+(4, 'test', 'test2', 'test2@gmail.com', 45789523, 'indvkmlomdfpskjrgtlkndgrf', 451263, 'Premium', 0, 'chat-img2.jpg', '7485edfdc', 'check-mark.png', 'img5.jpg', 'check-mark-green.png', '$2y$10$sparhTY36ZzWU9GUjowRCeIIMvGehLgT4HcanlGvxkvRVN/Od19Q6', '', 'Franchise', 4954, '', '', '2025-02-01 15:05:48.000000', '', '', NULL),
+(6, 'test_updated', 'test_updated', 'testupdated@gmail.com', 7946135, 'delhi', 451263, 'Standard', 2147483647, 'apple-touch-icon.png', 'lokij5478p', 'banner-img.png', 'photo2.jpg', 'chat-img2.jpg', '$2y$10$HCwsUdXqY/7FrBwi1dmOMuMP2LK3QlvQiWVPqd2jrTh4h45f0oJXy', '', 'Franchise', 4654, 'franchise_67c5981149594.png', '', '2025-02-20 17:13:57.000000', '', '', NULL),
+(20, 'tedd', 'oxygen', 'dehi13841384@gmail.com', 2147483647, '546fd654df, 45df354f', 6456543, 'Enterprise', 65446543, 'caution-sign.png', '45fdre54fd', 'caution-sign.png', 'banner-img.png', 'banner-img.png', '$2y$10$enorw/6Hti6zaD5Y40pU/.kMfRiYIf5Ww//UNJNQ3Lcu49KkzqycK', '', 'Franchise', 0, 'oxygen_qr.png', '6a2a446370cd74f42c715f0e2bb9b6b5', '2025-03-05 18:11:54.000000', '', 'e65543ebe5237b851df28f46a29797fcac39121c040f556056ec76e2a80eeea06c514993378f9720ae51f278e521683a2d20', '2025-03-12 22:25:06'),
+(23, 'daksh', 'djlab', 'djlab@gmail.com', 91, '64536ervd4s561er54, 4s68re5f4fed - 25000000', 6565, 'Advanced', 2147483647, 'caution-sign.png', 'er45r54e', 'caution-sign.png', 'banner-img.png', 'banner-img.png', '$2y$10$w.Pu3QW/g/yLXGZPWjxTH.qvNwS1nNCwbMSwfYYAD2jGwit2LjMBS', '', 'Franchise', 0, 'djlab_qr.png', '102890647b3d0eaf35125d20f0599300', '2025-03-06 15:26:55.000000', '', '', NULL);
 
 -- --------------------------------------------------------
 
@@ -103,6 +108,35 @@ INSERT INTO `labs` (`id`, `lab_name`, `lab_logo`, `created_at`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `membership`
+--
+
+CREATE TABLE `membership` (
+  `id` int(10) NOT NULL,
+  `franchise_id` int(10) NOT NULL,
+  `franchise_name` varchar(50) NOT NULL,
+  `name` text NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `phone` varchar(50) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `upi_reference` varchar(255) NOT NULL,
+  `created_at` datetime(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `membership`
+--
+
+INSERT INTO `membership` (`id`, `franchise_id`, `franchise_name`, `name`, `email`, `phone`, `address`, `upi_reference`, `created_at`) VALUES
+(1, 6, 'test_updated', 'test', 'test@gmail.com', '5+696565456315431', 'fdkmloaeinvldskm;', '653126df', '2025-02-28 13:38:47.000000'),
+(2, 6, 'test_updated', 'test2', 'test@gmail.com', '46853146531', 'anfvkloihbfdjvjaporevmdslpjof;mld', '+563146853bfdv', '2025-02-28 13:46:59.000000'),
+(3, 6, 'test_updated', 'updated', 'updated@gmail.com', '5216485312', 'new delhi gurgaon', '5426453120fvdcfd', '2025-02-28 13:47:45.000000'),
+(12, 20, 'oxygen', 'listen', 'listen@gmail.com', '64546536543', 'f465d, fd5454fd', '54542', '2025-03-05 18:12:35.000000'),
+(13, 6, 'test_updated', 'Mr. Test Test', 'devjoshi13841384@gmail.com', '89465468513', '465r1fd2645fr, 684r5fd4fd', '864545efd452df', '2025-03-11 23:44:38.000000');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `recharge_requests`
 --
 
@@ -122,22 +156,25 @@ CREATE TABLE `recharge_requests` (
 --
 
 INSERT INTO `recharge_requests` (`id`, `franchise_id`, `franchise_name`, `amount`, `upi_reference`, `attachments`, `status`, `created_at`) VALUES
-(1, 1, 'test_updated', 5000, 3456, 'banner-img.png', 'Pending', '2025-02-13 18:20:09.000000'),
-(2, 1, 'test_updated', 9000, 3456, 'caution-sign.png', 'Approved', '2025-02-13 18:20:32.000000'),
-(3, 1, 'test_updated', -1000, 0, '', 'Approved', '2025-02-13 18:21:16.000000'),
-(4, 1, 'test_updated', -1700, 0, '', 'Approved', '2025-02-14 18:57:16.000000'),
-(5, 1, 'test_updated', 10000, 6845652, 'apple-touch-icon.png', 'Rejected', '2025-02-14 19:00:16.000000'),
-(6, 1, 'test_updated', -4500, 0, '', 'Approved', '2025-02-17 22:29:46.000000'),
-(7, 1, 'test_updated', -1400, 0, '', 'Approved', '2025-02-17 22:35:36.000000'),
-(8, 1, 'test_updated', -90, 0, '', 'Approved', '2025-02-20 10:53:35.000000'),
-(9, 1, 'test_updated', -90, 0, '', 'Approved', '2025-02-20 11:05:38.000000'),
-(10, 1, 'test_updated', -90, 0, '', 'Approved', '2025-02-20 11:19:04.000000'),
-(11, 1, 'test_updated', -90, 0, '', 'Approved', '2025-02-20 13:06:02.000000'),
-(12, 1, 'test_updated', 560, 45125623, 'apple-touch-icon.png', 'Approved', '2025-02-20 16:16:13.000000'),
-(13, 1, 'test_updated', -68, 0, '', 'Approved', '2025-02-20 16:17:02.000000'),
-(14, 1, 'test_updated', -68, 0, '', 'Approved', '2025-02-20 19:19:05.000000'),
-(15, 1, 'test_updated', -68, 0, '', 'Approved', '2025-02-20 19:23:49.000000'),
-(16, 1, 'test_updated', 5000, 45, '', 'Pending', '2025-02-20 19:28:26.000000');
+(1, 6, 'test_updated', 5000, 3456, 'banner-img.png', 'Pending', '2025-02-13 18:20:09.000000'),
+(2, 6, 'test_updated', 9000, 3456, 'caution-sign.png', 'Approved', '2025-02-13 18:20:32.000000'),
+(3, 6, 'test_updated', -1000, 0, '', 'Approved', '2025-02-13 18:21:16.000000'),
+(4, 6, 'test_updated', -1700, 0, '', 'Approved', '2025-02-14 18:57:16.000000'),
+(5, 6, 'test_updated', 10000, 6845652, 'apple-touch-icon.png', 'Rejected', '2025-02-14 19:00:16.000000'),
+(6, 6, 'test_updated', -4500, 0, '', 'Approved', '2025-02-17 22:29:46.000000'),
+(7, 6, 'test_updated', -1400, 0, '', 'Approved', '2025-02-17 22:35:36.000000'),
+(8, 6, 'test_updated', -90, 0, '', 'Approved', '2025-02-20 10:53:35.000000'),
+(9, 6, 'test_updated', -90, 0, '', 'Approved', '2025-02-20 11:05:38.000000'),
+(10, 6, 'test_updated', -90, 0, '', 'Approved', '2025-02-20 11:19:04.000000'),
+(11, 6, 'test_updated', -90, 0, '', 'Approved', '2025-02-20 13:06:02.000000'),
+(12, 6, 'test_updated', 560, 45125623, 'apple-touch-icon.png', 'Approved', '2025-02-20 16:16:13.000000'),
+(13, 6, 'test_updated', -68, 0, '', 'Approved', '2025-02-20 16:17:02.000000'),
+(14, 6, 'test_updated', -68, 0, '', 'Approved', '2025-02-20 19:19:05.000000'),
+(15, 6, 'test_updated', -68, 0, '', 'Approved', '2025-02-20 19:23:49.000000'),
+(16, 6, 'test_updated', 5000, 45, 'apple-touch-icon.png', 'Approved', '2025-02-20 19:28:26.000000'),
+(17, 6, 'test_updated', -68, 0, '', 'Approved', '2025-02-22 21:21:41.000000'),
+(18, 6, 'test_updated', -374, 0, '', 'Approved', '2025-02-25 23:08:40.000000'),
+(19, 6, 'test_updated', -300, 0, '', 'Approved', '2025-03-03 16:06:49.000000');
 
 -- --------------------------------------------------------
 
@@ -161,7 +198,9 @@ CREATE TABLE `reports` (
 INSERT INTO `reports` (`id`, `patient_name`, `franchise_name`, `test_date`, `report_files`, `created_at`) VALUES
 (1, 'test', 'test_updated', '2025-12-31', 'report.pdf', '2025-02-11 18:12:49.000000'),
 (2, 'test2', 'test_updated', '2025-12-31', 'report.pdf', '2025-02-11 18:13:01.000000'),
-(3, 'test3', 'test', '2025-12-31', 'report.pdf', '2025-02-11 18:13:11.000000');
+(3, 'test3', 'test', '2025-12-31', 'report.pdf', '2025-02-11 18:13:11.000000'),
+(4, 'test', 'test1', '2025-12-31', 'report.pdf', '2025-02-25 22:36:29.000000'),
+(5, 'updated', 'test_updated', '2025-12-31', 'report.pdf', '2025-02-25 22:36:45.000000');
 
 -- --------------------------------------------------------
 
@@ -182,7 +221,7 @@ CREATE TABLE `tests_agilus diagnostics` (
 --
 
 INSERT INTO `tests_agilus diagnostics` (`id`, `code`, `test_name`, `B2B`, `B2C`) VALUES
-(1, '3358', 'NEWBORN SCREENING FOR ACYLCARNITINE & AMINO\nACIDS Dried Blood spot', 3150, 4500),
+(1, '3358', 'NEWBORN SCREENING FOR ACYLCARNITINE & AMINOACIDS Dried Blood spot', 3150, 4500),
 (2, 'RD1480', 'NF1 GENE MUTATION', 45500, 65000),
 (3, '9150U', 'NICKEL URINE SPOT', 2555, 3650),
 (4, '9150U24', 'NICKEL 24 HRS URINE', 2555, 3650),
@@ -1000,7 +1039,7 @@ CREATE TABLE `tests_dr.lal pathlabs` (
 --
 
 INSERT INTO `tests_dr.lal pathlabs` (`id`, `code`, `test_name`, `B2B`, `B2C`) VALUES
-(1, 'F015', '(CA) CYFRA 211; LUNG CANCER MARKER', 2025, 2700),
+(1, 'F015', '(CA) CYFRA 211; LUNG CANCER MARKER updated', 2025, 2700),
 (2, 'B187', '0.5 HR AFTER 75 GM GLUCOSE', 68, 90),
 (3, 'Z086', '17 HYDROXY CORTICOSTEROIDS & 17 \nKETOSTEROIDS 24HOUR URINE', 9000, 12000),
 (4, 'U032', '17 HYDROXY CORTICOSTEROIDS (17OHCS)\n24HOUR URINE', 5025, 6700),
@@ -5045,7 +5084,6 @@ CREATE TABLE `tests_lupin diagnostics` (
 
 INSERT INTO `tests_lupin diagnostics` (`id`, `code`, `test_name`, `B2B`, `B2C`) VALUES
 (1, '1', 'ADENOSINE DEAMINASE (ADA)', 250, 750),
-(2, '2', 'ABNORMAL HEMOGLOBIN STUDY (HB ELECTROPHORESIS)', 300, 990),
 (3, '3', 'ABPA Panel', 2000, 3250),
 (4, '4', 'Activated Partial Thromboplastin Time APTT/ PTTK', 130, 550),
 (5, '5', 'AFB smear (Acid fast bacilli)', 100, 300),
@@ -5913,9 +5951,9 @@ INSERT INTO `tests_lupin diagnostics` (`id`, `code`, `test_name`, `B2B`, `B2C`) 
 (867, 'LDSER0534', 'Filaria Antigen', 270, 360),
 (868, 'LDIMM0537', 'First Trimester Triple marker (PLGF)', 2250, 3000),
 (869, 'LDMOL1384', 'FISH Neonatal screen\n(2 probes Trisomy 13 & 21)', 2250, 3000),
-(870, 'LDMOL1385', 'FISH Neonatal screen\n(5 probes Trisomy 131821XY)', 7725, 10300);
+(870, 'LDMOL1385', 'FISH Neonatal screen\n(5 probes Trisomy 131821XY)', 7725, 10300),
+(871, 'LDMOL1386', 'FISH Prenatal Aneuploidy Detection\n(2 probes Trisomy 13 & 21)', 2250, 3000);
 INSERT INTO `tests_lupin diagnostics` (`id`, `code`, `test_name`, `B2B`, `B2C`) VALUES
-(871, 'LDMOL1386', 'FISH Prenatal Aneuploidy Detection\n(2 probes Trisomy 13 & 21)', 2250, 3000),
 (872, 'LDMOL1387', 'FISH Prenatal Aneuploidy Detection\n(3 probes Trisomy 18 X Y)', 3150, 4200),
 (873, 'LDMOL1388', 'FISH Prenatal Aneuploidy Detection (5 probes Trisomy 131821XY)', 7725, 10300),
 (874, 'LDMOL1389', 'FISH Trisomy 21', 2400, 3200),
@@ -13343,20 +13381,6 @@ CREATE TABLE `tests_thyrocare` (
 --
 
 INSERT INTO `tests_thyrocare` (`id`, `code`, `test_name`, `B2B`, `B2C`) VALUES
-(1, 'AHGLU', '15 ANHYDROGLUCITOL', 536, 820),
-(2, '17OH', '17 OH PROGESTERONE', 451, 770),
-(3, 'VITDC', '25OH VITAMIN D (TOTAL)', 264, 1000),
-(4, 'ACRAB', 'ACETYLCHOLINE RECEPTOR AUTOANTIBODY', 1395, 2060),
-(5, 'ACP', 'ACID PHOSPHATASE', 229, 410),
-(6, 'AVB12', 'ACTIVE VITAMIN B12 (HOLOTRANSCOBALAMIN)', 701, 1030),
-(7, 'ADA', 'ADENOSINE DEAMINASE', 312, 760),
-(8, 'ACTH', 'ADRENOCORTICOTROPIC HORMONE (ACTH)', 451, 770),
-(9, 'AHEL', 'ADULT HEMOGLOBIN ELECTROPHORESIS', 364, 1090),
-(10, 'SGPT', 'ALANINE TRANSAMINASE (SGPT)', 62, 200),
-(11, 'SALB', 'ALBUMIN SERUM', 62, 210),
-(12, 'ALC', 'ALCOHOL', 423, 620),
-(13, 'ALDOL', 'ALDOLASE', 701, 1030),
-(14, 'ALDOS', 'ALDOSTERONE', 173, 1500),
 (15, 'ALKP', 'ALKALINE PHOSPHATASE', 62, 210),
 (16, 'AFP', 'ALPHA FETO PROTEIN (AFP)', 312, 760),
 (17, 'ALHBD', 'ALPHA HYDROXYBUTYRATE DEHYDROGENASE', 111, 210),
@@ -14247,8 +14271,7 @@ INSERT INTO `tests_thyrocare` (`id`, `code`, `test_name`, `B2B`, `B2C`) VALUES
 (902, 'KH113', 'KHComprehensive Genomic Panel 500 (Outlab)', 150737, 234840),
 (903, 'HIS06', 'LARGE BIOPSY TISSUE SIZE 36CM INLAB', 575, 2110),
 (904, 'LBCCS', 'LBC CERVICAL SMEAR', 910, 1400),
-(905, 'P00236', 'Leukemia Panel4 (Outlab)', 11913, 13400);
-INSERT INTO `tests_thyrocare` (`id`, `code`, `test_name`, `B2B`, `B2C`) VALUES
+(905, 'P00236', 'Leukemia Panel4 (Outlab)', 11913, 13400),
 (906, 'CG034', 'LOWGRADE MOSAICISM DETECTION BY FISH ON BLOOD (Outlab)', 4125, 4640),
 (907, 'CG035', 'LOWGRADE MOSAICISM DETECTION BY FISH ON BUCCAL CELLS (Outlab)', 4125, 4640),
 (908, 'CG036', 'LOWGRADE MOSAICISM DETECTION BY FISH ON URINE (Outlab)', 4125, 4640),
@@ -14256,7 +14279,8 @@ INSERT INTO `tests_thyrocare` (`id`, `code`, `test_name`, `B2B`, `B2C`) VALUES
 (910, 'HIS05', 'MEDIUM BIOPSY TISSUE SIZE 13CM INLAB', 406, 1490),
 (911, 'CG010', 'METAPHASE FISH 22Q MICRODELETIONDIGEORGE SYNDROME (Outlab)', 2750, 3370),
 (912, 'CG011', 'METAPHASE FISH�15Q�DELETIONPRADER WILLI SYNDROME (Outlab)', 3610, 4310),
-(913, 'MM1119', 'Microsatellite Instability (MSI) (Outlab)', 11913, 13400),
+(913, 'MM1119', 'Microsatellite Instability (MSI) (Outlab)', 11913, 13400);
+INSERT INTO `tests_thyrocare` (`id`, `code`, `test_name`, `B2B`, `B2C`) VALUES
 (914, 'MIC03', 'MISCELLANEOUS CULTURE AND SUSCEPTIBILITY', 771, 830),
 (915, 'CG084', 'MM PLASMA CELL ISOLATION ONLY (Outlab)', 5934, 6680),
 (916, 'HIS10', 'Modified Radicle Mastectomy Breast INLAB', 2266, 8330),
@@ -14317,7 +14341,12 @@ INSERT INTO `tests_thyrocare` (`id`, `code`, `test_name`, `B2B`, `B2C`) VALUES
 (971, 'DNA12', 'URINE OCCULT BLOOD (Outlab)', 145, 210),
 (972, 'DJL01', 'Urine Culture and susceptibility (Outlab)', 286, 460),
 (973, 'SNM119', 'Whole Exome sequencing (Outlab)', 38094, 42850),
-(974, 'CG085', 'Y CHROMOSOME MICRODELETION PCR FOR 30 MUTATIONS (Outlab)', 13646, 15350);
+(974, 'CG085', 'Y CHROMOSOME MICRODELETION PCR FOR 30 MUTATIONS (Outlab)', 13646, 15350),
+(975, '654132', 'test', 500, 600),
+(976, '4552', 'again', 500, 600),
+(977, '68523', 'again again', 500, 600),
+(978, 'bevkml', 'jefvskml', 500, 600),
+(979, 'fkdml', '85461', 500, 600);
 
 -- --------------------------------------------------------
 
@@ -14336,6 +14365,7 @@ CREATE TABLE `test_requests` (
   `gender` text NOT NULL,
   `mobile` varchar(25) NOT NULL,
   `address` varchar(255) NOT NULL,
+  `patient_email` varchar(255) NOT NULL,
   `selected_test` text NOT NULL,
   `dispatch_option` enum('Pickup','Courier','','') NOT NULL,
   `sample_drawn_date` date NOT NULL,
@@ -14344,7 +14374,9 @@ CREATE TABLE `test_requests` (
   `reference_doctor` text NOT NULL,
   `attachments` text NOT NULL,
   `order_amount` int(10) NOT NULL,
+  `b2b_amount` int(10) NOT NULL,
   `status` enum('Pending','In-Process','Completed','Rejected/Cancelled') NOT NULL DEFAULT 'Pending',
+  `rejection_reason` text NOT NULL DEFAULT 'N/A',
   `created_at` datetime(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -14352,25 +14384,36 @@ CREATE TABLE `test_requests` (
 -- Dumping data for table `test_requests`
 --
 
-INSERT INTO `test_requests` (`id`, `franchise_id`, `franchise_name`, `lab_name`, `patient_id`, `patient_name`, `age`, `gender`, `mobile`, `address`, `selected_test`, `dispatch_option`, `sample_drawn_date`, `sample_drawn_time`, `fasting_status`, `reference_doctor`, `attachments`, `order_amount`, `status`, `created_at`) VALUES
-(3, 1, 'test_updated', 'pathkind', '', 'test', 2, 'male', '2147483647', 'haryana', 'CBC, test1', 'Pickup', '2025-12-31', '12:59:00.000000', 'Yes', 'test', 'apple-touch-icon.png', 1300, 'Pending', '2025-02-12 14:57:21.000000'),
-(4, 1, 'test_updated', 'metropolis', '', 'test', 2, 'male', '2147483647', 'ludhiana', 'bulb', 'Pickup', '2025-12-31', '12:59:00.000000', 'Yes', 'test', 'banner-img.png', 1000, 'Pending', '2025-02-12 16:19:47.000000'),
-(5, 1, 'test_updated', 'apollo', '', 'test', 1, 'male', '2147483647', 'test', 'bulb', 'Pickup', '2025-12-31', '12:59:00.000000', 'Yes', 'test', '', 1000, 'Pending', '2025-02-12 16:23:03.000000'),
-(6, 1, 'test_updated', 'pathkind', '', 'test', 2, 'male', '2147483647', 'test', 'bulb', 'Pickup', '2025-12-31', '12:59:00.000000', 'Yes', '', '', 1000, 'Pending', '2025-02-12 16:31:10.000000'),
-(7, 1, 'test_updated', 'apollo', '', 'test', 1, 'male', '2147483647', 'test', 'bulb', 'Pickup', '2025-12-31', '12:59:00.000000', 'Yes', '', '', 1000, 'Pending', '2024-12-24 16:58:20.000000'),
-(8, 1, 'test_updated', 'apollo', '', 'test', 2, 'male', '2147483647', 'test', 'bulb', 'Pickup', '2025-12-31', '12:59:00.000000', 'Yes', '', '', 1000, 'Pending', '2025-02-12 18:03:43.000000'),
-(10, 1, 'test_updated', 'apollo', '', 'test', 1, 'male', '2147483647', 'test', 'test1, lipid profile, blood', 'Pickup', '2025-12-31', '12:58:00.000000', 'Yes', '', '', 2000, 'Pending', '2025-02-12 18:13:45.000000'),
-(11, 1, 'test_updated', 'Dr.Lal', '', 'test', 2, 'male', '2147483647', 'test', 'CBC, test1, test2, lipid profile', 'Pickup', '2025-12-31', '12:59:00.000000', 'Yes', 'test', 'caution-sign.png', 3100, 'Pending', '2025-02-12 20:58:26.000000'),
-(12, 1, 'test_updated', 'Apollo', '', 'test', 2, 'male', '2147483647', 'gurgaon', 'bulb', 'Pickup', '2025-12-31', '12:59:00.000000', 'Yes', 'test', 'caution-sign.png', 1000, 'Pending', '2025-02-13 18:21:16.000000'),
-(13, 1, 'test_updated', 'Indira Pathlabs', '', 'test', 2, 'male', '2147483647', 'delhi', 'BILIRUBIN, BLOOD GROUP, CHIKUNGUNYA IGM, CHLORIDE, TOTAL CHOLESTEROAL', 'Pickup', '2025-12-31', '12:59:00.000000', 'Yes', '', '', 1700, 'Pending', '2025-02-14 18:57:16.000000'),
-(15, 1, 'test_updated', 'agilus diagnostics', '', 'test', 2, 'male', '2147483647', 'delhi', 'NONGYNAEC CYTOLOGY & FINE NEEDLE ASPIRATION CYTOLOGY (FNAC) PHOTO', 'Pickup', '2025-12-31', '12:59:00.000000', 'Yes', 'test', 'apple-touch-icon.png', 1400, 'Rejected/Cancelled', '2025-02-17 22:35:36.000000'),
-(16, 1, 'test_updated', 'dr.lal pathlabs', '', 'Test Test', 7, 'female', '2147483647', 'Delhi', '0.5 HR AFTER 75 GM GLUCOSE', 'Courier', '2025-12-31', '12:59:00.000000', 'Yes', 'Dr. Test Test', 'apple-touch-icon.png', 90, 'Completed', '2025-02-20 10:53:35.000000'),
-(17, 1, 'test_updated', 'dr.lal pathlabs', '', 'Mr. Test Test', 12, 'Male', '2147483647', 'Test ', '0.5 HR AFTER 75 GM GLUCOSE', 'Pickup', '2025-12-30', '12:59:00.000000', 'Yes', 'Dr. Test Test', 'apple-touch-icon.png', 90, 'Pending', '2025-02-20 11:05:38.000000'),
-(18, 1, 'test_updated', 'dr.lal pathlabs', 'P202568776', 'Mr. Test Test', 11, 'Male', '2147483647', 'Test', '0.5 HR AFTER 75 GM GLUCOSE', 'Pickup', '2025-12-31', '12:59:00.000000', 'Yes', 'Dr. Test Test', 'banner-img.png', 90, 'In-Process', '2025-02-20 11:19:04.000000'),
-(19, 1, 'test_updated', 'dr.lal pathlabs', 'P202576643', 'Mr. Test Test', 5, 'Male', '2147483647', 'House No.23, jawahar nagar, delhi, 451263', '0.5 HR AFTER 75 GM GLUCOSE', 'Pickup', '2025-12-31', '12:59:00.000000', 'Yes', 'test', 'apple-touch-icon.png', 90, 'Pending', '2025-02-20 13:06:02.000000'),
-(20, 1, 'test_updated', 'dr.lal pathlabs', 'P202553952', 'Mr. Test Test', 5, 'Male', '2147483647', 'delhi', '0.5 HR AFTER 75 GM GLUCOSE', 'Pickup', '2025-12-31', '12:59:00.000000', 'Yes', 'test', 'banner-img.png', 90, 'Pending', '2025-02-20 16:17:02.000000'),
-(21, 1, 'test_updated', 'dr.lal pathlabs', 'P202512941', 'new', 2, 'Male', '2147483647', 'iurfvjbevknlm', '0.5 HR AFTER 75 GM GLUCOSE', 'Pickup', '2025-12-31', '12:59:00.000000', 'Yes', 'test', 'banner-img.png', 90, 'Pending', '2025-02-20 19:19:05.000000'),
-(22, 1, 'test_updated', 'dr.lal pathlabs', 'P202527004', 'test new', 6, 'Male', '7894561235', 'ebudskml', '0.5 HR AFTER 75 GM GLUCOSE', 'Pickup', '2025-12-31', '00:59:00.000000', 'Yes', 'test', 'banner-img.png', 90, 'Pending', '2025-02-20 19:23:49.000000');
+INSERT INTO `test_requests` (`id`, `franchise_id`, `franchise_name`, `lab_name`, `patient_id`, `patient_name`, `age`, `gender`, `mobile`, `address`, `patient_email`, `selected_test`, `dispatch_option`, `sample_drawn_date`, `sample_drawn_time`, `fasting_status`, `reference_doctor`, `attachments`, `order_amount`, `b2b_amount`, `status`, `rejection_reason`, `created_at`) VALUES
+(18, 6, 'test_updated', 'dr.lal pathlabs', 'P202568776', 'Mr. Test Test', 11, 'Male', '2147483647', 'Test', '', '0.5 HR AFTER 75 GM GLUCOSE', 'Pickup', '2025-12-31', '12:59:00.000000', 'Yes', 'Dr. Test Test', 'banner-img.png', 90, 0, 'In-Process', '', '2025-02-20 11:19:04.000000'),
+(19, 6, 'test_updated', 'dr.lal pathlabs', 'P202576643', 'Mr. Test Test', 5, 'Male', '2147483647', 'House No.23, jawahar nagar, delhi, 451263', '', '0.5 HR AFTER 75 GM GLUCOSE', 'Pickup', '2025-12-31', '12:59:00.000000', 'Yes', 'test', 'apple-touch-icon.png', 90, 0, 'Pending', '', '2025-02-20 13:06:02.000000'),
+(20, 6, 'test_updated', 'dr.lal pathlabs', 'P202553952', 'Mr. Test Test', 5, 'Male', '2147483647', 'delhi', '', '0.5 HR AFTER 75 GM GLUCOSE', 'Pickup', '2025-12-31', '12:59:00.000000', 'Yes', 'test', 'banner-img.png', 90, 0, 'Pending', '', '2025-02-20 16:17:02.000000'),
+(21, 6, 'test_updated', 'dr.lal pathlabs', 'P202512941', 'new', 2, 'Male', '2147483647', 'iurfvjbevknlm', '', '0.5 HR AFTER 75 GM GLUCOSE', 'Pickup', '2025-12-31', '12:59:00.000000', 'Yes', 'test', 'banner-img.png', 90, 0, 'Completed', '', '2025-02-20 19:19:05.000000'),
+(22, 6, 'test_updated', 'dr.lal pathlabs', 'P202527004', 'test new', 6, 'Male', '7894561235', 'ebudskml', '', '0.5 HR AFTER 75 GM GLUCOSE', 'Pickup', '2025-12-31', '00:59:00.000000', 'Yes', 'test', 'banner-img.png', 90, 0, 'In-Process', 'wrong sample taken', '2025-02-20 19:23:49.000000'),
+(23, 6, 'test_updated', 'dr.lal pathlabs', 'P202561555', 'new', 2, 'Male', '4512562382', 'zuidrubkjvkdzb', '', '0.5 HR AFTER 75 GM GLUCOSE', 'Pickup', '2025-12-31', '12:59:00.000000', 'Yes', '', '', 90, 0, 'Pending', 'N/A', '2025-02-22 21:21:41.000000'),
+(24, 6, 'test_updated', 'thyrocare', 'P202533269', 'ifnvm', 3, 'Female', '7894561235', 'invdsomkenovsdkm', '', 'ALKALINE PHOSPHATASE,ALPHA FETO PROTEIN (AFP)', 'Pickup', '2025-12-31', '12:59:00.000000', 'Yes', 'test', 'apple-touch-icon.png', 970, 374, 'Pending', 'N/A', '2025-02-25 23:08:40.000000'),
+(25, 6, 'test_updated', 'lupin diagnostics', 'P202571824', 'test', 1, 'Male', '7894561235', 'iuvskiofldvj/s;d', '', 'ABNORMAL HEMOGLOBIN STUDY (HB ELECTROPHORESIS)', 'Pickup', '2025-12-31', '12:59:00.000000', 'Yes', 'test', '', 990, 300, 'Pending', 'N/A', '2025-03-03 16:06:49.000000'),
+(50, 0, 'New Test', '', 'P202582684', 'test2', 3, '', '65654315412', '5414531trevdsc', 'test@gmail.com', 'ALKP, AFP', 'Pickup', '0000-00-00', '00:00:00.000000', '', '', 'caution-sign.png', 970, 0, 'Pending', 'N/A', '2025-03-05 11:28:40.000000'),
+(51, 0, 'New Test', '', 'P202537837', 'test2', 2, '', '64856845956', '5414531trevdsc', 'test@gmail.com', 'ALKP', 'Pickup', '0000-00-00', '00:00:00.000000', '', '', 'caution-sign.png', 210, 0, 'Pending', 'N/A', '2025-03-05 11:34:30.000000'),
+(52, 0, 'New Test', '', 'P202545770', 'test2', 2, '', '64856845956', 'mlkle,f,ld434535', 'test@gmail.com', 'ALKP', 'Pickup', '0000-00-00', '00:00:00.000000', '', '', 'caution-sign.png', 210, 0, 'Pending', 'N/A', '2025-03-05 11:37:14.000000'),
+(53, 0, 'New Test', '', 'P202565960', 'test2', 2, '', '64856845956', 'mlkle,f,ld434535', 'test@gmail.com', 'ALKP', 'Pickup', '0000-00-00', '00:00:00.000000', '', '', 'caution-sign.png', 210, 0, 'Pending', 'N/A', '2025-03-05 11:37:34.000000'),
+(54, 0, 'New Test', '', 'P202561981', 'test2', 2, '', '5446353', '6546354fdvfdc', 'test@gmail.com', 'ALKP, AFP', 'Pickup', '0000-00-00', '00:00:00.000000', '', '', 'caution-sign.png', 970, 0, 'Pending', 'N/A', '2025-03-05 11:40:36.000000'),
+(55, 0, 'efidvskm', '', 'P202547192', 'test2', 25, '', '56384549863532', '683e45rvd', 'test@gmail.com', 'ALKP', 'Pickup', '0000-00-00', '00:00:00.000000', '', '', 'caution-sign.png', 210, 0, 'Pending', 'N/A', '2025-03-06 12:16:07.000000'),
+(56, 0, 'efidvskm', '', 'P202599744', 'test2', 25, '', '56384549863532', '683e45rvd', 'test@gmail.com', 'ALKP, AFP', 'Pickup', '0000-00-00', '00:00:00.000000', '', '', 'caution-sign.png', 970, 0, 'Pending', 'N/A', '2025-03-06 12:16:44.000000'),
+(57, 0, 'efidvskm', '', 'P202514356', 'nice', 3, '', '894658465', '8r46e5f, 754frc', 'nice@gmail.com', 'ALKP, AFP', 'Pickup', '0000-00-00', '00:00:00.000000', '', '', 'banner-img.png', 970, 0, 'Pending', 'N/A', '2025-03-06 12:33:47.000000'),
+(58, 0, 'efidvskm', '', 'P202582136', 'new', 3, '', '486536845', '86er45, 4er65f', 'test@gmail.com', 'ALKALINE PHOSPHATASE, ALPHA FETO PROTEIN (AFP)', 'Pickup', '0000-00-00', '00:00:00.000000', '', '', 'caution-sign.png', 970, 0, 'Pending', 'N/A', '2025-03-06 12:37:45.000000'),
+(59, 0, 'oxygen', '', 'P153452', 'test', 6, '', '42645', '648er52, 45erf2', 'devjoshi1384@gmail.com', 'ALKALINE PHOSPHATASE, ALPHA FETO PROTEIN (AFP)', 'Pickup', '0000-00-00', '00:00:00.000000', '', '', '67d0834cc4166.jpg', 970, 0, 'Pending', 'N/A', '2025-03-12 00:09:08.000000'),
+(60, 0, 'oxygen', '', 'P951864', 'test', 12, '', '465148651', '465erf, e645rf1d', 'dj3992@srmist.edu.in', 'ALKALINE PHOSPHATASE, ALPHA FETO PROTEIN (AFP)', 'Pickup', '0000-00-00', '00:00:00.000000', '', '', '', 970, 0, 'Pending', 'N/A', '2025-03-12 00:19:57.000000'),
+(61, 0, 'oxygen', '', 'P101993', 'Mr. Test Test', 9, '', '4568465', 'e456erf, rf654', 'dj3992@srmist.edu.in', 'ALKALINE PHOSPHATASE', 'Pickup', '0000-00-00', '00:00:00.000000', '', '', '', 210, 0, 'Pending', 'N/A', '2025-03-12 00:38:11.000000'),
+(62, 0, 'oxygen', '', 'P763827', 'test', 10, '', '6485465', '451re, 486r51', 'dj3992@srmist.edu.in', 'ALKALINE PHOSPHATASE', 'Pickup', '0000-00-00', '00:00:00.000000', '', '', '', 210, 0, 'Pending', 'N/A', '2025-03-12 00:40:50.000000'),
+(63, 0, 'oxygen', '', 'P809016', 'test', 45, '', '486516485', '684e, 59+ed', 'dj3992@srmist.edu.in', 'ALKALINE PHOSPHATASE', 'Pickup', '0000-00-00', '00:00:00.000000', '', '', '', 210, 0, 'Pending', 'N/A', '2025-03-12 00:44:02.000000'),
+(64, 0, 'oxygen', '', 'P763272', 'test', 45, '', '89465248965', '29856dc, 48edc', 'dj3992@srmist.edu.in', 'ALKALINE PHOSPHATASE', 'Pickup', '0000-00-00', '00:00:00.000000', '', '', '', 210, 0, 'Pending', 'N/A', '2025-03-12 00:47:03.000000'),
+(65, 0, 'oxygen', '', 'P661445', 'test', 45, '', '89465248965', '29856dc, 48edc', 'dj3992@srmist.edu.in', 'ALKALINE PHOSPHATASE', 'Pickup', '0000-00-00', '00:00:00.000000', '', '', '', 210, 0, 'Pending', 'N/A', '2025-03-12 00:48:23.000000'),
+(66, 0, 'djlab', '', 'P798487', 'Mr. Dev Joshi', 23, '', '8171866922', '1384, Sector-3, Shastri Nagar, Meerut, UP, 250002', 'devjoshi1384@gmail.com', 'ALKALINE PHOSPHATASE, ALPHA FETO PROTEIN (AFP)', 'Pickup', '0000-00-00', '00:00:00.000000', '', '', '67d2b0588a599.png', 970, 0, 'Pending', 'N/A', '2025-03-13 15:45:52.000000'),
+(67, 0, 'djlab', '', 'P952390', 'Mr. Dev Joshi', 23, '', '8171866922', '1384, Sector-3, Shastri Nagar, Meerut, UP, 250002', 'devjoshi1384@gmail.com', 'ALKALINE PHOSPHATASE, ALPHA FETO PROTEIN (AFP)', 'Pickup', '0000-00-00', '00:00:00.000000', '', '', '67d2b08a3bb92.png', 970, 0, 'Pending', 'N/A', '2025-03-13 15:46:42.000000'),
+(68, 0, 'djlab', '', 'P496715', 'test', 45, '', '489652489652', '4865ref, 98r4v6fec', 'devjoshi1384@gmail.com', 'ALKALINE PHOSPHATASE, ALPHA FETO PROTEIN (AFP)', 'Pickup', '0000-00-00', '00:00:00.000000', '', '', '', 970, 0, 'Pending', 'N/A', '2025-03-13 15:52:32.000000'),
+(69, 0, 'djlab', '', 'P413132', 'test', 45, '', '489652489652', '4865ref, 98r4v6fec', 'devjoshi1384@gmail.com', 'ALKALINE PHOSPHATASE, ALPHA FETO PROTEIN (AFP)', 'Pickup', '0000-00-00', '00:00:00.000000', '', '', '', 970, 0, 'Pending', 'N/A', '2025-03-13 15:53:10.000000'),
+(70, 0, 'djlab', '', 'P637459', 'Mr. Dev Joshi', 23, '', '8171866922', '1384, Sector-3, Shastri Nagar, Meerut, UP, 250002', 'devjoshi1384@gmail.com', 'ALKALINE PHOSPHATASE, ALPHA FETO PROTEIN (AFP)', 'Pickup', '0000-00-00', '00:00:00.000000', '', '', '67d2b32e9d239.png', 970, 0, 'Pending', 'N/A', '2025-03-13 15:57:58.000000');
 
 --
 -- Indexes for dumped tables
@@ -14387,6 +14430,12 @@ ALTER TABLE `franchises`
 -- Indexes for table `labs`
 --
 ALTER TABLE `labs`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `membership`
+--
+ALTER TABLE `membership`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -14511,7 +14560,7 @@ ALTER TABLE `test_requests`
 -- AUTO_INCREMENT for table `franchises`
 --
 ALTER TABLE `franchises`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `labs`
@@ -14520,16 +14569,22 @@ ALTER TABLE `labs`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
+-- AUTO_INCREMENT for table `membership`
+--
+ALTER TABLE `membership`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
 -- AUTO_INCREMENT for table `recharge_requests`
 --
 ALTER TABLE `recharge_requests`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `reports`
 --
 ALTER TABLE `reports`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `tests_agilus diagnostics`
@@ -14625,13 +14680,13 @@ ALTER TABLE `tests_sagepath`
 -- AUTO_INCREMENT for table `tests_thyrocare`
 --
 ALTER TABLE `tests_thyrocare`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=975;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=980;
 
 --
 -- AUTO_INCREMENT for table `test_requests`
 --
 ALTER TABLE `test_requests`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
